@@ -1,0 +1,12 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/Second",
+    "pages/LifeCirclePage",
+    "pages/Base",
+    "pages/AboutBuildParams",
+    "pages/AboutParams",
+    "pages/AboutExtendAnno",
+    "pages/AboutStyleAnno"
+  ]
+}
