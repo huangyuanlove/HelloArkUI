@@ -1,109 +1,53 @@
 import router from '@ohos.router'
+@Extend(Button) function indexButtonStyle(path:string){
+  .type(ButtonType.Capsule)
+  .margin({
+    top: 20
+  })
+  .backgroundColor('#39d167')
+  .onClick(()=>{
+    router.pushUrl({url:path})
+  })
+}
+
+
+@Component
+export struct IndexItem{
+
+  path:string ;
+  label:string;
+
+  build(){
+    Button() {
+      Text(this.label)
+        .fontSize(30)
+        .padding(10)
+    }.indexButtonStyle(this.path)
+  }
+}
 
 @Entry
 @Component
 struct Index {
+  scroller: Scroller = new Scroller()
   build() {
-    Column() {
-      Button() {
-        Text('基础')
-          .fontSize(30)
-          .padding(10)
-      }.type(ButtonType.Capsule)
-      .width('40%')
-      .backgroundColor('#39d167')
-      .onClick(() => {
-        router.pushUrl({ url: 'pages/Base' })
-      })
-
-      Button() {
-        Text('生命周期')
-          .fontSize(30)
-          .padding(10)
+    Scroll(this.scroller){
+      Column() {
+        IndexItem({label:'基础',path:'pages/Base'})
+        IndexItem({label:'生命周期',path:'pages/LifeCirclePage'})
+        IndexItem({label:'参数传递',path:'pages/AboutParams'})
+        IndexItem({label:'参数传递',path:'pages/AboutParams'})
+        IndexItem({label:'@Styles装饰器',path:'pages/AboutStyleAnno'})
+        IndexItem({label:'@Extend装饰器',path:'pages/AboutExtendAnno'})
+        IndexItem({label:'@stateStyles',path:'pages/AboutStateStyles'})
+        IndexItem({label:'状态管理',path:'pages/AboutStateManagement'})
       }
-      .type(ButtonType.Capsule)
-      .margin({
-        top: 20
-      })
-      .backgroundColor('#39d167')
-      .width('40%')
-      .onClick(() => {
-        router.pushUrl({ url: 'pages/LifeCirclePage' })
-      })
+    }.height('100%').width('100%').backgroundColor(Color.Grey)
+    .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
+    .scrollBar(BarState.On)  // 滚动条常驻显示
+    .scrollBarColor(Color.Gray)  // 滚动条颜色
+    .scrollBarWidth(10) // 滚动条宽度
+    .edgeEffect(EdgeEffect.None)
+    }
 
-      Button() {
-        Text('参数传递')
-          .fontSize(30)
-          .padding(10)
-      }
-      .type(ButtonType.Capsule)
-      .margin({
-        top: 20
-      })
-      .backgroundColor('#39d167')
-      .width('40%')
-      .onClick(() => {
-        router.pushUrl({ url: 'pages/AboutParams' })
-      })
-
-      Button() {
-        Text('参数传递')
-          .fontSize(30)
-          .padding(10)
-      }
-      .type(ButtonType.Capsule)
-      .margin({
-        top: 20
-      })
-      .backgroundColor('#39d167')
-      .width('40%')
-      .onClick(() => {
-        router.pushUrl({ url: 'pages/AboutParams' })
-      })
-
-      Button() {
-        Text('@BuilderParam装饰器：引用@Builder函数')
-          .fontSize(20)
-          .padding(10)
-      }
-      .type(ButtonType.Capsule)
-      .margin({
-        top: 20
-      })
-      .backgroundColor('#39d167')
-      .onClick(() => {
-        router.pushUrl({ url: 'pages/AboutBuildParams' })
-      })
-
-      Button() {
-        Text('@Styles装饰器：定义组件重用样式')
-          .fontSize(20)
-          .padding(10)
-      }
-      .type(ButtonType.Capsule)
-      .margin({
-        top: 20
-      })
-      .backgroundColor('#39d167')
-      .onClick(() => {
-        router.pushUrl({ url: 'pages/AboutStyleAnno' })
-      })
-
-      Button() {
-        Text('@Extend装饰器：定义扩展组件样式')
-          .fontSize(20)
-          .padding(10)
-      }
-      .type(ButtonType.Capsule)
-      .margin({
-        top: 20
-      })
-      .backgroundColor('#39d167')
-      .onClick(() => {
-        router.pushUrl({ url: 'pages/AboutExtendAnno' })
-      })
-
-
-    }.height('100%')
-  }
 }
