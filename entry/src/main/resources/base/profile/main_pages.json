@@ -7,6 +7,9 @@
     "pages/AboutBuildParams",
     "pages/AboutParams",
     "pages/AboutExtendAnno",
-    "pages/AboutStyleAnno"
+    "pages/AboutStyleAnno",
+    "pages/AboutStateManagement",
+    "pages/AboutStateStyles",
+    "pages/state_menager/AboutStateAnno"
   ]
 }
