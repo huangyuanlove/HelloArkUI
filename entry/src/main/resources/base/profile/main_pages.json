@@ -10,6 +10,8 @@
     "pages/AboutStyleAnno",
     "pages/AboutStateManagement",
     "pages/AboutStateStyles",
-    "pages/state_menager/AboutStateAnno"
+    "pages/state_manager/AboutStateAnno",
+    "pages/state_manager/AboutPropAnno",
+    "pages/state_manager/AboutLinkAnno"
   ]
 }
