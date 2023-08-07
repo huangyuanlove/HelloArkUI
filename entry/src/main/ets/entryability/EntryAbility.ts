@@ -5,6 +5,7 @@ import window from '@ohos.window';
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    new LocalStorage({'PropA':18});
   }
 
   onDestroy() {
