@@ -33,6 +33,14 @@ struct AboutStateManagement {
           label: 'Environment：设备环境查询',
           path: 'pages/state_manager/AboutEnvironment'
         })
+        IndexItem({
+          label: '@Watch装饰器：状态变量更改通知',
+          path: 'pages/state_manager/AboutWatchAnno'
+        })
+        IndexItem({
+          label: '$$语法：内置组件双向同步',
+          path: 'pages/state_manager/AboutDoubleDollar'
+        })
       }
     }
     .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向

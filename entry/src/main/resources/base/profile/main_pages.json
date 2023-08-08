@@ -18,6 +18,8 @@
     "pages/state_manager/AboutObservedAndObjectLinkAnno",
     "pages/state_manager/AboutAppStorage",
     "pages/state_manager/AboutPersistentStorage",
-    "pages/state_manager/AboutEnvironment"
+    "pages/state_manager/AboutEnvironment",
+    "pages/state_manager/AboutWatchAnno",
+    "pages/state_manager/AboutDoubleDollar"
   ]
 }
