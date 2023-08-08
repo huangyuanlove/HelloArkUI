@@ -3,9 +3,14 @@ import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 
 export default class EntryAbility extends UIAbility {
+
+  localStorage: LocalStorage = new LocalStorage({
+    'PropA': 18
+  });
+
   onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
-    new LocalStorage({'PropA':18});
+
   }
 
   onDestroy() {
@@ -16,13 +21,14 @@ export default class EntryAbility extends UIAbility {
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
-    windowStage.loadContent('pages/Index', (err, data) => {
+    windowStage.loadContent('pages/Index', this.localStorage,(err, data) => {
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
         return;
       }
       hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');
     });
+
   }
 
   onWindowStageDestroy() {

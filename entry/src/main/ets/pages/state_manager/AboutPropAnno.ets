@@ -1,12 +1,25 @@
 import common from '@ohos.app.ability.common'
-// import CustomDialogController from
+import { ContentDialog } from '../../component/ContentDialog';
 @Entry
 @Component
 struct AboutPropAnno {
   @State countDownStartValue: number = 10;
   @State arr: number[] = [1, 2, 3];
   dialogController: CustomDialogController = new CustomDialogController({
-    builder: CustomDialogExample({}),
+    builder: ContentDialog({
+      content:'在子组件Child中做的所有的修改都不会同步回父组件Index组件，' +
+      '所以即使6个组件显示都为7，但在父组件Index中，this.arr保存的值依旧是[1,2,3]。\n\n' +
+      '点击replace entire arr，this.arr[0] == 1成立，' +
+      '将this.arr赋值为[3, 4, 5]；因为this.arr[0]已更改，' +
+      'Child({value: this.arr[0]})组件将this.arr[0]更新同步到实例@Prop装饰的变量。' +
+      'Child({value: this.arr[1]})和Child({value: this.arr[2]})的情况也类似。\n\n' +
+      'this.arr的更改触发ForEach更新，' +
+      'this.arr更新的前后都有数值为3的数组项：[3, 4, 5] 和[1, 2, 3]。' +
+      '根据diff机制，数组项“3”将被保留，删除“1”和“2”的数组项，添加为“4”和“5”的数组项。' +
+      '这就意味着，数组项“3”的组件不会重新生成，而是将其移动到第一位。' +
+      '所以“3”对应的组件不会更新，此时“3”对应的组件数值为“7”，' +
+      'ForEach最终的渲染结果是“7”，“4”，“5”。'
+    }),
 
     autoCancel: true,
     alignment: DialogAlignment.Default,
@@ -125,27 +138,3 @@ struct Child {
   }
 }
 
-@CustomDialog
-struct CustomDialogExample {
-  private customController: CustomDialogController
-
-  build() {
-    Column() {
-      Text('在子组件Child中做的所有的修改都不会同步回父组件Index组件，' +
-      '所以即使6个组件显示都为7，但在父组件Index中，this.arr保存的值依旧是[1,2,3]。\n\n' +
-      '点击replace entire arr，this.arr[0] == 1成立，' +
-      '将this.arr赋值为[3, 4, 5]；因为this.arr[0]已更改，' +
-      'Child({value: this.arr[0]})组件将this.arr[0]更新同步到实例@Prop装饰的变量。' +
-      'Child({value: this.arr[1]})和Child({value: this.arr[2]})的情况也类似。\n\n' +
-      'this.arr的更改触发ForEach更新，' +
-      'this.arr更新的前后都有数值为3的数组项：[3, 4, 5] 和[1, 2, 3]。' +
-      '根据diff机制，数组项“3”将被保留，删除“1”和“2”的数组项，添加为“4”和“5”的数组项。' +
-      '这就意味着，数组项“3”的组件不会重新生成，而是将其移动到第一位。' +
-      '所以“3”对应的组件不会更新，此时“3”对应的组件数值为“7”，' +
-      'ForEach最终的渲染结果是“7”，“4”，“5”。')
-        .fontSize(20).padding(10)
-
-    }
-    // dialog默认的borderRadius为24vp，如果需要使用border属性，请和borderRadius属性一起使用。
-  }
-}
