@@ -9,6 +9,16 @@ export default class SecondAbility extends UIAbility {
     let info = entryAbilityWant?.parameters?.info
     console.error('huangyuan',JSON.stringify(info));
     console.error('huangyuan',JSON.stringify(launchParam));
+
+    try {
+      // 监听call事件所需的方法
+      this.callee.on('funA', FunACall);
+      this.callee.on('funB', FunBCall);
+    } catch (error) {
+      console.log('register failed with error. Cause: ' + JSON.stringify(error));
+    }
+
+
   }
 
   onWindowStageCreate(windowStage:Window.WindowStage){
@@ -20,6 +30,24 @@ export default class SecondAbility extends UIAbility {
 
     })
   }
+  // 进程退出时，解除监听
+  onDestroy() {
+    try {
+      this.callee.off('funA');
+      this.callee.off('funB');
+    } catch (error) {
+      console.log('register failed with error. Cause: ' + JSON.stringify(error));
+    }
+  }
 
 }
 
+function FunACall(data) {
+  // 获取call事件中传递的所有参数
+  console.log('FunACall param:' + JSON.stringify(data.readString()));
+  return null;
+}
+function FunBCall(data) {
+  console.log('FunACall param:' + JSON.stringify(data.readString()));
+  return null;
+}

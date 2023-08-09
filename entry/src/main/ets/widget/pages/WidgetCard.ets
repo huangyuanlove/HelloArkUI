@@ -56,6 +56,10 @@ struct WidgetCard {
    */
   readonly IMAGE_HEIGHT_PERCENT: string = '64%';
   @State mini: boolean = false;
+  @State imageUrl:string ='http://img.duoziwang.com/2018/05/201712310823457.jpg'
+
+
+
 
   build() {
     Row() {
@@ -76,18 +80,65 @@ struct WidgetCard {
           .backgroundImage($r("app.media.ic_widget"), ImageRepeat.NoRepeat)
           .displayPriority(this.MINI_DISPLAY_PRIORITY)
         }
-        Image($r("app.media.ic_widget"))
+        Image(this.imageUrl)
           .width(this.FULL_WIDTH_PERCENT)
           .height(this.IMAGE_HEIGHT_PERCENT)
           .objectFit(ImageFit.Fill)
           .borderRadius($r('app.float.image_border_radius'))
         Blank()
-        Text(this.ITEM_TITLE)
-          .fontSize($r('app.float.normal_title_font_size'))
-        Text(this.ITEM_CONTENT)
-          .maxLines(this.MAX_LINES)
-          .fontSize($r('app.float.normal_content_font_size'))
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        Text("打开指定页面")
+          .fontColor($r('app.color.green_39d169'))
+          .fontSize(14)
+          .backgroundColor(Color.Gray)
+          .borderRadius(10)
+          .padding(10)
+          .margin(10)
+          .onClick(() => {
+            postCardAction(this, {
+              "action": this.ACTION_TYPE,
+              "abilityName": this.ABILITY_NAME,
+              "params": {
+                "message": this.MESSAGE
+              }
+            });
+          })
+
+        Text("拉起页面到后台")
+          .fontColor($r('app.color.green_39d169'))
+          .fontSize(14)
+          .backgroundColor(Color.Gray)
+          .borderRadius(10)
+          .padding(10)
+          .margin(10)
+          .onClick(() => {
+            postCardAction(this, {
+              'action': 'call',
+              'abilityName': 'SecondAbility', // 只能跳转到当前应用下的UIAbility
+              'params': {
+                'method': 'funB', // 在EntryAbility中调用的方法名
+                'num': 1 // 需要传递的其他参数
+              }
+            });
+          })
+
+        Text("message刷新")
+          .fontColor($r('app.color.green_39d169'))
+          .fontSize(14)
+          .backgroundColor(Color.Gray)
+          .borderRadius(10)
+          .padding(10)
+          .margin(10)
+          .onClick(() => {
+            postCardAction(this, {
+              'action': 'message',
+              'params': {
+                'msgTest': 'messageEvent'
+              }
+            });
+          })
+
+
+
       }
       .width(this.FULL_WIDTH_PERCENT)
       .height(this.FULL_HEIGHT_PERCENT)
@@ -97,14 +148,6 @@ struct WidgetCard {
     .height(this.FULL_HEIGHT_PERCENT)
     .alignItems(VerticalAlign.Top)
     .padding($r('app.float.row_padding'))
-    .onClick(() => {
-      postCardAction(this, {
-        "action": this.ACTION_TYPE,
-        "abilityName": this.ABILITY_NAME,
-        "params": {
-          "message": this.MESSAGE
-        }
-      });
-    })
+
   }
 }

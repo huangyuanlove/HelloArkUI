@@ -1,7 +1,7 @@
 {
   "forms": [
     {
-      "name": "widget",
+      "name": "xuan_service_card",
       "description": "This is a service widget.",
       "src": "./ets/widget/pages/WidgetCard.ets",
       "uiSyntax": "arkts",
