@@ -8,6 +8,11 @@
       "phone",
       "tablet"
     ],
+    "requestPermissions": [
+      {
+        "name": 'ohos.permission.INTERNET'
+      }
+    ],
     "deliveryWithInstall": true,
     "installationFree": false,
     "pages": "$profile:main_pages",
@@ -29,6 +34,41 @@
             "actions": [
               "action.system.home"
             ]
+          }
+        ]
+      },
+      {
+        "name": "SecondAbility",
+        "srcEntry": "./ets/entryability/SecondeAbility.ets",
+        "description": "第二个 Ability",
+        "icon": "$media:nav_arkui",
+        "label": "$string:SecondAbility_label",
+        "startWindowIcon": "$media:nav_arkui",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true,
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "action.system.home"
+            ]
+          }
+        ]
+      }
+    ],
+    "extensionAbilities": [
+      {
+        "name": "EntryFormAbility",
+        "srcEntry": "./ets/entryformability/EntryFormAbility.ts",
+        "label": "$string:EntryFormAbility_label",
+        "description": "$string:EntryFormAbility_desc",
+        "type": "form",
+        "metadata": [
+          {
+            "name": "ohos.extension.form",
+            "resource": "$profile:form_config"
           }
         ]
       }

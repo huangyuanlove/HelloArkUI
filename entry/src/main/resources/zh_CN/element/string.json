@@ -10,7 +10,23 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "ArkUIDemo"
+      "value": "HelloArkUI"
+    },
+    {
+      "name": "SecondAbility_label",
+      "value": "SecondAbility"
+    },
+    {
+      "name": "SecondAbility_desc",
+      "value": "SecondAbility"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "form_description"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "form_label"
     }
   ]
 }
