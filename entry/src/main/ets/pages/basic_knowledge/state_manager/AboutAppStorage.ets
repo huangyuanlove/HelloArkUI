@@ -1,3 +1,4 @@
+import ActionBar from '../../../comm/ActionBar';
 AppStorage.SetOrCreate('PropA', 47);
 let storage = new LocalStorage({ 'PropA': 48 });
 
@@ -8,6 +9,7 @@ struct AboutAppStorage{
   @LocalStorageLink('PropA') localStorLink: number = 1;
   build(){
     Column(){
+      ActionBar({ title: 'AppStorage' })
       Text('AppStorage是单例，它的所有API都是静态的，使用方法类似于LocalStorage对应的非静态方法。')
         .margin(10)
         .padding(10)

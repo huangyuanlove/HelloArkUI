@@ -1,3 +1,4 @@
+import ActionBar from '../../comm/ActionBar'
 @Entry
 @Component
 struct AboutStateStyle {
@@ -8,6 +9,7 @@ struct AboutStateStyle {
 
   build() {
     Column() {
+      ActionBar({ title: '组件状态：' })
       Text("提供了四种状态\nfocused：获焦态。\nnormal：正常态。\npressed：按压态。\ndisabled：不可用态。")
         .fontSize(20)
         .fontColor(Color.Black)

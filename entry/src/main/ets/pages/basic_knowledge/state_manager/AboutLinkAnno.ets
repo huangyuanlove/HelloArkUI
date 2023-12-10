@@ -1,3 +1,4 @@
+import ActionBar from '../../../comm/ActionBar';
 @Entry
 @Component
 struct AboutLinkAnno{
@@ -5,6 +6,7 @@ struct AboutLinkAnno{
   @State totalCount:number =0;
   build(){
     Column(){
+      ActionBar({ title: '@Link' })
       Text(`总点击数量--> ${this.totalCount}`)
         .onClick(()=>{
           this.totalCount++

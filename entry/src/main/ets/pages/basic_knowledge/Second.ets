@@ -1,16 +1,19 @@
 import router from '@ohos.router'
-import { HelloComponent } from '../component/HelloComponent'
+import ActionBar from '../../comm/ActionBar'
+import { HelloComponent } from '../../component/HelloComponent'
+
 @Entry
 @Component
-struct Second{
-  @State message :string = 'hi second'
-  build(){
-    Row(){
-      Column(){
+struct Second {
+  @State message: string = 'hi second'
+
+  build() {
+      Column() {
+        ActionBar({ title: '第二个页面' })
         Text(this.message)
           .fontColor('#1b91e0')
           .fontWeight(FontWeight.Lighter)
-        Button(){
+        Button() {
           Text('back')
             .fontWeight(FontWeight.Medium)
             .fontColor('#666666')
@@ -19,18 +22,20 @@ struct Second{
         .type(ButtonType.Normal)
         .backgroundColor('#0D9FFB')
         .margin({
-          top:20
+          top: 20
         })
         .width('40%')
         .height('5%')
-        .onClick(()=>{
+        .onClick(() => {
           router.back()
         })
+
         HelloComponent()
 
-      }
-      .width('100%')
-    }.height('100%')
+
+          .width('100%')
+      }.height('100%') .width('100%')
+
 
   }
 }

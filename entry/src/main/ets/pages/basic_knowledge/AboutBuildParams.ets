@@ -1,3 +1,4 @@
+import ActionBar from '../../comm/ActionBar'
 @Builder function GlobalBuilder0($$: { label: string }) {
   Text($$.label)
     .width(400)
@@ -18,6 +19,7 @@ struct AboutBuildParams {
 
   build() {
     Column() {
+      ActionBar({ title: '构建参数' })
       this.componentBuilder()
       Child({ aBuilder0: this.componentBuilder, aBuilder1: GlobalBuilder0 })
 
@@ -37,7 +39,7 @@ struct AboutBuildParams {
         .padding(10)
     }
     .alignItems(HorizontalAlign.Center)
-    .padding(10)
+
   }
 }
 

@@ -1,4 +1,5 @@
-import { ContentDialog } from '../../component/ContentDialog';
+import ActionBar from '../../../comm/ActionBar';
+import { ContentDialog } from '../../../component/ContentDialog';
 
 PersistentStorage.PersistProp('aProp', 47);
 
@@ -87,7 +88,7 @@ struct AboutPersistentStorage {
 
   build() {
     Column() {
-
+      ActionBar({ title: 'PersistentStorage' })
       Button('概述').showDialogButtonStyle()
 
         .onClick(() => {

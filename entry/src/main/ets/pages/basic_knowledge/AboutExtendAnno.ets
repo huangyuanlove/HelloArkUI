@@ -1,3 +1,4 @@
+import ActionBar from '../../comm/ActionBar';
 @Entry
 @Component
 struct AboutExtendAnno{
@@ -10,6 +11,7 @@ struct AboutExtendAnno{
 
   build(){
     Column(){
+      ActionBar({ title: '@Extends装饰器' })
       Text('@Extends 基础用法').superFancyText(20)
       Text(`hello ${this.label}`)
       Text('@Extend装饰的方法的参数可以为function，作为Event事件的句柄。').makeMeClick(this.onClickHandle.bind(this))

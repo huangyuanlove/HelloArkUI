@@ -1,8 +1,10 @@
+import ActionBar from '../../comm/ActionBar';
 @Entry
 @Component
 struct AboutStyleAnno{
 
   @State heightValue:number = 100;
+
   @Styles fancy(){
     .width(200)
     .height(this.heightValue)
@@ -17,6 +19,7 @@ struct AboutStyleAnno{
 
   build(){
     Column({space:10}){
+      ActionBar({ title: '@Style注解' })
       Text('globalFancy')
         .globalFancy ()
         .fontSize(30)

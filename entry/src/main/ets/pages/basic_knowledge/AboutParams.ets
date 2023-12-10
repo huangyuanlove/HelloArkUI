@@ -3,6 +3,7 @@
  * 当传递的参数为状态变量时，状态变量的改变不会引起@Builder方法内的UI刷新。
  * 所以当使用状态变量的时候，推荐使用按引用传递。
  */
+import ActionBar from '../../comm/ActionBar';
 @Entry
 @Component
 struct AboutParams {
@@ -12,6 +13,7 @@ struct AboutParams {
   build() {
 
     Column() {
+      ActionBar({ title: '参数传递' })
       ABuild({ paramsA: this.label,paramsB:this.label1 })
       Divider()
         .margin({

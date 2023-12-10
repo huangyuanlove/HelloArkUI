@@ -1,4 +1,5 @@
 
+import ActionBar from '../../../comm/ActionBar';
 let localStorage = LocalStorage.GetShared() //在 EntryAbility中声明并 load，可以在多个视图中共享
 @Entry(localStorage)
 @Component
@@ -8,6 +9,7 @@ struct AboutLocalStorage {
 
   build() {
     Column() {
+      ActionBar({ title: '@LocalStorageLink' })
       Text('@Observed装饰器和@ObjectLink装饰器：嵌套类对象属性变化,用于在涉及嵌套对象或数组的场景中进行双向数据同步：')
         .margin(10)
         .padding(10)

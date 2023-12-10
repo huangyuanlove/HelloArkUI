@@ -1,5 +1,6 @@
 import common from '@ohos.app.ability.common'
-import { ContentDialog } from '../../component/ContentDialog';
+import ActionBar from '../../../comm/ActionBar';
+import { ContentDialog } from '../../../component/ContentDialog';
 @Entry
 @Component
 struct AboutPropAnno {
@@ -34,6 +35,7 @@ struct AboutPropAnno {
 
   build() {
     Column() {
+      ActionBar({ title: '@Prop' })
       Text('@State装饰器：组件内状态,使用场景：父组件@State到子组件@Prop数据同步')
         .padding(10)
         .margin(10)

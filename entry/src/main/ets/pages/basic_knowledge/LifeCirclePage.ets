@@ -1,4 +1,5 @@
 import router from '@ohos.router';
+import ActionBar from '../../comm/ActionBar';
 @Entry
 @Component
 struct LifeCirclePage{
@@ -32,6 +33,7 @@ struct LifeCirclePage{
   @State show: boolean = false
   build(){
     Column(){
+      ActionBar({ title: '生命周期' })
       // this.showChild为true，创建Child子组件，执行Child aboutToAppear
       if (this.showChild) {
         Child()

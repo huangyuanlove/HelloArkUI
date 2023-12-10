@@ -1,3 +1,4 @@
+import ActionBar from '../../../comm/ActionBar';
 @Entry
 @Component
 struct AboutObservedAndObjectLinkAnno {
@@ -6,6 +7,7 @@ struct AboutObservedAndObjectLinkAnno {
   build() {
 
     Column() {
+      ActionBar({ title: '@Observed 和 @ObjectLink' })
       Text('@Observed装饰器和@ObjectLink装饰器：嵌套类对象属性变化,用于在涉及嵌套对象或数组的场景中进行双向数据同步：')
         .margin(10)
         .padding(10)

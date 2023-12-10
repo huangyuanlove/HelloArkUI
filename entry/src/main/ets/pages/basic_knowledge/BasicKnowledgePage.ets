@@ -6,15 +6,15 @@ export default struct  BasicKnowledgePage{
   build(){
     Column(){
       Flex({ wrap: FlexWrap.Wrap, }) {
-        BaseListItem({ label: '基础', path: 'pages/Base' })
-        BaseListItem({ label: '生命周期', path: 'pages/LifeCirclePage' })
-        BaseListItem({ label: '参数传递', path: 'pages/AboutParams' })
-        BaseListItem({ label: '参数传递', path: 'pages/AboutParams' })
-        BaseListItem({ label: '@Styles装饰器', path: 'pages/AboutStyleAnno' })
-        BaseListItem({ label: '@Extend装饰器', path: 'pages/AboutExtendAnno' })
-        BaseListItem({ label: '@stateStyles', path: 'pages/AboutStateStyles' })
-        BaseListItem({ label: '状态管理', path: 'pages/AboutStateManagement' })
-        BaseListItem({ label: 'PlayGround', path: 'pages/PlayGround' })
+        BaseListItem({ label: '基础', path: 'pages/basic_knowledge/Base' })
+        BaseListItem({ label: '生命周期', path: 'pages/basic_knowledge/LifeCirclePage' })
+        BaseListItem({ label: '参数传递', path: 'pages/basic_knowledge/AboutParams' })
+        BaseListItem({ label: '构建参数', path: 'pages/basic_knowledge/AboutBuildParams' })
+        BaseListItem({ label: '@Styles装饰器', path: 'pages/basic_knowledge/AboutStyleAnno' })
+        BaseListItem({ label: '@Extend装饰器', path: 'pages/basic_knowledge/AboutExtendAnno' })
+        BaseListItem({ label: '@stateStyles', path: 'pages/basic_knowledge/AboutStateStyles' })
+        BaseListItem({ label: '状态管理', path: 'pages/basic_knowledge/AboutStateManagement' })
+        BaseListItem({ label: 'PlayGround', path: 'pages/basic_knowledge/PlayGround' })
         Button() {
           Text('打开 UIAbility').fontSize(18)
             .padding(10)
@@ -53,7 +53,7 @@ export default struct  BasicKnowledgePage{
 
         })
       }
-    }.width('100%').height('100%').backgroundColor('#00CB87').padding({top:48})
+    }.width('100%').height('100%').padding({top:48})
 
   }
 }

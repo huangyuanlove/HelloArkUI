@@ -1,3 +1,4 @@
+import ActionBar from '../../../comm/ActionBar';
 @Entry
 @Component
 struct AboutWatchAnno {
@@ -5,7 +6,7 @@ struct AboutWatchAnno {
   @State shopBasket: PurchaseItem[] = [];
   build() {
     Column() {
-
+      ActionBar({ title: '@Watch' })
       Column() {
         Button('add to basket')
           .onClick(() => {

@@ -1,4 +1,5 @@
 import common from '@ohos.app.ability.common'
+import ActionBar from '../../../comm/ActionBar'
 @Entry
 @Component
 struct AboutStateAnnoPage {
@@ -8,7 +9,7 @@ struct AboutStateAnnoPage {
   build() {
     Column(){
 
-
+      ActionBar({ title: '@State' })
 
       Button('@State装饰器：组件内状态').onClick(()=>{
         let want = {

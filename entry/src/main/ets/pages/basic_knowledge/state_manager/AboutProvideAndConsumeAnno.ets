@@ -1,3 +1,4 @@
+import ActionBar from '../../../comm/ActionBar';
 @Entry
 @Component
 struct AboutProvideAndConsumeAnno {
@@ -6,6 +7,7 @@ struct AboutProvideAndConsumeAnno {
 
   build() {
     Column() {
+      ActionBar({ title: '@Provide 和 @Consume' })
       Text('@Provide装饰器和@Consume装饰器：与后代组件双向同步')
         .margin(10)
         .padding(10)
