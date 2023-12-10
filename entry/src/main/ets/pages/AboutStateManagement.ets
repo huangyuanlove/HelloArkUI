@@ -1,43 +1,43 @@
-import { IndexItem } from './Index'
 
+import { BaseListItem } from '../comm/BaseListItem'
 @Entry
 @Component
 struct AboutStateManagement {
   build() {
     Scroll() {
       Column() {
-        IndexItem({ label: '@State：组件内状态', path: 'pages/state_manager/AboutStateAnno' })
-        IndexItem({ label: '@Prop：父子单向同步', path: 'pages/state_manager/AboutPropAnno' })
-        IndexItem({ label: '@Link：父子双向同步', path: 'pages/state_manager/AboutLinkAnno' })
-        IndexItem({
+        BaseListItem({ label: '@State：组件内状态', path: 'pages/state_manager/AboutStateAnno' })
+        BaseListItem({ label: '@Prop：父子单向同步', path: 'pages/state_manager/AboutPropAnno' })
+        BaseListItem({ label: '@Link：父子双向同步', path: 'pages/state_manager/AboutLinkAnno' })
+        BaseListItem({
           label: '@Provide 和 @Consume：与后代组件双向同步',
           path: 'pages/state_manager/AboutProvideAndConsumeAnno'
         })
-        IndexItem({
+        BaseListItem({
           label: '@Observed 和 @ObjectLink：嵌套类对象属性变化',
           path: 'pages/state_manager/AboutObservedAndObjectLinkAnno'
         })
-        IndexItem({
+        BaseListItem({
           label: 'LocalStorage：页面级UI状态存储',
           path: 'pages/state_manager/AboutLocalStorage'
         })
-        IndexItem({
+        BaseListItem({
           label: 'AppStorage：应用全局的UI状态存储',
           path: 'pages/state_manager/AboutAppStorage'
         })
-        IndexItem({
+        BaseListItem({
           label: 'PersistentStorage：持久化存储UI状态',
           path: 'pages/state_manager/AboutPersistentStorage'
         })
-        IndexItem({
+        BaseListItem({
           label: 'Environment：设备环境查询',
           path: 'pages/state_manager/AboutEnvironment'
         })
-        IndexItem({
+        BaseListItem({
           label: '@Watch装饰器：状态变量更改通知',
           path: 'pages/state_manager/AboutWatchAnno'
         })
-        IndexItem({
+        BaseListItem({
           label: '$$语法：内置组件双向同步',
           path: 'pages/state_manager/AboutDoubleDollar'
         })
