@@ -4,7 +4,7 @@ import { Level } from '@ohos/hypium'
 @Preview
 @Component
 export default struct  ActionBar{
-  title:string = '默认标题'
+  @Prop title:string
 
   build(){
     Row(){
@@ -15,9 +15,9 @@ export default struct  ActionBar{
         .onClick(()=>{
         router.back()
       })
-      if(this.title){
-        Text(this.title).layoutWeight(1).margin({right:32}).textAlign(TextAlign.Center).fontSize(24).fontColor(Color.Black)
-      }
+
+        Text(this.title?this.title:router.getState().name ).layoutWeight(1).margin({right:32}).textAlign(TextAlign.Center).fontSize(24).fontColor(Color.Black)
+
     }.alignItems(VerticalAlign.Center).padding({top:48,bottom:16}).shadow({radius:1}).width('100%')
   }
 

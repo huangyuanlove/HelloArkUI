@@ -16,7 +16,8 @@ struct Base {
   build() {
 
     Column() {
-      ActionBar({ title: '点击事件绑定' })
+      // ActionBar({ title: '点击事件绑定' })
+      ActionBar()
       Text("使用lambda表达式配置组件的事件方法")
         .onClick(() => {
           this.message = "hello arkUI"

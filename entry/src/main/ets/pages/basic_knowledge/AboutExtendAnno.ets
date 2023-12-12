@@ -1,7 +1,14 @@
+import router from '@ohos.router';
 import ActionBar from '../../comm/ActionBar';
 @Entry
 @Component
 struct AboutExtendAnno{
+
+
+  getCurrentPath():String{
+    return router.getState().path
+  }
+
 
   @State label:string = 'hello @Extend()'
   @State fontSize:number = 20;

@@ -9,7 +9,8 @@ struct Second {
 
   build() {
       Column() {
-        ActionBar({ title: '第二个页面' })
+        // ActionBar({ title: '第二个页面' })
+        ActionBar()
         Text(this.message)
           .fontColor('#1b91e0')
           .fontWeight(FontWeight.Lighter)

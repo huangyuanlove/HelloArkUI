@@ -1,4 +1,5 @@
 import common from '@ohos.app.ability.common';
+import router from '@ohos.router';
 import { BaseListItem } from '../../comm/BaseListItem';
 @Preview
 @Component
@@ -51,6 +52,9 @@ export default struct  BasicKnowledgePage{
 
           })
 
+        })
+        Button("webview").onClick(()=>{
+          router.pushUrl({url:"WebViewPage",params:{path:"debug.html"}})
         })
       }
     }.width('100%').height('100%').padding({top:48})
