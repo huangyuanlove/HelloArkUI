@@ -54,7 +54,7 @@ export default struct  BasicKnowledgePage{
 
         })
         Button("webview").onClick(()=>{
-          router.pushUrl({url:"WebViewPage",params:{path:"debug.html"}})
+          router.pushUrl({url:"WebViewPage",params:{path:"https://www.chunyuyisheng.com"}})
         })
       }
     }.width('100%').height('100%').padding({top:48})
