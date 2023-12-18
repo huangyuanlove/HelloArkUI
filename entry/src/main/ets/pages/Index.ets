@@ -1,3 +1,4 @@
+import router from '@ohos.router'
 import BasicKnowledgePage from './basic_knowledge/BasicKnowledgePage'
 
 
@@ -16,7 +17,11 @@ struct Index {
           Column().width('100%').height('100%')
         }.tabBar("API")
         TabContent() {
-          Column().width('100%').height('100%').backgroundColor('#FFBF00')
+          Column(){
+            Button("手写签名").onClick(()=>{
+              router.pushUrl({url:"pages/playground/SignatureWithCanvas"})
+            })
+          }.width('100%').height('100%').backgroundColor('#FFBF00').padding({top:48})
         }.tabBar("实验")
       }
     }
