@@ -21,7 +21,6 @@
     "pages/basic_knowledge/state_manager/AboutEnvironment",
     "pages/basic_knowledge/state_manager/AboutWatchAnno",
     "pages/basic_knowledge/state_manager/AboutDoubleDollar",
-    "pages/PlayGround",
     "pages/playground/SignatureWithCanvas",
     "WebViewPage"
   ]

@@ -15,7 +15,7 @@ export default struct  BasicKnowledgePage{
         BaseListItem({ label: '@Extend装饰器', path: 'pages/basic_knowledge/AboutExtendAnno' })
         BaseListItem({ label: '@stateStyles', path: 'pages/basic_knowledge/AboutStateStyles' })
         BaseListItem({ label: '状态管理', path: 'pages/basic_knowledge/AboutStateManagement' })
-        BaseListItem({ label: 'PlayGround', path: 'pages/basic_knowledge/PlayGround' })
+
         Button() {
           Text('打开 UIAbility').fontSize(18)
             .padding(10)
