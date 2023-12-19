@@ -1,53 +1,53 @@
-import image from '@ohos.multimedia.image'
 import ActionBar from '../../comm/ActionBar'
 
+@Preview
 @Entry
 @Component
-export struct Image3D {
-  private settings: RenderingContextSettings = new RenderingContextSettings(true)
-  private canvasRendering: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
-  private imageBitMap: ImageBitmap = new ImageBitmap("pages/playground/cat.webp")
-  context = getContext(this)
+struct Image3D {
+  @State angle: number = 10
   private preX: number = 0
   private preY: number = 0
-  private canvasWidth = 0
-  private canvasHeight = 0
-
+  @State x: number = 0
+  @State y: number = 0
+  @State z: number = 0
 
   build() {
     Column() {
       ActionBar({ title: "3D卡片" })
-      Canvas(this.canvasRendering).backgroundColor(Color.Orange)
-        .onAreaChange((oldValue: Area, newValue: Area) => {
-          this.canvasWidth = parseInt(newValue.width.toString())
-          this.canvasHeight = parseInt(newValue.height.toString())
 
+      Image($r("app.media.cat")).width("100%").height("40%")
+        .rotate({
+          x: this.x,
+          y: this.y,
+          z: this.z,
+          centerX: '50%',
+          centerY: '50%',
+          angle: this.angle
         })
-        .onReady(() => {
-          let imageWidth = this.imageBitMap.width
-          let imageHeight = this.imageBitMap.height
-          this.canvasRendering.translate((this.canvasWidth - imageWidth)/2,(this.canvasHeight-imageHeight)/2)
-
-          // this.canvasRendering.drawImage(this.imageBitMap, (this.canvasWidth - imageWidth)/2, (this.canvasHeight-imageHeight)/2)
-          this.canvasRendering.drawImage(this.imageBitMap, 0,0)
-
-        }).onTouch((event: TouchEvent) => {
-        if (event.type === TouchType.Down) {
-
-          this.preX = event.touches[0].x
-          this.preY = event.touches[0].y
-        }
-        if (event.type === TouchType.Move) {
-          let diffX = event.touches[0].x - this.preX
-          let diffY = event.touches[0].y - this.preY
 
 
+        .onTouch((value: TouchEvent) => {
+          if (value.type == TouchType.Move) {
+            let x = value.touches[0].x
+            let y = value.touches[0].y
 
-          this.preX = event.touches[0].x
-          this.preY = event.touches[0].y
+            let diffX = x - this.preX
+            let diffY = y - this.preY
+            if (diffX > diffY) {
+              this.x = 1
+              this.y = 0
+            } else {
+              this.y = 1
+              this.x = 0
+            }
+            this.angle += diffX/10
+            this.preX = x
+            this.preY = y
 
-        }
-      })
-    }.height("100%").width("100%").padding({ top: 48 })
+          }
+        })
+
+    }.height("100%").width("100%")
+
   }
 }
