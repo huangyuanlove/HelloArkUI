@@ -11,7 +11,28 @@
 没有特殊情况，应该只会存放自己学习过程中对一些组件用法的示例代码及思考：不定时更新，不清楚啥时候有时间
 肯定会有三四方库的使用
 
-#### ps 
+#### 说明
+
+`指南` 和 `API` 和官网差不多，但没有官网详细，这里只有代码，没有接口说明
+`实验` 则是三方库的使用以及平时开发中的需求 demo
+
+
+##### 指南
+
+......
+
+##### API
+
+......
+
+##### 实验
+
+* 手写签名
+
+
+
+
+#### 其他 
 
 正在开发一个翻译软件，代码在这里 [github]( https://github.com/huangyuanlove/HarmonyTranslator) 链接是：https://github.com/huangyuanlove/HarmonyTranslator
 
