@@ -20,7 +20,9 @@ struct Image3D {
 
         .transform(
           matrix4.identity().rotate({ x: this.x, angle: this.angleX })
-          .combine(matrix4.identity().rotate({ y: this.y, angle: this.angleY }))
+          .combine(matrix4.identity().rotate({ y: this.y, angle: this.angleY })
+
+          )
         )
 
 
