@@ -15,8 +15,8 @@ struct AnimationOfSphericalPaths {
 
 
   private radius = 200
-  private a = 0
-  private b = 90
+  private a = 90
+  private b = 0
 
 
   toRadians(degrees):number{
@@ -25,6 +25,7 @@ struct AnimationOfSphericalPaths {
 
   changeAngleX() {
     this.b +=3
+    // this.a += 3
     if(this.a > 360){
       this.a = this.a - 360
     }
@@ -37,7 +38,7 @@ struct AnimationOfSphericalPaths {
     this.translateY = this.radius * Math.sin(this.toRadians(this.a)) * Math.sin(this.toRadians(this.b))*2
     this.translateZ = this.radius * Math.cos(this.toRadians(this.b))*2
 
-    this.ballRadius  = this.translateZ/this.radius * 25 +50
+    this.ballRadius  = this.translateZ/this.radius *10 +50
 
     console.error(`translateX-> ${this.translateX} ,translateY-> ${this.translateY} ,translateZ-> ${this.translateZ}`)
 
@@ -54,7 +55,7 @@ struct AnimationOfSphericalPaths {
         Circle({ width: this.radius * 2, height: this.radius * 2 }).fill(Color.Yellow)
         Circle({width:this.ballRadius,height:this.ballRadius}).fill(Color.Pink)
           .transform(matrix4.identity().translate({ x: this.translateX, y: this.translateY, z: this.translateZ }))
-      }.alignContent(Alignment.Center)
+      }.alignContent(Alignment.Center).width(this.radius * 2).height(this.radius *2)
       Row(){
         Button("start")
           .onClick(() => {
