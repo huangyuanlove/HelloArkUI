@@ -1,5 +1,10 @@
 // 特别粗糙，可以参考这个：https://developer.huawei.com/consumer/cn/forum/topic/0201104583144305349?fid=0101587866109860105
 import ActionBar from '../../comm/ActionBar'
+import picker from '@ohos.file.picker';
+import image from '@ohos.multimedia.image';
+import mediaLibrary from '@ohos.multimedia.mediaLibrary';
+import fs from '@ohos.file.fs';
+import { saveImage } from '../../util/FileUtils';
 
 @Entry
 @Component
@@ -93,16 +98,16 @@ struct SignatureWithCanvas {
               let vx = targetX - this.prePointX
               let vy = targetY - this.prePointY
 
-              let d = Math.sqrt(vx * vx + vy*vy) /3
+              let d = Math.sqrt(vx * vx + vy * vy) / 3
 
-              let mx = (targetX + this.prePointX) /2
-              let my = (targetY + this.prePointY)/2
+              let mx = (targetX + this.prePointX) / 2
+              let my = (targetY + this.prePointY) / 2
 
-              let tmpX1 = mx +d/3 *(vx/d)
-              let tmpY1 = my + d/3*(vy/d)
+              let tmpX1 = mx + d / 3 * (vx / d)
+              let tmpY1 = my + d / 3 * (vy / d)
 
-              let tmpX2 = mx -d/3 *(vx/d)
-              let tmpY2 = my - d/3*(vy/d)
+              let tmpX2 = mx - d / 3 * (vx / d)
+              let tmpY2 = my - d / 3 * (vy / d)
 
               this.path2Db.bezierCurveTo(tmpX1, tmpY1, tmpX2, tmpY2, targetX, targetY)
 
@@ -120,6 +125,10 @@ struct SignatureWithCanvas {
         })
         Blank().width(100)
         Button("保存").onClick(() => {
+          let pixelMap: PixelMap = this.canvasRendering.getPixelMap(0, 0, this.canvasWidth, this.canvasHeight)
+          saveImage(pixelMap)
+
+
 
         })
       }
@@ -127,7 +136,32 @@ struct SignatureWithCanvas {
   }
 }
 
-class Point {
-  x: number
-  y: number
+
+async function encode(component: Object, pixelMap: PixelMap) {
+  const newPixelMap = pixelMap;
+  // Packing image.
+  const imagePackerApi = image.createImagePacker();
+  const packOptions: image.PackingOption = {
+    format: "image/jpeg",
+    quality: 100
+  }
+  const imageData = await imagePackerApi.packing(newPixelMap, packOptions);
+  console.error(`imageData's length is ${imageData.byteLength}`);
+  // Get album's path.
+  const context = getContext(component);
+  const media = mediaLibrary.getMediaLibrary(context);
+  const publicPath = await media.getPublicDirectory(mediaLibrary.DirectoryType.DIR_IMAGE);
+  const currentTime = new Date().getTime();
+  // Create image asset.
+  const imageAssetInfo = await media.createAsset(
+    mediaLibrary.MediaType.IMAGE,
+    `image_${currentTime}.jpg`,
+    publicPath
+  );
+  const imageFd = await imageAssetInfo.open("rw");
+  await fs.write(imageFd, imageData);
+  // Image resource release.
+  await imageAssetInfo.close(imageFd);
+  imagePackerApi.release();
+  await media.release();
 }
