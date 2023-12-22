@@ -27,10 +27,13 @@
 
 ##### 实验
 
-* 手写签名
-* 3D图片翻转
-* canvas 实现球面动画
-![球面动画](image/canvas_ball_animation.gif)
+* 手写签名  
+  <img src ="image/canvas_sign.gif" width=20% height=20%/>
+* 3D图片翻转  
+  <img src ="image/image_transfrom.gif" width=20% height=20%/>
+* canvas 实现球面动画  
+<img src ="image/canvas_ball_animation.gif" width=20% height=20%/>
+
 
 
 
