@@ -30,6 +30,7 @@
 * 手写签名
 * 3D图片翻转
 * canvas 实现球面动画
+![球面动画](image/canvas_ball_animation.gif)
 
 
 
