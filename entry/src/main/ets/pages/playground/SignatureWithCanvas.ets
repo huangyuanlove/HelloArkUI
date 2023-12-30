@@ -4,7 +4,8 @@ import picker from '@ohos.file.picker';
 import image from '@ohos.multimedia.image';
 import mediaLibrary from '@ohos.multimedia.mediaLibrary';
 import fs from '@ohos.file.fs';
-import { saveImage } from '../../util/FileUtils';
+import { saveImage, saveImageDataUrl } from '../../util/FileUtils';
+import util from '@ohos.util';
 
 @Entry
 @Component
@@ -125,8 +126,11 @@ struct SignatureWithCanvas {
         })
         Blank().width(100)
         Button("保存").onClick(() => {
-          let pixelMap: PixelMap = this.canvasRendering.getPixelMap(0, 0, this.canvasWidth, this.canvasHeight)
-          saveImage(pixelMap)
+
+
+
+          let data = this.canvasRendering.toDataURL()
+          saveImageDataUrl(data.split(',')[1])
         })
       }
     }
