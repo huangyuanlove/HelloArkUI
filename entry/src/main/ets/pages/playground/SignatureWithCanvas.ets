@@ -127,41 +127,8 @@ struct SignatureWithCanvas {
         Button("保存").onClick(() => {
           let pixelMap: PixelMap = this.canvasRendering.getPixelMap(0, 0, this.canvasWidth, this.canvasHeight)
           saveImage(pixelMap)
-
-
-
         })
       }
     }
   }
-}
-
-
-async function encode(component: Object, pixelMap: PixelMap) {
-  const newPixelMap = pixelMap;
-  // Packing image.
-  const imagePackerApi = image.createImagePacker();
-  const packOptions: image.PackingOption = {
-    format: "image/jpeg",
-    quality: 100
-  }
-  const imageData = await imagePackerApi.packing(newPixelMap, packOptions);
-  console.error(`imageData's length is ${imageData.byteLength}`);
-  // Get album's path.
-  const context = getContext(component);
-  const media = mediaLibrary.getMediaLibrary(context);
-  const publicPath = await media.getPublicDirectory(mediaLibrary.DirectoryType.DIR_IMAGE);
-  const currentTime = new Date().getTime();
-  // Create image asset.
-  const imageAssetInfo = await media.createAsset(
-    mediaLibrary.MediaType.IMAGE,
-    `image_${currentTime}.jpg`,
-    publicPath
-  );
-  const imageFd = await imageAssetInfo.open("rw");
-  await fs.write(imageFd, imageData);
-  // Image resource release.
-  await imageAssetInfo.close(imageFd);
-  imagePackerApi.release();
-  await media.release();
 }
