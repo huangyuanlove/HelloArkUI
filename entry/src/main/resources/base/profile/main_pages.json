@@ -26,6 +26,7 @@
     "pages/playground/SignatureWithCanvas",
     "pages/playground/Image3D",
     "pages/playground/AnimationOfSphericalPaths",
+    "pages/playground/NineSquareBox",
     "WebViewPage"
   ]
 }

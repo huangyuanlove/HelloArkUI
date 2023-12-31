@@ -1,12 +1,11 @@
 import matrix4 from '@ohos.matrix4'
+import ActionBar from '../../comm/ActionBar'
 import { CanvasBallAnimation } from './CanvasBallAnimation'
 
 @Preview
 @Entry
 @Component
 struct AnimationOfSphericalPaths {
-  private settings: RenderingContextSettings = new RenderingContextSettings(true)
-  private canvasRendering: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
   @State angleX: number = 0
   @State translateX: number = 0
   @State translateY: number = 0
@@ -44,6 +43,9 @@ struct AnimationOfSphericalPaths {
 
   build() {
     Column() {
+
+      ActionBar({title:"球面动画"})
+
       Stack() {
         Circle({ width: this.radius * 2, height: this.radius * 2 }).fill(Color.Yellow)
         Circle({ width: this.ballRadius, height: this.ballRadius }).fill(Color.Pink)

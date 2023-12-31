@@ -4,8 +4,12 @@ import picker from '@ohos.file.picker';
 import image from '@ohos.multimedia.image';
 import mediaLibrary from '@ohos.multimedia.mediaLibrary';
 import fs from '@ohos.file.fs';
-import { saveImage, saveImageDataUrl } from '../../util/FileUtils';
+import fileIo from '@ohos.file.fs';
+import { saveImageDataUrl } from '../../util/FileUtils';
 import util from '@ohos.util';
+import buffer from '@ohos.buffer';
+import promptAction from '@ohos.promptAction';
+import { ShowDialogSuccessResponse } from '@system.prompt';
 
 @Entry
 @Component
@@ -23,6 +27,8 @@ struct SignatureWithCanvas {
     this.canvasRendering.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
     this.path2Db = new Path2D()
   }
+    private saveImageUri:string
+
 
   @Builder
   buildOperation() {
@@ -72,6 +78,7 @@ struct SignatureWithCanvas {
           this.canvasRendering.lineCap = "round"
           this.canvasRendering.lineWidth = 6
           this.canvasRendering.fillStyle = "#111111"
+          this.canvasRendering.strokeStyle = "#111111"
 
         })
         .onTouch((event: TouchEvent) => {
@@ -127,12 +134,77 @@ struct SignatureWithCanvas {
         Blank().width(100)
         Button("保存").onClick(() => {
 
-
-
           let data = this.canvasRendering.toDataURL()
           saveImageDataUrl(data.split(',')[1])
+
+
+          // let pixelMap = this.canvasRendering.getPixelMap(0,0,this.canvasWidth,this.canvasHeight)
+          //
+          // const readBuffer = new ArrayBuffer(pixelMap.getPixelBytesNumber());  //96为需要创建的像素buffer大小，取值为：height * width *4
+          //
+          // pixelMap.readPixelsToBuffer(readBuffer, (err, res) => {
+          //
+          //   if(err) {
+          //
+          //     console.log('Failed to read image pixel data.');  //不符合条件则进入
+          //
+          //   } else {
+          //
+          //     try {
+          //       let photoSaveOptions = new picker.PhotoSaveOptions();
+          //       //保存图片默认名称
+          //       const currentTime = new Date().getTime();
+          //       photoSaveOptions.newFileNames = [`image_${currentTime}.png`]; // 保存文件名（可选）
+          //       let photoPicker = new picker.PhotoViewPicker();
+          //       //调起系统的图片保存功能
+          //       photoPicker.save(photoSaveOptions).then((PhotoSaveResult) => {
+          //        this.saveImageUri = PhotoSaveResult[0];
+          //
+          //         promptAction.showDialog({
+          //           title:"确认保存图片",
+          //           buttons:[
+          //             {
+          //               text: '确认',
+          //               color: '#000000',
+          //             },
+          //             {
+          //               text: '取消',
+          //               color: '#000000',
+          //             }
+          //           ]
+          //
+          //         }).then((result:ShowDialogSuccessResponse)=>{
+          //           if(result.index == 0){
+          //             promptAction.showToast({message:"正在保存"})
+          //             //打开文件
+          //             let file = fs.openSync(this.saveImageUri, fs.OpenMode.READ_WRITE);
+          //
+          //             //写入文件
+          //             fs.writeSync(file.fd, readBuffer);
+          //             //关闭文件
+          //             fs.closeSync(file);
+          //             promptAction.showToast({message:"保存完成"})
+          //           }else{
+          //             promptAction.showToast({message:"取消保存"})
+          //           }
+          //         })
+          //
+          //       }).catch((err: Error) => {
+          //         console.error(err + '');
+          //       })
+          //     } catch (e) {
+          //       console.error(e);
+          //     }
+          //
+          //
+          //
+          //
+          //   }
+          //
+          // })
         })
       }
     }
   }
+
 }
