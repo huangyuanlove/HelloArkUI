@@ -8,10 +8,10 @@ import { PlayGroundIndex } from './playground/PlayGroundIndex'
 struct Index {
   scroller: Scroller = new Scroller()
 
-  private tabText:string[] =["指南","API","实验"]
+  private tabText:string[] =["指南","实验"]
 
-  private tabSelectIcon:Resource[] =[$r("app.media.tab_guide_select"),$r("app.media.tab_api_select"),$r("app.media.tab_playground_select"),]
-  private tabUnselectIcon:Resource[] =[$r("app.media.tab_guide_unselect"),$r("app.media.tab_api_unselect"),$r("app.media.tab_playground_unselect"),]
+  private tabSelectIcon:Resource[] =[$r("app.media.tab_guide_select"),$r("app.media.tab_playground_select"),]
+  private tabUnselectIcon:Resource[] =[$r("app.media.tab_guide_unselect"),$r("app.media.tab_playground_unselect"),]
 
   @State currentIndex:number = 0
 
@@ -33,11 +33,9 @@ struct Index {
           BasicKnowledgePage()
         }.tabBar(this.tabBar(0))
         TabContent() {
-          Column().width('100%').height('100%')
-        }.tabBar(this.tabBar(1))
-        TabContent() {
           PlayGroundIndex().width('100%').height('100%')
-        }.tabBar(this.tabBar(2))
+        }.tabBar(this.tabBar(1))
+
       }.onChange((index)=>{
         this.currentIndex = index
       })

@@ -10,6 +10,7 @@ export struct  PlayGroundIndex {
       BaseListItem({ label: '3D翻转卡片', path: 'pages/playground/Image3D' })
       BaseListItem({ label: '球面动画', path: 'pages/playground/AnimationOfSphericalPaths' })
       BaseListItem({ label: '九宫格', path: 'pages/playground/NineSquareBox' })
+      BaseListItem({ label: '相册', path: 'pages/playground/PhotoAlbumPage' })
     }.width("100%").height("100%").padding({top:48})
   }
 

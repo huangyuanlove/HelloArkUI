@@ -27,6 +27,7 @@
     "pages/playground/Image3D",
     "pages/playground/AnimationOfSphericalPaths",
     "pages/playground/NineSquareBox",
+    "pages/playground/PhotoAlbumPage",
     "WebViewPage"
   ]
 }
