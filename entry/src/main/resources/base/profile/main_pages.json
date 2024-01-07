@@ -28,6 +28,7 @@
     "pages/playground/AnimationOfSphericalPaths",
     "pages/playground/NineSquareBox",
     "pages/playground/PhotoAlbumPage",
+    "pages/playground/WaveLinePage",
     "WebViewPage"
   ]
 }
