@@ -40,8 +40,10 @@ struct SignatureWithCanvas {
       for (let i = 0; i < length; i++) {
         if (grantStatus[i] === 0) {
           // 用户授权，可以继续访问目标操作
+          promptAction.showToast({message:"已授权"})
         } else {
           // 用户拒绝授权，提示用户必须授权才能访问当前页面的功能，并引导用户到系统设置中打开相应的权限
+          promptAction.showToast({message:"已拒绝"})
           return;
         }
       }

@@ -46,24 +46,3 @@ export function saveImageDataUrl(data: string) {
     console.error(e);
   }
 }
-
-
-// async savePicture(buffer:ArrayBuffer) {
-//
-//   Logger.info(this.tag, 'savePicture')
-//
-//   this.fileAsset = await this.mediaUtil.createAndGetUri(mediaLibrary.MediaType.IMAGE)
-//
-//   this.photoUri = this.fileAsset.uri
-//
-//   Logger.info(this.tag, `this.photoUri = ${this.photoUri}`)
-//
-//   this.fd = await this.mediaUtil.getFdPath(this.fileAsset)
-//
-//   Logger.info(this.tag, `this.fd = ${this.fd}`)
-//
-//   await fileio.write(this.fd, buffer)
-//
-//   await this.fileAsset.close(this.fd)
-//
-// }
