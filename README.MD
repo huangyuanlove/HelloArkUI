@@ -32,11 +32,11 @@
 * 3D图片翻转  
   <img src ="image/image_transfrom.gif" width=20% height=20%/>
 * canvas 实现球面动画  
-<img src ="image/canvas_ball_animation.gif" width=20% height=20%/>
+  <img src ="image/canvas_ball_animation.gif" width=20% height=20%/>
 * canvas 一张图片分为九宫格展示  
-<img src ="image/NineSquareBox.png" width=20% height=20%/>
+  <img src ="image/NineSquareBox.png" width=20% height=20%/>
 * canvas 使用贝塞尔曲线实现波浪效果  
-<img src ="image/wave_view.gif" width=20% height=20%/>
+  <img src ="image/wave_view.gif" width=20% height=20%/>
 
 
 #### 其他 
