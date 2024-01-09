@@ -29,6 +29,7 @@
     "pages/playground/NineSquareBox",
     "pages/playground/PhotoAlbumPage",
     "pages/playground/WaveLinePage",
+    "pages/playground/ScratchOffPage",
     "WebViewPage"
   ]
 }

@@ -12,6 +12,7 @@ export struct  PlayGroundIndex {
       BaseListItem({ label: '九宫格', path: 'pages/playground/NineSquareBox' })
       BaseListItem({ label: '相册', path: 'pages/playground/PhotoAlbumPage' })
       BaseListItem({ label: '波浪线', path: 'pages/playground/WaveLinePage' })
+      BaseListItem({ label: '刮奖', path: 'pages/playground/ScratchOffPage' })
     }.width("100%").height("100%").padding({top:48})
   }
 
