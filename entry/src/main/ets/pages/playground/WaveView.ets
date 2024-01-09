@@ -15,7 +15,6 @@ export struct WaveView{
     if (this.dx >= this.waveWidth) {
       this.dx = 0
     }
-    console.error(`偏差-->  ${this.dx}`)
     this.canvasRendering.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
 
     if (this.waveWidth == 0) {
