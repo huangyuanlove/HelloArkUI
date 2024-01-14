@@ -30,6 +30,7 @@
     "pages/playground/PhotoAlbumPage",
     "pages/playground/WaveLinePage",
     "pages/playground/ScratchOffPage",
+    "pages/playground/ImageScaleWithGesture",
     "WebViewPage"
   ]
 }

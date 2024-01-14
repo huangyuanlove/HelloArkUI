@@ -1,11 +1,19 @@
 
 import router from '@ohos.router'
-
+import deviceInfo from '@ohos.deviceInfo'
 @Preview
 @Component
 export default struct  ActionBar{
   @Prop title:string
+
+  private topPadding:number = 0
+
+
   aboutToAppear(){
+    if(deviceInfo.deviceType == "tablet"){
+      this.topPadding = 48
+    }
+
     if(!this.title){
       this.title = router.getState().path
     }
@@ -29,7 +37,7 @@ export default struct  ActionBar{
         .onClick(()=>{
           router.pushUrl({url:"WebViewPage",params:{path:"", }})
         })
-    }.alignItems(VerticalAlign.Center).padding({top:48,bottom:16}).shadow({radius:1}).width('100%')
+    }.alignItems(VerticalAlign.Center).padding({top:this.topPadding,bottom:16}).shadow({radius:1}).width('100%')
   }
 
 }
