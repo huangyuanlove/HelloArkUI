@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\huangyuan\\.ohos\\config\\auto_debug_HelloArkUI_com.huangyuanlove.arkui_demo_260086000249248119.cer",
-          "storePassword": "0000001BBA26144630FBD54DF5F2C7C92921094A879429FBBB639522CF40DDC4AFC01004FAC7F03522B810",
+          "certpath": "/Users/huangyuan/.ohos/config/auto_debug_HelloArkUI_com.huangyuanlove.arkui_demo_260086000249248119.cer",
+          "storePassword": "0000001B4382B05B2DC96782DFEFAE0EC02FBF52BF88FF623D2DA7E84D3A8B7B4E78145B7672168394FE32",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B89BA4477237DF7DD147BD5502995323238FBC094A1C62BC9B83550D8D36CFF9F4FAC9B08895C17",
-          "profile": "C:\\Users\\huangyuan\\.ohos\\config\\auto_debug_HelloArkUI_com.huangyuanlove.arkui_demo_260086000249248119.p7b",
+          "keyPassword": "0000001B1CB5D21D94D78D20FDC39BD9AAEAECDB72959927AB5B686A00BB51860520B5D1A50416E7BE5604",
+          "profile": "/Users/huangyuan/.ohos/config/auto_debug_HelloArkUI_com.huangyuanlove.arkui_demo_260086000249248119.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\huangyuan\\.ohos\\config\\auto_debug_HelloArkUI_com.huangyuanlove.arkui_demo_260086000249248119.p12"
+          "storeFile": "/Users/huangyuan/.ohos/config/auto_debug_HelloArkUI_com.huangyuanlove.arkui_demo_260086000249248119.p12"
         }
       }
     ],

@@ -5,7 +5,7 @@ function indexButtonStyle(path: string) {
   .type(ButtonType.Normal)
   .borderRadius(4)
   .margin(6)
-  .backgroundColor($r('app.color.green_39d169'))
+  .backgroundColor($r('app.color.blue_3583ee'))
   .onClick(() => {
     router.pushUrl({ url: path })
   })
@@ -20,8 +20,9 @@ export struct BaseListItem {
   build() {
     Button() {
       Text(this.label)
-        .fontSize(18)
-        .padding(2)
+        .fontSize(24)
+        .fontColor(Color.White)
+        .padding({left:10,right:10,top:4,bottom:4})
     }.indexButtonStyle(this.path)
   }
 }
