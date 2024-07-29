@@ -30,7 +30,12 @@
       "name": "EntryFormAbility_label",
       "value": "form_label"
     },
-
-
+    {
+      "name": "user_grant_READ_MEDIA_reason",
+      "value": "选择图片"
+    },    {
+      "name": "user_grant_WRITE_MEDIA_reason",
+      "value": "保存图片"
+    }
   ]
 }

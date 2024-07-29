@@ -1,6 +1,7 @@
 import ActionBar from '../../../comm/ActionBar';
 AppStorage.SetOrCreate('PropA', 47);
-let storage = new LocalStorage({ 'PropA': 48 });
+let para:Record<string,number> = { 'PropA': 48 }
+let storage =new LocalStorage(para);
 
 @Entry(storage)
 @Component

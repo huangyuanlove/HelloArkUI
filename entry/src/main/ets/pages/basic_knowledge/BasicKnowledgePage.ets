@@ -1,6 +1,9 @@
 import common from '@ohos.app.ability.common';
 import router from '@ohos.router';
 import { BaseListItem } from '../../comm/BaseListItem';
+import Want from '@ohos.app.ability.Want';
+import { BusinessError } from '@kit.BasicServicesKit';
+
 @Preview
 @Component
 export default struct  BasicKnowledgePage{
@@ -26,7 +29,7 @@ export default struct  BasicKnowledgePage{
         .backgroundColor($r('app.color.green_39d169'))
         .onClick(() => {
           let context = getContext(this) as common.UIAbilityContext;
-          let want = {
+          let want:Want = {
             deviceId: '', // deviceId为空表示本设备
             bundleName: 'com.huangyuanlove.arkui_demo',
             abilityName: 'SecondAbility',
@@ -48,8 +51,8 @@ export default struct  BasicKnowledgePage{
               // 解析被调用方UIAbility返回的信息
               let info = data.want?.parameters?.info
             }
-          }).catch((err) => {
-
+          }).catch((err:BusinessError) => {
+            console.error(`startAbilityForResult failed, code is ${err.code}, message is ${err.message}`);
           })
 
         })

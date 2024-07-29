@@ -12,6 +12,7 @@ import promptAction from '@ohos.promptAction';
 import { ShowDialogSuccessResponse } from '@system.prompt';
 import abilityAccessCtrl, { Permissions } from '@ohos.abilityAccessCtrl';
 import common from '@ohos.app.ability.common';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 @Entry
 @Component
@@ -19,8 +20,8 @@ struct SignatureWithCanvas {
   private settings: RenderingContextSettings = new RenderingContextSettings(true)
   private canvasRendering: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
   private path2Db: Path2D = new Path2D()
-  private canvasWidth: number
-  private canvasHeight: number
+  private canvasWidth: number = 0
+  private canvasHeight: number=0
   private prePointX: number = 0;
   private prePointY: number = 0;
   private lineType: number = 0
@@ -48,7 +49,7 @@ struct SignatureWithCanvas {
         }
       }
       // 授权成功
-    }).catch((err) => {
+    }).catch((err:BusinessError) => {
       console.error(`requestPermissionsFromUser failed, code is ${err.code}, message is ${err.message}`);
     })
   }

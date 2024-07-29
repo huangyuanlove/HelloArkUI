@@ -2,6 +2,7 @@ import picker from '@ohos.file.picker'
 import ActionBar from '../../comm/ActionBar'
 import abilityAccessCtrl, { Permissions } from '@ohos.abilityAccessCtrl';
 import common from '@ohos.app.ability.common';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 @Entry
 @Component
@@ -23,7 +24,7 @@ struct PhotoAlbumPage {
         }
       }
       // 授权成功
-    }).catch((err) => {
+    }).catch((err:BusinessError) => {
       console.error(`requestPermissionsFromUser failed, code is ${err.code}, message is ${err.message}`);
     })
   }
@@ -43,7 +44,7 @@ struct PhotoAlbumPage {
         let photoPicker = new picker.PhotoViewPicker();
         photoPicker.select(PhotoSelectOptions).then((PhotoSelectResult) => {
           console.error('PhotoViewPicker.select successfully, PhotoSelectResult uri: ' + JSON.stringify(PhotoSelectResult));
-        }).catch((err) => {
+        }).catch((err:BusinessError) => {
           console.error('PhotoViewPicker.select failed with err: ' + err);
         });
       })

@@ -1,5 +1,7 @@
 import common from '@ohos.app.ability.common'
 import ActionBar from '../../../comm/ActionBar'
+import Want from '@ohos.app.ability.Want'
+
 @Entry
 @Component
 struct AboutStateAnnoPage {
@@ -12,7 +14,8 @@ struct AboutStateAnnoPage {
       ActionBar({ title: '@State' })
 
       Button('@State装饰器：组件内状态').onClick(()=>{
-        let want = {
+
+        let want:Want = {
           // uncomment line below if wish to implicitly query only in the specific bundle.
           // bundleName: "com.example.myapplication",
           "action": "ohos.want.action.viewData",

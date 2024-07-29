@@ -1,5 +1,10 @@
 import ActionBar from '../../comm/ActionBar'
-@Builder function GlobalBuilder0($$: { label: string }) {
+
+interface GeneratedTypeLiteralInterface_1 {
+  label: string;
+}
+
+@Builder function GlobalBuilder0($$: GeneratedTypeLiteralInterface_1) {
   Text($$.label)
     .width(400)
     .height(50)
@@ -44,11 +49,15 @@ struct AboutBuildParams {
 }
 
 
+interface GeneratedTypeLiteralInterface_2 {
+  label: string;
+}
+
 @Component
 struct Child {
   label: string = 'Child'
   @BuilderParam aBuilder0: () => void;
-  @BuilderParam aBuilder1: ($$: { label: string }) => void;
+  @BuilderParam aBuilder1: ($$: GeneratedTypeLiteralInterface_2) => void;
 
   build() {
     Column() {

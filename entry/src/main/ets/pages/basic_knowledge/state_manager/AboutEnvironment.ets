@@ -2,7 +2,7 @@
 import ActionBar from '../../../comm/ActionBar';
 
 Environment.EnvProp('languageCode', 'en');
-let enable = AppStorage.Get('languageCode');
+let enable:number | undefined = AppStorage.Get('languageCode');
 
 @Entry
 @Component

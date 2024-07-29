@@ -29,7 +29,7 @@ struct AboutPersistentStorage {
   '在Index组件里，@StorageLink绑定的“aProp”为PersistentStorage写入AppStorage中的值，即为上一次退出引用存入的值。'
 
 
-  generalityController: CustomDialogController = new CustomDialogController({
+  generalityController: CustomDialogController|null = new CustomDialogController({
     builder: ContentDialog({
       content: this.generality
     }),
@@ -39,7 +39,7 @@ struct AboutPersistentStorage {
     offset: { dx: 0, dy: 0 },
   })
 
-  firstInstallFlowController: CustomDialogController = new CustomDialogController({
+  firstInstallFlowController: CustomDialogController|null = new CustomDialogController({
     builder: ContentDialog({
       content: this.firstInstallFlow
     }),
@@ -48,7 +48,7 @@ struct AboutPersistentStorage {
     alignment: DialogAlignment.Default,
     offset: { dx: 0, dy: 0 },
   })
-  afterClickFlowController: CustomDialogController = new CustomDialogController({
+  afterClickFlowController: CustomDialogController|null = new CustomDialogController({
     builder: ContentDialog({
       content: this.afterClick
     }),
@@ -57,7 +57,7 @@ struct AboutPersistentStorage {
     alignment: DialogAlignment.Default,
     offset: { dx: 0, dy: 0 },
   })
-  afterLaunchFlowController: CustomDialogController = new CustomDialogController({
+  afterLaunchFlowController: CustomDialogController|null = new CustomDialogController({
     builder: ContentDialog({
       content: this.afterLaunch
     }),
@@ -72,17 +72,13 @@ struct AboutPersistentStorage {
   aboutToDisappear() {
 
 
-    delete this.firstInstallFlowController,
-    this.firstInstallFlowController = undefined
+    this.firstInstallFlowController = null
 
-    delete this.afterClickFlowController,
-    this.afterClickFlowController = undefined
+    this.afterClickFlowController = null
 
-    delete this.afterLaunchFlowController,
-    this.afterLaunchFlowController = undefined
+    this.afterLaunchFlowController = null
 
-    delete this.afterLaunch,
-    this.afterLaunch = undefined
+    this.afterLaunch = ""
 
   }
 

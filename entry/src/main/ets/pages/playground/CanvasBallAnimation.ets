@@ -17,7 +17,7 @@ export struct CanvasBallAnimation {
   private zr: number = 0
   private pointList: Point[] = []
 
-  toRadians(degrees): number {
+  toRadians(degrees:number): number {
     return degrees * (Math.PI / 180)
   }
 
@@ -47,7 +47,7 @@ export struct CanvasBallAnimation {
       Canvas(this.canvasRendering)
         .width("100%")
         .height("40%")
-        .onAreaChange((oldValue: Area, newValue: Area) => {
+        .onAreaChange((_, newValue: Area) => {
           this.canvasWidth = parseInt(newValue.width.toString())
           this.canvasHeight = parseInt(newValue.height.toString())
 
@@ -72,9 +72,9 @@ export struct CanvasBallAnimation {
           if (this.canvasBallAnimationTimer > 0) {
             return
           }
-          this.canvasBallAnimationTimer = setInterval(function(){
+          this.canvasBallAnimationTimer = setInterval(()=>{
             this.canvasBallAnimation()
-          }.bind(this), 20)
+          }, 20)
         })
         Button("canvas ball end").onClick(() => {
           clearInterval(this.canvasBallAnimationTimer)
@@ -213,9 +213,9 @@ export struct CanvasBallAnimation {
 
 
 class Point {
-  color: string
-  x: number
-  y: number
-  z: number
+  color: string=""
+  x: number=0
+  y: number=0
+  z: number=0
   scale: number = 1
 }

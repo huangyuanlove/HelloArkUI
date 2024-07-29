@@ -4,20 +4,20 @@ import fileIo from '@ohos.file.fs';
 import buffer from '@ohos.buffer';
 import mediaLibrary from '@ohos.multimedia.mediaLibrary';
 
-
-async function saveImageBuffer(buffer: ArrayBuffer) {
-  let fileAsset = await this.mediaUtil.createAndGetUri(mediaLibrary.MediaType.IMAGE)
-
-  let photoUri = this.fileAsset.uri
-
-
-  this.fd = await this.mediaUtil.getFdPath(this.fileAsset)
-
-
-  await fileIo.write(this.fd, buffer)
-
-  await this.fileAsset.close(this.fd)
-}
+//
+// async function saveImageBuffer(buffer: ArrayBuffer) {
+//   let fileAsset = await this.mediaUtil.createAndGetUri(mediaLibrary.MediaType.IMAGE)
+//
+//   let photoUri = this.fileAsset.uri
+//
+//
+//   this.fd = await this.mediaUtil.getFdPath(this.fileAsset)
+//
+//
+//   await fileIo.write(this.fd, buffer)
+//
+//   await this.fileAsset.close(this.fd)
+// }
 
 
 export function saveImageDataUrl(data: string) {

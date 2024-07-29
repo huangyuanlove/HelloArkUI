@@ -6,7 +6,7 @@ import { ContentDialog } from '../../../component/ContentDialog';
 struct AboutPropAnno {
   @State countDownStartValue: number = 10;
   @State arr: number[] = [1, 2, 3];
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController: CustomDialogController|null = new CustomDialogController({
     builder: ContentDialog({
       content:'在子组件Child中做的所有的修改都不会同步回父组件Index组件，' +
       '所以即使6个组件显示都为7，但在父组件Index中，this.arr保存的值依旧是[1,2,3]。\n\n' +
@@ -29,8 +29,8 @@ struct AboutPropAnno {
 
   // 在自定义组件即将析构销毁时将dialogControlle删除和置空
   aboutToDisappear() {
-    delete this.dialogController, // 删除dialogController
-    this.dialogController = undefined // 将dialogController置空
+
+    this.dialogController = null // 将dialogController置空
   }
 
   build() {
@@ -83,10 +83,9 @@ struct AboutPropAnno {
 
         Row() {
           ForEach(this.arr,
-            item => {
+            (item:number) => {
               Child({ value: item })
-            },
-            item => item.toString()
+            }
           )
         }.width('100%').alignItems(VerticalAlign.Center).justifyContent(FlexAlign.Center)
 

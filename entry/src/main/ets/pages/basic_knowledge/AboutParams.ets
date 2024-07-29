@@ -38,7 +38,12 @@ struct AboutParams {
   }
 }
 
-@Builder function ABuild($$: { paramsA: string , paramsB:string}) {
+interface GeneratedTypeLiteralInterface_1 {
+  paramsA: string;
+  paramsB: string;
+}
+
+@Builder function ABuild($$: GeneratedTypeLiteralInterface_1) {
   Text(`按引用传递 : 状态变量--> ${$$.paramsA}  普通变量-->${$$.paramsB} `).fontSize(20).padding(10)
 }
 

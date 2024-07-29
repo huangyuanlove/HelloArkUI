@@ -12,9 +12,9 @@ struct AlarmClockPage{
   aboutToAppear(){
     this.getCurrentTime()
     if(this.timerInterval < 0){
-      this.timerInterval =setInterval(function(){
+      this.timerInterval =setInterval(()=>{
         this.getCurrentTime()
-      }.bind(this), 500)
+      }, 500)
     }
 
   }

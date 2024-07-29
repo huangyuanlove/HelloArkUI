@@ -30,10 +30,10 @@ struct Base {
       Divider().margin({
         top: 10
       })
-      Text('使用匿名函数表达式配置组件的事件方法，要求使用bind，以确保函数体中的this指向当前组件。')
-        .onClick(function(){
+      Text('使用匿名函数表达式配置组件的事件方法，要求使用bind，以确保函数体中的this指向当前组件。api12没有这种写法')
+        .onClick(()=>{
           this.message = "hello arkUI"
-        }.bind(this))
+        })
         .backgroundColor('#aaaaaa')
         .fontSize(20)
         .margin({
@@ -41,7 +41,7 @@ struct Base {
         })
 
       Text('使用组件的成员函数配置组件的事件方法。')
-        .onClick(this.myClickHandler.bind(this))
+        .onClick(this.myClickHandler)
         .margin({
           top: 20
         })
@@ -56,10 +56,10 @@ struct Base {
         top: 20
       })
       MyComponent({ message: "尝试直接修改属性" })
-        .onClick(function(){
+        .onClick(()=>{
           console.log("this指向", this)
 
-        }.bind(this)).margin({
+        }).margin({
         top: 20
       })
 

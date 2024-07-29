@@ -1,4 +1,3 @@
-import image from '@ohos.multimedia.image'
 import promptAction from '@ohos.promptAction'
 import ActionBar from '../../comm/ActionBar'
 

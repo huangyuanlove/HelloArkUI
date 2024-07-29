@@ -1,4 +1,3 @@
-import router from '@ohos.router'
 import BasicKnowledgePage from './basic_knowledge/BasicKnowledgePage'
 import { PlayGroundIndex } from './playground/PlayGroundIndex'
 

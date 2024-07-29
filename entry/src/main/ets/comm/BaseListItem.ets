@@ -14,8 +14,8 @@ function indexButtonStyle(path: string) {
 
 @Component
 export struct BaseListItem {
-  path: string;
-  label: string;
+  path: string="";
+  label: string="";
 
   build() {
     Button() {

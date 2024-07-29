@@ -60,9 +60,9 @@ export struct WaveView{
           if (this.intervalTimer != 0) {
             clearInterval(this.intervalTimer)
           }
-          this.intervalTimer = setInterval(function(){
+          this.intervalTimer = setInterval(()=>{
             this.drawWave()
-          }.bind(this), 10)
+          }, 10)
         })
         Blank().width(15)
         Button("停止").onClick(() => {

@@ -1,9 +1,10 @@
 @Component
 export struct MyComponent {
   @State message: string = "hello"
-  public controller : MyComponentController = null;
-  aboutToAppear(){
-    if(this.controller){
+  public controller?: MyComponentController = undefined;
+
+  aboutToAppear() {
+    if (this.controller) {
       this.controller.setItem(this);
     }
   }
@@ -16,13 +17,15 @@ export struct MyComponent {
 }
 
 export class MyComponentController {
-  item: MyComponent = null;
+  item?: MyComponent = undefined;
 
   setItem(item: MyComponent) {
     this.item = item;
   }
 
   updateMessage(message: string) {
-    this.item.message = message;
+    if (this.item) {
+      this.item.message = message;
+    }
   }
 }

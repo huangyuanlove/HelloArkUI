@@ -13,7 +13,7 @@ struct WebViewPage {
   @State loadProgress: number = 0
 
   aboutToAppear() {
-    const params = router.getParams(); // 获取传递过来的参数对象
+    const params = JSON.stringify(router.getParams()); // 获取传递过来的参数对象
     console.error("WebViewPage#aboutToAppear")
     console.error(JSON.stringify(params))
     let paramsPath: string = params['path'];

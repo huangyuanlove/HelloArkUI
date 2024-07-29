@@ -17,7 +17,7 @@ struct AnimationOfSphericalPaths {
   private b = 0
 
 
-  toRadians(degrees): number {
+  toRadians(degrees:number): number {
     return degrees * (Math.PI / 180)
   }
 
@@ -59,11 +59,11 @@ struct AnimationOfSphericalPaths {
               return
             }
 
-            this.timerInterval = setInterval(function(){
+            this.timerInterval = setInterval(()=>{
 
               this.changeAngleX()
 
-            }.bind(this), 20)
+            }, 20)
           })
         Button("stop").onClick(() => {
           clearInterval(this.timerInterval)

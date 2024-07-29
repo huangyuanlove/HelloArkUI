@@ -1,10 +1,13 @@
 
-import UIAbility from '@ohos.app.ability.UIAbility';
+import UIAbility, { CalleeCallback } from '@ohos.app.ability.UIAbility';
 import Window from '@ohos.window';
+import { AbilityConstant, Want } from '@kit.AbilityKit';
+import { rpc } from '@kit.IPCKit';
+
 export default class SecondAbility extends UIAbility {
 
 
-  onCreate(want,launchParam){
+  onCreate(want:Want,launchParam:AbilityConstant.LaunchParam){
     let entryAbilityWant = want;
     let info = entryAbilityWant?.parameters?.info
     console.error('huangyuan',JSON.stringify(info));
@@ -42,12 +45,12 @@ export default class SecondAbility extends UIAbility {
 
 }
 
-function FunACall(data) {
+function FunACall(data:rpc.MessageSequence) {
   // 获取call事件中传递的所有参数
   console.log('FunACall param:' + JSON.stringify(data.readString()));
   return null;
 }
-function FunBCall(data) {
+function FunBCall(data:rpc.MessageSequence) {
   console.log('FunACall param:' + JSON.stringify(data.readString()));
   return null;
 }

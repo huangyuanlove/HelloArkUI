@@ -142,13 +142,13 @@ export struct ClockView {
         this.draw()
       })
       Canvas(this.canvasRenderingClock).width("100%").height("100%").onReady(()=>{
-        this.timer = setInterval(function(){
+        this.timer = setInterval(()=>{
           let date: Date = new Date()
           this.minute = date.getMinutes()
           this.hour = date.getHours()
           this.second = date.getSeconds()
           this.draw()
-        }.bind(this),500)
+        },500)
       })
     }.width("100%").height("100%")
   }
