@@ -1,8 +1,8 @@
 import picker from '@ohos.file.picker';
 import fs from '@ohos.file.fs';
-import fileIo from '@ohos.file.fs';
+
 import buffer from '@ohos.buffer';
-import mediaLibrary from '@ohos.multimedia.mediaLibrary';
+
 
 //
 // async function saveImageBuffer(buffer: ArrayBuffer) {

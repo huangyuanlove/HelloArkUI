@@ -15,6 +15,7 @@ export struct  PlayGroundIndex {
       BaseListItem({ label: '刮奖', path: 'pages/playground/ScratchOffPage' })
       BaseListItem({ label: '图片手势缩放', path: 'pages/playground/ImageScaleWithGesture' })
       BaseListItem({ label: '闹钟', path: 'pages/playground/AlarmClockPage' })
+      BaseListItem({ label: '画布复合操作', path: 'pages/playground/canvas/CanvasCompositeOperationPage' })
     }.width("100%").height("100%").padding({top:48})
   }
 

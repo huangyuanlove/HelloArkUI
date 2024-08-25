@@ -1,5 +1,3 @@
-import hilog from '@ohos.hilog'
-
 @Preview
 @Component
 export struct ScratchOffView {
@@ -13,11 +11,9 @@ export struct ScratchOffView {
       Canvas(this.canvasRendering).width("100%").height("100%").onReady(() => {
         let canvasWidth = this.canvasRendering.width
         let canvasHeight = this.canvasRendering.height
-        hilog.error(0x000, "ScratchOffView", `onReady :canvasWidth--> ${canvasWidth}, canvasHeight--> ${canvasHeight}`)
 
         this.canvasRendering.fillStyle = "#aaf7f7f7"
         this.canvasRendering.fillRect(0, 0, canvasWidth, canvasHeight)
-
 
         this.canvasRendering.strokeStyle = "#00000000"
         this.canvasRendering.fillStyle = "#000000"
@@ -39,7 +35,6 @@ export struct ScratchOffView {
             this.path.moveTo(event.touches[0].x, event.touches[0].y)
             this.path.arc(event.touches[0].x, event.touches[0].y, 30, 0, Math.PI*2, false)
             this.canvasRendering.fill(this.path)
-
 
             break
           case TouchType.Up:

@@ -1,15 +1,8 @@
 // 特别粗糙，可以参考这个：https://developer.huawei.com/consumer/cn/forum/topic/0201104583144305349?fid=0101587866109860105
-import ActionBar from '../../comm/ActionBar'
-import picker from '@ohos.file.picker';
-import image from '@ohos.multimedia.image';
-import mediaLibrary from '@ohos.multimedia.mediaLibrary';
-import fs from '@ohos.file.fs';
-import fileIo from '@ohos.file.fs';
+import ActionBar from '../../comm/ActionBar';
+
 import { saveImageDataUrl } from '../../util/FileUtils';
-import util from '@ohos.util';
-import buffer from '@ohos.buffer';
 import promptAction from '@ohos.promptAction';
-import { ShowDialogSuccessResponse } from '@system.prompt';
 import abilityAccessCtrl, { Permissions } from '@ohos.abilityAccessCtrl';
 import common from '@ohos.app.ability.common';
 import { BusinessError } from '@kit.BasicServicesKit';
