@@ -16,6 +16,7 @@ export struct  PlayGroundIndex {
       BaseListItem({ label: '图片手势缩放', path: 'pages/playground/ImageScaleWithGesture' })
       BaseListItem({ label: '闹钟', path: 'pages/playground/AlarmClockPage' })
       BaseListItem({ label: '画布复合操作', path: 'pages/playground/canvas/CanvasCompositeOperationPage' })
+      BaseListItem({ label: '妖娆刻度尺', path: 'pages/playground/canvas/ruler/RulerPage' })
     }.width("100%").height("100%").padding({top:48})
   }
 

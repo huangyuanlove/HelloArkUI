@@ -33,6 +33,7 @@
     "pages/playground/ImageScaleWithGesture",
     "pages/playground/AlarmClockPage",
     "pages/playground/canvas/CanvasCompositeOperationPage",
+    "pages/playground/canvas/ruler/RulerPage",
     "WebViewPage"
   ]
 }
