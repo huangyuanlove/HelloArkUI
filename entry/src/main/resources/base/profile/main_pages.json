@@ -35,6 +35,7 @@
     "pages/playground/AlarmClockPage",
     "pages/playground/canvas/CanvasCompositeOperationPage",
     "pages/playground/canvas/ruler/RulerPage",
+    "pages/playground/nodeContainer/CustomNode",
     "WebViewPage"
   ]
 }
