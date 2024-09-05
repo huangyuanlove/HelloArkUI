@@ -18,6 +18,9 @@ export struct  PlayGroundIndex {
       BaseListItem({ label: '画布复合操作', path: 'pages/playground/canvas/CanvasCompositeOperationPage' })
       BaseListItem({ label: '妖娆刻度尺', path: 'pages/playground/canvas/ruler/RulerPage' })
       BaseListItem({ label: '自定义节点', path: 'pages/playground/nodeContainer/CustomNode' })
+      BaseListItem({ label: '操作节点树', path: 'pages/playground/frame_node/OperationNodeTree' })
+      BaseListItem({ label: '设置节点通用属性和事件回调', path: 'pages/playground/frame_node/CommonAttributeAndEvent' })
+      BaseListItem({ label: '自定义测量与绘制', path: 'pages/playground/frame_node/MeasureAndDraw' })
     }.width("100%").height("100%").padding({top:48})
   }
 

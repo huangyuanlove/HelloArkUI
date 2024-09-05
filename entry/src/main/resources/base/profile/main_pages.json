@@ -36,6 +36,9 @@
     "pages/playground/canvas/CanvasCompositeOperationPage",
     "pages/playground/canvas/ruler/RulerPage",
     "pages/playground/nodeContainer/CustomNode",
+    "pages/playground/frame_node/OperationNodeTree",
+    "pages/playground/frame_node/CommonAttributeAndEvent",
+    "pages/playground/frame_node/MeasureAndDraw",
     "WebViewPage"
   ]
 }
