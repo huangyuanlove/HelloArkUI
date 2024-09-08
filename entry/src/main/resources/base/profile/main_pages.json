@@ -39,6 +39,7 @@
     "pages/playground/frame_node/OperationNodeTree",
     "pages/playground/frame_node/CommonAttributeAndEvent",
     "pages/playground/frame_node/MeasureAndDraw",
+    "pages/playground/timer/TimerPage",
     "WebViewPage"
   ]
 }
