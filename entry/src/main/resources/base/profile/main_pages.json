@@ -40,6 +40,7 @@
     "pages/playground/frame_node/CommonAttributeAndEvent",
     "pages/playground/frame_node/MeasureAndDraw",
     "pages/playground/timer/TimerPage",
+    "pages/playground/input/InputVerificationCode",
     "WebViewPage"
   ]
 }

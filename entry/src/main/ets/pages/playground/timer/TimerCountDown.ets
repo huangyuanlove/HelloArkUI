@@ -2,8 +2,6 @@ import { util } from '@kit.ArkTS'
 
 
 class MyTextTimerModifier implements ContentModifier<TextTimerConfiguration> {
-
-
   applyContent(): WrappedBuilder<[TextTimerConfiguration]> {
     return wrapBuilder(buildTextTimer)
   }
