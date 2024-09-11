@@ -41,6 +41,8 @@
     "pages/playground/frame_node/MeasureAndDraw",
     "pages/playground/timer/TimerPage",
     "pages/playground/input/InputVerificationCode",
+    "pages/playground/input/InputVerificationByText",
+    "pages/playground/LineLimitFlexPage",
     "WebViewPage"
   ]
 }

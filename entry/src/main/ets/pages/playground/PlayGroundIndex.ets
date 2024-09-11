@@ -22,7 +22,9 @@ export struct  PlayGroundIndex {
       BaseListItem({ label: '设置节点通用属性和事件回调', path: 'pages/playground/frame_node/CommonAttributeAndEvent' })
       BaseListItem({ label: '自定义测量与绘制', path: 'pages/playground/frame_node/MeasureAndDraw' })
       BaseListItem({ label: '倒计时', path: 'pages/playground/timer/TimerPage' })
-      BaseListItem({ label: '验证码输入框', path: 'pages/playground/input/InputVerificationCode' })
+      BaseListItem({ label: '验证码输入“TextInput实现”', path: 'pages/playground/input/InputVerificationCode' })
+      BaseListItem({ label: '验证码“Text实现”', path: 'pages/playground/input/InputVerificationByText' })
+      BaseListItem({ label: '限制行数的Flex', path: 'pages/playground/LineLimitFlexPage' })
     }.width("100%").height("100%").padding({top:48})
   }
 
