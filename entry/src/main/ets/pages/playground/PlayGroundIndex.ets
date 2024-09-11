@@ -24,6 +24,7 @@ export struct  PlayGroundIndex {
       BaseListItem({ label: '倒计时', path: 'pages/playground/timer/TimerPage' })
       BaseListItem({ label: '验证码输入“TextInput实现”', path: 'pages/playground/input/InputVerificationCode' })
       BaseListItem({ label: '验证码“Text实现”', path: 'pages/playground/input/InputVerificationByText' })
+      BaseListItem({ label: '验证码“Canvas实现”', path: 'pages/playground/input/CanvasInputVerificationCode' })
       BaseListItem({ label: '限制行数的Flex', path: 'pages/playground/LineLimitFlexPage' })
     }.width("100%").height("100%").padding({top:48})
   }
