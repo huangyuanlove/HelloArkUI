@@ -11,8 +11,8 @@ struct CanvasInputVerificationCode {
   private canvasWidth = 0
   private canvasHeight = 0
   private codeLength = 4;
-  private hSpace = 10//验证码下划线间距
-  inputFocus: boolean[] = [true, false, false, false]//控制下划线高亮
+  private hSpace = 10 //验证码下划线间距
+  inputFocus: boolean[] = [true, false, false, false] //控制下划线高亮
   verifyCodeStr: string = ''; // 用户输入的验证码
   //软键盘
   private inputController: inputMethod.InputMethodController = inputMethod.getController();
@@ -29,13 +29,13 @@ struct CanvasInputVerificationCode {
 
     // 设置 text 高亮
     for (let i: number = 0; i < this.codeLength; i++) {
-      if (userInputLength === i) {
+      if (userInputLength == i) {
         this.inputFocus[i] = true;
       } else {
         this.inputFocus[i] = false;
       }
     }
-    hilog.error(0x01,"CanvasInputVerificationCode",`onInputChange ${this.inputFocus}`)
+    hilog.error(0x01, "CanvasInputVerificationCode", `onInputChange ${this.inputFocus}`)
     this.canvasRendering.reset()
     this.drawUnderLine()
     this.drawText()
@@ -64,18 +64,18 @@ struct CanvasInputVerificationCode {
    */
   inputListener() {
     this.inputController.on('insertText', (text: string) => {
-      hilog.error(0x01, "CanvasInputVerificationCode", `insertText-->输入的字符 ${text}`)
+
       if (this.verifyCodeStr.length >= this.codeLength || isNaN(Number(text)) || text === '') {
         return;
       }
       this.verifyCodeStr += text;
-      hilog.error(0x01, "CanvasInputVerificationCode", `insertText-->处理后字符 ${this.verifyCodeStr}`)
+
       this.onInputChange()
     });
     this.inputController.on('deleteLeft', () => {
-      hilog.error(0x01, "CanvasInputVerificationCode", `deleteLeft-->删除前的字符 ${this.verifyCodeStr}`)
+
       this.verifyCodeStr = this.verifyCodeStr.substring(0, this.verifyCodeStr.length - 1);
-      hilog.error(0x01, "CanvasInputVerificationCode", `deleteLeft-->删除后的字符 ${this.verifyCodeStr}`)
+
       this.onInputChange()
     });
   }
@@ -130,20 +130,27 @@ struct CanvasInputVerificationCode {
 
     //画出下划线
     let y = this.canvasHeight - 2
-
+    hilog.error(0x01, "CanvasInputVerificationCode", `drawUnderLine ${this.inputFocus}`)
     for (let i = 0; i < this.codeLength; i++) {
-      hilog.error(0x01,"CanvasInputVerificationCode",`drawUnderLine ${this.inputFocus}`)
+      let path = new Path2D()
+
       if (this.inputFocus[i]) {
-        this.canvasRendering.strokeStyle = "#39d167"
+
+        this.canvasRendering.strokeStyle = "#39D167"
         this.canvasRendering.lineWidth = 3
       } else {
         this.canvasRendering.strokeStyle = "#999999"
         this.canvasRendering.lineWidth = 2
       }
-      this.canvasRendering.moveTo((lineWidth + this.hSpace) * i, y)
-      this.canvasRendering.lineTo(lineWidth + (lineWidth + this.hSpace) * i, y)
-      this.canvasRendering.stroke()
+      let startX = (lineWidth + this.hSpace) * i
+      let endX = lineWidth + (lineWidth + this.hSpace) * i
+      hilog.error(0x01,"CanvasInputVerificationCode",`drawUnderLine startX:${startX}  endX:${endX}  ${this.canvasRendering.strokeStyle}`)
+      path.moveTo(startX, y)
+      path.lineTo(endX, y)
+      this.canvasRendering.stroke(path)
     }
+
+
 
   }
 
