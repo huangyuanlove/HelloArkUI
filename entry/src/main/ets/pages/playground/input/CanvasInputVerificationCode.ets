@@ -155,17 +155,21 @@ struct CanvasInputVerificationCode {
   }
 
   build() {
-    Canvas(this.canvasRendering)
-      .width("calc(100% - 30vp)")
-      .margin({ left: 15, right: 15 })
-      .height("100")
-      .onReady(() => {
-        this.canvasWidth = this.canvasRendering.width
-        this.canvasHeight = this.canvasRendering.height
-        this.drawUnderLine()
-        this.drawText()
+    Column(){
+      Text("canvas绘制").fontSize(20).fontColor(Color.Black)
+      Canvas(this.canvasRendering)
+        .width("calc(100% - 30vp)")
+        .margin({ left: 15, right: 15 })
+        .height("100")
+        .onReady(() => {
+          this.canvasWidth = this.canvasRendering.width
+          this.canvasHeight = this.canvasRendering.height
+          this.drawUnderLine()
+          this.drawText()
 
 
-      })
+        })
+    }
+
   }
 }
