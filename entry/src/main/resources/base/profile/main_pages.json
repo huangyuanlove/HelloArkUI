@@ -44,6 +44,7 @@
     "pages/playground/input/InputVerificationByText",
     "pages/playground/LineLimitFlexPage",
     "pages/playground/input/CanvasInputVerificationCode",
+    "pages/playground/input/RecordKeyboardInputPage",
     "WebViewPage"
   ]
 }

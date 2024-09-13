@@ -6,9 +6,9 @@
         "type": "HarmonyOS",
         "material": {
           "certpath": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.cer",
-          "storePassword": "0000001B4BCCEDB17A0D0464619C1C7409F89DD61271DAB5A077BCF3245C905ABBDBE8AAA70BE7F1273ABC",
+          "storePassword": "0000001BCC5E18EEDF68EDC540DB2C26B3E442ECFC06B6CA349ED6B9DA8CB0EFE1D1AD9D1828C0D60AA2AA",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B6FA18B9179D34576D2E454AF93B71645F47204E204CEAB79745ECAB272BAF436BCBD13A097CDE6",
+          "keyPassword": "0000001BA7B09E47F0435CCD97B3163A0D784F66557EEAE8CC9EED176B02E283161C98AB687B6FBC1FD02D",
           "profile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p12"
@@ -19,8 +19,13 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "4.0.0(10)",
-        "runtimeOS": "HarmonyOS"
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+          }
+        }
       }
     ]
   },
