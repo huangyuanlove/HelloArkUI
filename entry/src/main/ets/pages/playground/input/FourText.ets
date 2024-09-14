@@ -129,7 +129,6 @@ struct FourText{
       .defaultFocus(true)
       .onClick(async () => {
         await this.inputAttach();
-
       });
     }
   }
