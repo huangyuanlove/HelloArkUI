@@ -3,11 +3,23 @@ import { hilog } from '@kit.PerformanceAnalysisKit'
 @Entry
 @Component
 struct LineLimitFlexPage {
+  @State maxLine:number = 1
+
   build() {
     Column() {
-      CustomLayout({ builder: ColumnChildren ,hSpace:vp2px(10), vSpace:vp2px(6),maxLine:1}).width('100%')
+      CustomLayout({ builder: ColumnChildren ,hSpace:vp2px(10), vSpace:vp2px(6),maxLine:this.maxLine}).width('100%')
         .backgroundColor(Color.Red)
-      Text("自定义行数").fontColor(Color.Black).fontSize(20)
+      Row(){
+        Button("展示3行").fontColor(Color.Black).fontSize(20).onClick((_)=>{
+          this.maxLine = 3
+        })
+        Blank().width(10)
+        Button("展示1行").fontColor(Color.Black).fontSize(20)
+          .onClick((_)=>{
+            this.maxLine = 1
+          })
+      }.margin({top:10})
+
     }.backgroundColor(Color.Blue)
   }
 }
@@ -28,7 +40,7 @@ function ColumnChildren() {
 struct CustomLayout {
   hSpace: number = 0
   vSpace: number = 0
-  maxLine: number = Number.MAX_VALUE
+ @Prop maxLine: number = Number.MAX_VALUE
 
   @Builder
   doNothingBuilder() {
