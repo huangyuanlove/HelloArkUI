@@ -3,34 +3,37 @@ import { hilog } from '@kit.PerformanceAnalysisKit'
 @Entry
 @Component
 struct LineLimitFlexPage {
-  @State maxLine:number = 1
+  @State maxLine: number = 2
+  @State showAll: boolean = false
 
   build() {
     Column() {
-      CustomLayout({ builder: ColumnChildren ,hSpace:vp2px(10), vSpace:vp2px(6),maxLine:this.maxLine}).width('100%')
-        .backgroundColor(Color.Red)
-      Row(){
-        Button("展示3行").fontColor(Color.Black).fontSize(20).onClick((_)=>{
-          this.maxLine = 3
-        })
-        Blank().width(10)
-        Button("展示1行").fontColor(Color.Black).fontSize(20)
-          .onClick((_)=>{
-            this.maxLine = 1
-          })
-      }.margin({top:10})
 
-    }.backgroundColor(Color.Blue)
+      CustomLayout({
+        builder: ColumnChildren,
+        hSpace: vp2px(6),
+        vSpace: vp2px(4),
+        maxLine: this.maxLine,
+        showAll: this.showAll
+      }).onClick((_) => {
+        if (this.showAll) {
+          this.maxLine = 2
+        } else {
+          this.maxLine = Number.MAX_VALUE
+        }
+        this.showAll = !this.showAll
+      }
+      )}
   }
 }
 
 const colors: string[] = ["#ff6134", "#1b91e0", "#39d167"]
-
+const tag:string[]= ["明月", "星光", "北极光", "创新者", "晨曦", "悠然见南山", "科技创业者", "一缕阳光", "夜静春山空", "落英缤纷"]
 @Builder
 function ColumnChildren() {
-  ForEach([1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15], (index: number) => { //暂不支持lazyForEach的写法
-    Text('S' + index)
-      .fontSize(30)
+  ForEach([0,1, 2, 3, 4, 5, 6, 7, 8, 9], (index: number) => { //暂不支持lazyForEach的写法
+    Text(tag[index])
+      .fontSize(20)
       .borderWidth(2).backgroundColor(colors[index%3])
 
   })
@@ -40,20 +43,18 @@ function ColumnChildren() {
 struct CustomLayout {
   hSpace: number = 0
   vSpace: number = 0
- @Prop maxLine: number = Number.MAX_VALUE
+  @Prop maxLine: number
+  @Prop showAll: boolean
 
   @Builder
   doNothingBuilder() {
   };
 
   @BuilderParam builder: () => void = this.doNothingBuilder;
-  @State startSize: number = 100;
 
-  onMeasureSize(selfLayoutInfo: GeometryInfo, children: Array<Measurable>, constraint: ConstraintSizeOptions) {
-    hilog.error(0x01, "LineLimitFlexPage",
-      `onMeasureSize selfLayoutInfo: width-->${selfLayoutInfo.width}   height-->${selfLayoutInfo.height}`)
-    hilog.error(0x01, "LineLimitFlexPage",
-      `onMeasureSize constraint: minWidth-->${constraint.minWidth},maxWidth-->${constraint.maxWidth},   minHeight-->${constraint.minHeight}, maxHeight-->${constraint.maxHeight}`)
+  onMeasureSize(selfLayoutInfo: GeometryInfo, children: Array<Measurable>, constraint: ConstraintSizeOptions): SizeResult {
+    hilog.error(0x01, "LineLimitFlexPage", `onMeasureSize selfLayoutInfo: ${JSON.stringify(selfLayoutInfo)}`)
+    hilog.error(0x01, "LineLimitFlexPage", `onMeasureSize constraint: ${JSON.stringify(constraint)}`)
 
     let totalWidth = 0
     let totalHeight = 0
@@ -87,7 +88,7 @@ struct CustomLayout {
           break;
         }
         totalHeight += lineHeight + this.vSpace
-        totalWidth = result.width+ this.vSpace
+        totalWidth = result.width + this.vSpace
         lineHeight = 0
       } else {
         //如果加上当前控件没有超过父控件宽度，加上水平间距
@@ -101,43 +102,41 @@ struct CustomLayout {
       width: lineCount > 1 ? selfLayoutInfo.width : totalWidth,
       height: totalHeight + firstLineHeight
     };
-    hilog.error(0x01,"LineLimitFlexPage",`onMeasureSize result--> width: ${result.width} ,height:${result.height}`)
     return result
   }
 
   onPlaceChildren(selfLayoutInfo: GeometryInfo, children: Array<Layoutable>, constraint: ConstraintSizeOptions) {
-    hilog.error(0x01, "LineLimitFlexPage",
-      `onPlaceChildren: selfLayoutInfo: width-->${selfLayoutInfo.width}   height-->${selfLayoutInfo.height}`)
+    hilog.error(0x01, "LineLimitFlexPage", `onPlaceChildren: selfLayoutInfo: ${JSON.stringify(selfLayoutInfo)}`)
+    hilog.error(0x01, "LineLimitFlexPage", `onPlaceChildren: constraint: ${JSON.stringify(constraint)}`)
     let startX = 0;
     let startY = 0;
     let lineCount = 1
 
-    for(let i =0;i<children.length;i++){
+    for (let i = 0; i < children.length; i++) {
       let child = children[i]
       let childWidth = child.measureResult.width;
       let childHeight = child.measureResult.height
-
-      hilog.error(0x01, "LineLimitFlexPage", `第${i}个: childWidth-->${childWidth}   childHeight-->${childHeight}`)
 
 
       if (startX + childWidth > selfLayoutInfo.width) {
         startX = 0
         startY += childHeight + this.vSpace
-        lineCount ++
-        if(lineCount > this.maxLine){
+        lineCount++
+        if (lineCount > this.maxLine) {
           break
         }
       }
-      hilog.error(0x01, "LineLimitFlexPage", `第${i}个layout: x-->${startX}   y-->${startY}`)
       child.layout({ x: startX, y: startY })
       startX += childWidth + this.hSpace
 
     }
-
-
   }
 
   build() {
-    this.builder()
+    if (this.showAll ) {
+      this.builder()
+    }else{
+      this.builder()
+    }
   }
 }
