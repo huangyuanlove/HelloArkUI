@@ -1,4 +1,5 @@
 import { BuilderNode, FrameNode, NodeController, Size, UIContext } from '@kit.ArkUI'
+import BuildProfile from 'BuildProfile'
 
 class Params {
   text: string = "this is a text"
@@ -44,6 +45,7 @@ class MyNodeController extends NodeController {
 
   aboutToAppear() {
     console.log("aboutToAppear")
+
   }
 
   aboutToDisappear() {

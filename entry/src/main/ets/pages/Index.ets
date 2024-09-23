@@ -1,5 +1,7 @@
 import BasicKnowledgePage from './basic_knowledge/BasicKnowledgePage'
 import { PlayGroundIndex } from './playground/PlayGroundIndex'
+import { promptAction } from '@kit.ArkUI'
+import BuildProfile from 'BuildProfile'
 
 
 @Entry
@@ -13,6 +15,11 @@ struct Index {
   private tabUnselectIcon:Resource[] =[$r("app.media.tab_guide_unselect"),$r("app.media.tab_playground_unselect"),]
 
   @State currentIndex:number = 0
+
+
+  aboutToAppear(): void {
+
+  }
 
   @Builder
   tabBar(index:number){

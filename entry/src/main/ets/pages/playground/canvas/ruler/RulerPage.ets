@@ -65,6 +65,14 @@ struct RulerPage {
           this.canvasRendering.fillStyle = "#aaff6134"
           this.canvasRendering.font = "36px sans-serif"
           this.canvasRendering.lineWidth = this.lineWidth
+
+          let grad = this.canvasRendering.createLinearGradient(0, 0, this.canvasWidth*3,  this.canvasHeight)
+          grad.addColorStop(0.0, '#00b09b')
+
+          grad.addColorStop(1.0, '#96c93d')
+          this.canvasRendering.strokeStyle = grad
+
+
           this.draw()
 
         })
@@ -97,44 +105,6 @@ struct RulerPage {
               console.info('Pan end')
             }))
 
-
-      Flex({wrap:FlexWrap.Wrap}) {
-        Button("开始").onClick((_) => {
-          if(this.timer == -1){
-            this.timer = setInterval(() => {
-              this.baseNumber += 1
-              this.draw()
-            }, 1000)
-          }
-
-        })
-        Button("暂停").onClick((_) => {
-          if (this.timer != -1) {
-            clearInterval(this.timer)
-            this.timer = -1
-          }
-        })
-        Button("手动加1").onClick((_) => {
-          this.baseNumber += 1
-          this.canvasRendering.strokeStyle = "#aa1b91e0"
-          this.canvasRendering.fillStyle = "#aa1b91e0"
-          this.canvasRendering.font = "36px sans-serif"
-        })
-        Button("绘制").onClick((_) => {
-          this.draw()
-        })
-        Button("重置").onClick((_) => {
-          this.canvasRendering.reset()
-        })
-        Button("清空画布").onClick((_) => {
-          this.canvasRendering.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
-        })
-        Button("stroke").onClick((_) => {
-          this.canvasRendering.stroke()
-        })
-        Text(`PanGestureX:${this.panGestureX}`)
-
-      }
 
     }
   }
