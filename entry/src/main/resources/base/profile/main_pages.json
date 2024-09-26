@@ -40,6 +40,7 @@
     "pages/playground/frame_node/CommonAttributeAndEvent",
     "pages/playground/frame_node/MeasureAndDraw",
     "pages/playground/timer/TimerPage",
+    "pages/playground/html_parse/HtmlParsePage",
     "pages/playground/input/InputVerificationCode",
     "pages/playground/input/InputVerificationByText",
     "pages/playground/LineLimitFlexPage",
