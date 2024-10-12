@@ -119,7 +119,10 @@ struct HtmlParsePage {
           Span("1213").fontColor(Color.Green).fontSize(16)
         }.textBackgroundStyle({color: "#7F107DFF", radius: 6,})
         ContainerSpan()
-      }
+      }.backgroundColor(Color.Orange)
     }
   }
 }
+
+//如果是Span则没有子控件，属性放在Span上
+//如果是 ContainerSpan，只允许一级子控件
