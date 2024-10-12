@@ -11,6 +11,7 @@ struct LineLimitFlexPage {
 
       CustomLayout({
         builder: ColumnChildren,
+        tags:tags,
         hSpace: vp2px(6),
         vSpace: vp2px(4),
         maxLine: this.maxLine,
@@ -27,12 +28,31 @@ struct LineLimitFlexPage {
   }
 }
 
+interface LineLimitFlexElement{
+  getContent():string
+}
+
+class CustomObject implements LineLimitFlexElement{
+  constructor(tag:string) {
+    this.tag = tag
+  }
+  tag:string=''
+
+  getContent(): string {
+   return this.tag
+  }
+
+}
+
+
 const colors: string[] = ["#ff6134", "#1b91e0", "#39d167"]
-const tag:string[]= ["明月", "星光", "北极光", "创新者", "晨曦", "悠然见南山", "科技创业者", "一缕阳光", "夜静春山空", "落英缤纷"]
+
+const tags:CustomObject[] = [new CustomObject('明月'),new CustomObject('星光'),new CustomObject('北极光'),new CustomObject('创新者'),new CustomObject('晨曦'),new CustomObject('悠然见南山'),new CustomObject('科技创业者'),new CustomObject('一缕阳光'),new CustomObject('夜静春山空'),new CustomObject('落英缤纷')]
+
 @Builder
-function ColumnChildren() {
-  ForEach([0,1, 2, 3, 4, 5, 6, 7, 8, 9], (index: number) => { //暂不支持lazyForEach的写法
-    Text(tag[index])
+function ColumnChildren(tags:LineLimitFlexElement[]) {
+  ForEach(tags, (tag: LineLimitFlexElement,index:number) => { //暂不支持lazyForEach的写法
+    Text(tag.getContent())
       .fontSize(20)
       .borderWidth(2).backgroundColor(colors[index%3])
 
@@ -46,11 +66,9 @@ struct CustomLayout {
   @Prop maxLine: number
   @Prop showAll: boolean
 
-  @Builder
-  doNothingBuilder() {
-  };
+  tags:LineLimitFlexElement[]=[]
 
-  @BuilderParam builder: () => void = this.doNothingBuilder;
+  @BuilderParam builder: (tags:LineLimitFlexElement[]) => void
 
   onMeasureSize(selfLayoutInfo: GeometryInfo, children: Array<Measurable>, constraint: ConstraintSizeOptions): SizeResult {
     hilog.error(0x01, "LineLimitFlexPage", `onMeasureSize selfLayoutInfo: ${JSON.stringify(selfLayoutInfo)}`)
@@ -134,9 +152,9 @@ struct CustomLayout {
 
   build() {
     if (this.showAll ) {
-      this.builder()
+      this.builder(this.tags)
     }else{
-      this.builder()
+      this.builder(this.tags)
     }
   }
 }
