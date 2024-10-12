@@ -1,11 +1,23 @@
 import router from '@ohos.router'
 import ActionBar from '../../comm/ActionBar'
 import { HelloComponent } from '../../component/HelloComponent'
+import { getMainRouterInfo, MainRouterParams } from './RouterParams'
+import { hilog } from '@kit.PerformanceAnalysisKit'
 
 @Entry
 @Component
 struct Second {
   @State message: string = 'hi second'
+  @State routerParams?:MainRouterParams = undefined
+  aboutToAppear(): void {
+    this.routerParams = router.getParams() as MainRouterParams
+    let params = router.getParams()
+
+    let tmp:MainRouterParams = new MainRouterParams()
+    tmp.name = "Second"
+    hilog.error(0x01,"Second","aboutToAppear--> " + JSON.stringify(this.routerParams))
+    hilog.error(0x01,"Second","aboutToAppear--> " + JSON.stringify(tmp))
+  }
 
   build() {
       Column() {
@@ -14,6 +26,7 @@ struct Second {
         Text(this.message)
           .fontColor('#1b91e0')
           .fontWeight(FontWeight.Lighter)
+        Text(getMainRouterInfo(this.routerParams)).width(50).height(50).backgroundColor(Color.Pink)
         Button() {
           Text('back')
             .fontWeight(FontWeight.Medium)

@@ -1,6 +1,7 @@
 import router from '@ohos.router';
 import { MyComponent, MyComponentController } from '../../component/CustomMethodAndMemeber';
 import ActionBar from '../../comm/ActionBar';
+import { MainRouterParams } from './RouterParams';
 
 @Entry
 @Component
@@ -83,7 +84,9 @@ struct Base {
       .width('40%')
       .height('5%')
       .onClick(() => {
-        router.pushUrl({ url: 'pages/basic_knowledge/Second' })
+        let routerParams = new MainRouterParams()
+        routerParams.name = "Next 页面跳转"
+        router.pushUrl({ url: 'pages/basic_knowledge/Second',params: routerParams })
       })
 
     }.width('100%').height('100%')
