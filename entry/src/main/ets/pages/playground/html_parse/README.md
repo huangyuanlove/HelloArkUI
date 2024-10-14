@@ -28,8 +28,10 @@
 1. 判断是否是多个一级标签，如果是多个一级标签，则只能解析为
 ``` typescript
 Text(){
-  ContainerSpan(){}.textBackgroundStyle() //1级标签对应的控件
-  ContainerSpan(){}.textBackgroundStyle()
+  ContainerSpan(){}.textBackgroundStyle() //1级标签对应的控件，如果没有backgroundColor属性，则解析为Span
+  ContainerSpan(){
+    Span()
+  }.textBackgroundStyle()
 }
 
 ```
@@ -41,7 +43,5 @@ Text(){
 
 
 如果有background属性，则需要包一层 ContainerSpan，因为span不支持背景色
-如果是
-
 如果是 Span 则没有子控件，属性放在Span上
 如果是 ContainerSpan，只允许一级子控件
