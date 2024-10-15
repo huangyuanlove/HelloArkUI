@@ -3,11 +3,17 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { VNode } from './VNode';
 import { promptAction } from '@kit.ArkUI';
 
+
 @Entry
 @Component
 struct HtmlParsePage {
+  rootTagCount = 0
+  startTag = 0
+  rootNode: VNode = new VNode()
+  currentNode: VNode = new VNode()
+  @State hasParse: boolean = false
   private htmlContent: string =
-    ` <font size="3" color="red"> <a href="https://www.baidu.com">点我跳转到百度</a></font> <br/><span style="background:#1b91e0"> 这位姑娘有一双<span style="color:#ff6134;font-weight:bold;font-size:20px;background:yellow">蓝色</span>的眼睛。</span>`
+    `<span> 123\n <font  color="red"> <a href="https://www.baidu.com">点我跳转到百度</a></font> <br/><font> 这位姑娘有一双</font><span style="color:#ff6134;font-size:40px;background:yellow">蓝色的眼睛。</span></span>`
 
   startParse() {
     let textEncoder: util.TextEncoder = new util.TextEncoder();
@@ -18,20 +24,79 @@ struct HtmlParsePage {
       supportDoctype: true,
       ignoreNameSpace: true,
 
-      attributeValueCallbackFunction: this.attributeValueCallback,
-      tokenValueCallbackFunction: this.tokenValueCallback
+      attributeValueCallbackFunction: this.attributeValueCallback.bind(this),
+      tokenValueCallbackFunction: this.tokenValueCallback.bind(this)
     };
     that.parse(options);
     //如何判断是否为多个标签？检测 start_tag 和 end_tag
+    hilog.error(0x01, "HtmlParsePage", `共 ${this.rootTagCount} 个根标签`)
   }
 
   attributeValueCallback(name: string, value: string): boolean {
     let str = name + ' ' + value + ' ';
-    hilog.error(0x01, 'HtmlParsePage', `attributeValueCallback  ${str}`)
+    hilog.error(0x01, 'HtmlParsePage', `attribute  ${str}`)
+    if (name === 'href') {
+      this.currentNode.href = value
+    } else if (name === 'size') {
+      if (value.includes('px')) {
+        let tmp = value.replace('px', '')
+        this.currentNode.style.fontSize = px2fp(parseInt(tmp))
+      } else {
+        this.currentNode.style.fontSize = px2fp(parseInt(value))
+      }
+    } else if (name === 'style') {
+      let attributes: string[] = value.split(';')
+      attributes.forEach((attribute: string) => {
+        let tmp: string [] = attribute.split(':')
+        if (tmp[0] === 'color') {
+          this.currentNode.style.fontColor = tmp[1]
+        } else if (tmp[0] === 'background') {
+          this.currentNode.style.backgroundColor = this.getColorWithStr(tmp[1])
+        } else if (tmp[0] === 'font-size') {
+          this.currentNode.style.fontSize = px2fp(parseInt(tmp[1].replace('px', '')))
+        }
+      })
+    } else if (name === 'color') {
+      this.currentNode.style.fontColor = this.getColorWithStr(value)
+    }
     return true; // true:继续解析 false:停止解析
   }
 
+  getColorWithStr(color: string): string | Color {
+    if (color.includes('#')) {
+      return color
+    }
+    switch (color.toLowerCase()) {
+      case 'white':
+        return Color.White
+      case 'black':
+        return Color.Black
+      case 'blue':
+        return Color.Blue
+      case 'brown':
+        return Color.Brown
+      case 'gray':
+        return Color.Gray
+      case 'green':
+        return Color.Green
+      case 'grey':
+        return Color.Grey
+      case 'orange':
+        return Color.Orange
+      case 'pink':
+        return Color.Pink
+      case 'red':
+        return Color.Red
+      case 'yellow':
+        return Color.Yellow
+      case 'transparent':
+        return Color.Transparent
+      default:
+        hilog.error(0x01, 'HtmlParsePage', '未支持的颜色--> ' + color)
+        return Color.Transparent
 
+    }
+  }
 
   tokenValueCallback(name: xml.EventType, value: xml.ParseInfo): boolean {
 
@@ -68,9 +133,31 @@ struct HtmlParsePage {
       return true
     }
     let valueStr =
-      `getName:${value.getName()}    getText:${value.getText()}   getDepth:${value.getDepth()}    getAttributeCount:${value.getAttributeCount()}`
+      `getName:${value.getName()}    getText:${value.getText()}  `
 
-    hilog.error(0x01, 'HtmlParsePage', `tokenValueCallback  ${nameStr}  ${valueStr}`)
+    hilog.error(0x01, 'HtmlParsePage', `token  ${nameStr}  ${valueStr}`)
+    if (name === xml.EventType.TEXT) {
+      this.currentNode.text = value.getText()
+    }
+
+    if (name === xml.EventType.START_TAG) {
+      if (value.getName() === 'br') {
+        let lineBreakSpan = new VNode()
+        lineBreakSpan.text = '\n'
+        this.rootNode.child?.push(lineBreakSpan)
+      }
+      if (this.startTag == 0) {
+        this.currentNode = new VNode()
+        this.rootNode.child?.push(this.currentNode)
+        this.rootTagCount++
+      }
+      this.startTag++
+    }
+    if (name === xml.EventType.END_TAG) {
+      this.startTag--
+
+    }
+
     return true; //true:继续解析 false:停止解析
   }
 
@@ -110,6 +197,7 @@ struct HtmlParsePage {
       Text(this.htmlContent)
         .onClick((_) => {
           this.startParse()
+          this.hasParse = true
         })
       Text() {
         Span("123").fontColor(Color.Red).fontSize(18)
@@ -126,6 +214,13 @@ struct HtmlParsePage {
 
         ContainerSpan()
       }.backgroundColor(Color.Orange)
+
+      if (this.hasParse) {
+        Divider().color(Color.Gray).height(20)
+        this.buildWithVNode(this.rootNode)
+      }
+
+
     }
   }
 
@@ -133,23 +228,23 @@ struct HtmlParsePage {
   buildWithVNode(vNode: VNode) {
     Text() {
       ForEach(vNode.child, (child: VNode) => {
-        if (child.backgroundColor != Color.Transparent) {
+        if (child.style.backgroundColor != Color.Transparent) {
           ContainerSpan() {
             Span(child.text).configSpanStyle(child)
-          }.textBackgroundStyle({ color: child.backgroundColor })
+          }.textBackgroundStyle({ color: child.style.backgroundColor })
         } else {
           Span(child.text).configSpanStyle(child)
         }
       })
-    }
+    }.backgroundColor('#e1e1e1')
   }
 }
 
 @Extend(Span)
 function configSpanStyle(vNode: VNode) {
-  .backgroundColor(vNode.backgroundColor)
-  .fontColor(vNode.href ? vNode.hrefFontColor : vNode.fontColor)
-  .fontSize(vNode.fontSize)
+  .backgroundColor(vNode.style.backgroundColor)
+  .fontColor(vNode.href ? vNode.style.hrefFontColor : vNode.style.fontColor)
+  .fontSize(vNode.style.fontSize)
   .onClick((event: ClickEvent) => {
     if (vNode.href) {
       promptAction.showToast({ message: vNode.href })

@@ -45,3 +45,9 @@ Text(){
 如果有background属性，则需要包一层 ContainerSpan，因为span不支持背景色
 如果是 Span 则没有子控件，属性放在Span上
 如果是 ContainerSpan，只允许一级子控件
+
+## 支持标签
+
+* a
+* font
+* span
