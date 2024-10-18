@@ -8,26 +8,26 @@ import { Stack } from '@kit.ArkTS';
 export struct HtmlRender {
   htmlContent: string = ''
   rootNode: VNode = new VNode()
-  @State hasParse: boolean = false
   private styleStack: Stack<Style> = new Stack()
+  @State hasParse: boolean = false
 
   aboutToAppear(): void {
       this.startParse()
   }
 
   startParse() {
+    // 对数据编码，防止包含中文字符乱码
     let textEncoder: util.TextEncoder = new util.TextEncoder();
-    let arrBuffer: Uint8Array = textEncoder.encodeInto(this.htmlContent); // 对数据编码，防止包含中文字符乱码
+    let arrBuffer: Uint8Array = textEncoder.encodeInto(this.htmlContent);
     // 1.基于ArrayBuffer构造XmlPullParser对象
-    let that: xml.XmlPullParser = new xml.XmlPullParser(arrBuffer.buffer as object as ArrayBuffer, 'UTF-8');
+    let xmlPullParser: xml.XmlPullParser = new xml.XmlPullParser(arrBuffer.buffer as object as ArrayBuffer, 'UTF-8');
     let options: xml.ParseOptions = {
       supportDoctype: true,
       ignoreNameSpace: true,
-
       attributeValueCallbackFunction: this.attributeValueCallback.bind(this),
       tokenValueCallbackFunction: this.tokenValueCallback.bind(this)
     };
-    that.parse(options);
+    xmlPullParser.parse(options);
     this.hasParse = true
 
   }
@@ -49,7 +49,7 @@ export struct HtmlRender {
       attributes.forEach((attribute: string) => {
         let tmp: string [] = attribute.split(':')
         if (tmp[0] === 'color') {
-          this.styleStack.peek().fontColor = tmp[1]
+          this.styleStack.peek().fontColor = this.getColorWithStr(tmp[1])
         } else if (tmp[0] === 'background') {
           this.styleStack.peek().backgroundColor = this.getColorWithStr(tmp[1])
         } else if (tmp[0] === 'font-size') {
@@ -98,50 +98,32 @@ export struct HtmlRender {
     }
   }
 
-  tokenValueCallback(name: xml.EventType, value: xml.ParseInfo): boolean {
-
-    let nameStr = '未知'
-    if (name == xml.EventType.START_DOCUMENT) {
-      nameStr = 'START_DOCUMENT'
-      return true
-    } else if (name == xml.EventType.END_DOCUMENT) {
-      nameStr = 'END_DOCUMENT'
-      return true
-    } else if (name == xml.EventType.START_TAG) {
+  getTagEventName(name: xml.EventType):string{
+    let nameStr = ''
+     if (name == xml.EventType.START_TAG) {
       nameStr = 'START_TAG'
     } else if (name == xml.EventType.END_TAG) {
       nameStr = 'END_TAG'
     } else if (name == xml.EventType.TEXT) {
       nameStr = 'TEXT'
-    } else if (name == xml.EventType.CDSECT) {
-      nameStr = 'CDSECT'
-      return true
-    } else if (name == xml.EventType.COMMENT) {
-      nameStr = 'COMMENT'
-      return true
-    } else if (name == xml.EventType.DOCDECL) {
-      nameStr = 'DOCDECL'
-      return true
-    } else if (name == xml.EventType.INSTRUCTION) {
-      nameStr = 'INSTRUCTION'
-      return true
-    } else if (name == xml.EventType.ENTITY_REFERENCE) {
-      nameStr = 'ENTITY_REFERENCE'
-      return true
-    } else if (name == xml.EventType.WHITESPACE) {
-      nameStr = 'WHITESPACE'
+    }
+    return nameStr
+  }
+  tokenValueCallback(name: xml.EventType, value: xml.ParseInfo): boolean {
+    //只需要关心 START_TAG  END_TAG TEXT 这三个类型就好
+    let nameStr = ''
+    if(name == xml.EventType.START_TAG || name == xml.EventType.END_TAG || name == xml.EventType.TEXT){
+      nameStr = this.getTagEventName(name)
+    }else{
       return true
     }
-    let valueStr =
-      `getName:${value.getName()}    getText:${value.getText()}  `
 
-    hilog.error(0x01, 'HtmlParsePage', `token  ${nameStr}  ${valueStr}`)
+    hilog.error(0x01, 'HtmlParsePage', `token    ${nameStr}  getName:${value.getName()}    getText:${value.getText()} `)
     if (name === xml.EventType.TEXT) {
       let vNode: VNode = new VNode()
       vNode.text = value.getText()
       vNode.style = copyStyle(this.styleStack.peek())
       this.rootNode.child?.push(vNode)
-
     }
 
     if (name === xml.EventType.START_TAG) {
@@ -150,7 +132,7 @@ export struct HtmlRender {
         lineBreakSpan.text = '\n'
         this.rootNode.child?.push(lineBreakSpan)
       }
-      if (value.getName() === 'font' || value.getName() === 'span') {
+      if (value.getName() === 'font' || value.getName() === 'span' || value.getName() === 'a') {
         if (this.styleStack.isEmpty()) {
           this.styleStack.push(new Style())
         } else {
@@ -159,7 +141,7 @@ export struct HtmlRender {
         }
       }
     }
-    if (name === xml.EventType.END_TAG && (value.getName() === 'font' || value.getName() === 'span')) {
+    if (name === xml.EventType.END_TAG && (value.getName() === 'font' || value.getName() === 'span'|| value.getName() === 'a')) {
       this.styleStack.pop()
     }
 
@@ -220,7 +202,7 @@ export struct HtmlRender {
           Span(child.text).configSpanStyle(child)
         }
       })
-    }.backgroundColor('#e1e1e1')
+    }
   }
 }
 

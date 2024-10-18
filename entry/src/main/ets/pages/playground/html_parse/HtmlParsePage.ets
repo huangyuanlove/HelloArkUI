@@ -1,25 +1,17 @@
-import { xml, util } from '@kit.ArkTS'; // 需要使用util模块函数对文件编码
-import { hilog } from '@kit.PerformanceAnalysisKit';
-import { copyStyle, Style, VNode } from './VNode';
-import { promptAction } from '@kit.ArkUI';
-import { Stack } from '@kit.ArkTS';
 import { HtmlRender } from './HtmlRender';
-
 @Entry
 @Component
 struct HtmlParsePage {
 
-  private htmlContent: string =
-    `<span> 123\n <font  color="red"> <a href="https://www.baidu.com">点我跳转到百度</a></font> <br/><font> 这位姑娘有一双</font><span style="color:#ff6134;font-size:40px;background:yellow">蓝色的眼睛。</span></span>`
-
-
-
-
-
+  private htmlContent:string = '<span style="color:blue;background:yellow">这位姑娘有一双 <span style="color:blue;background:red">蓝<span style="color:red;background:blue">色</span></span>的眼睛</span> <a href="https://example.com">这是链接</a>'
 
   build() {
     Column(){
+      Text(this.htmlContent)
+      Divider().vertical(false).color(Color.Gray).height(2).margin(15)
       HtmlRender({htmlContent:this.htmlContent})
+      Divider().vertical(false).color(Color.Gray).height(2).margin(15)
+      RichText(this.htmlContent).backgroundColor(Color.Grey).height(200)
     }
 
   }

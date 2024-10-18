@@ -1,7 +1,5 @@
 
 export class VNode{
-
-
   text:string=''
   child?:VNode[]=[]
   style:Style= new Style()
