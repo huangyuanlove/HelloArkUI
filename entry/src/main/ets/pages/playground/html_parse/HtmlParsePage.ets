@@ -1,4 +1,7 @@
 import { HtmlRender } from './HtmlRender';
+import { promptAction } from '@kit.ArkUI';
+import { Style } from './VNode';
+
 @Entry
 @Component
 struct HtmlParsePage {
@@ -11,15 +14,13 @@ struct HtmlParsePage {
       Divider().vertical(false).color(Color.Gray).height(2).margin(15)
       HtmlRender({htmlContent:this.htmlContent})
       Divider().vertical(false).color(Color.Gray).height(2).margin(15)
-      RichText(this.htmlContent).backgroundColor(Color.Grey).height(200)
+      HtmlRender({htmlContent:this.htmlContent,defaultStyle:{fontSize:14,hrefFontColor:Color.Red,fontColor:Color.Brown} as Style, onLinkClick:(link:string)=>{
+        promptAction.showToast({message:`点击了链接 ${link}`})
+
+      }})
     }
 
   }
 
-
 }
 
-
-
-//如果是Span则没有子控件，属性放在Span上
-//如果是 ContainerSpan，只允许一级子控件

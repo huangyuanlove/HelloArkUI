@@ -1,12 +1,14 @@
-import { promptAction } from "@kit.ArkUI"
 import { copyStyle, Style, VNode } from "./VNode"
 import { util, xml } from "@kit.ArkTS";
 import { hilog } from "@kit.PerformanceAnalysisKit";
 import { Stack } from '@kit.ArkTS';
 
+
 @Component
 export struct HtmlRender {
   htmlContent: string = ''
+  defaultStyle:Style|undefined
+  onLinkClick:((link:string)=>void)|undefined
   rootNode: VNode = new VNode()
   private styleStack: Stack<Style> = new Stack()
   @State hasParse: boolean = false
@@ -61,6 +63,8 @@ export struct HtmlRender {
     }
     return true; // true:继续解析 false:停止解析
   }
+
+
 
   getColorWithStr(color: string): string | Color {
     if (color.includes('#')) {
@@ -134,7 +138,7 @@ export struct HtmlRender {
       }
       if (value.getName() === 'font' || value.getName() === 'span' || value.getName() === 'a') {
         if (this.styleStack.isEmpty()) {
-          this.styleStack.push(new Style())
+          this.styleStack.push(copyStyle(this.defaultStyle))
         } else {
           let style = copyStyle(this.styleStack.peek())
           this.styleStack.push(style)
@@ -148,36 +152,6 @@ export struct HtmlRender {
     return true; //true:继续解析 false:停止解析
   }
 
-  getXmlEventTypeStr(type: number): string {
-    switch (type) {
-      case xml.EventType.START_DOCUMENT:
-        return 'START_DOCUMENT'
-      case xml.EventType.END_DOCUMENT:
-        return 'END_DOCUMENT'
-      case xml.EventType.START_TAG:
-        return 'START_TAG'
-      case xml.EventType.END_TAG:
-        return 'END_TAG'
-      case xml.EventType.TEXT:
-        return 'TEXT'
-      case xml.EventType.CDSECT:
-        return 'CDSECT'
-      case xml.EventType.COMMENT:
-        return 'COMMENT'
-      case xml.EventType.DOCDECL:
-        return 'DOCDECL'
-      case xml.EventType.INSTRUCTION:
-        return 'INSTRUCTION'
-      case xml.EventType.ENTITY_REFERENCE:
-        return 'ENTITY_REFERENCE'
-      case xml.EventType.WHITESPACE:
-        return 'WHITESPACE'
-
-
-    }
-
-    return "未知"
-  }
 
   build() {
     if (this.hasParse) {
@@ -196,10 +170,23 @@ export struct HtmlRender {
       ForEach(vNode.child, (child: VNode) => {
         if (child.style.backgroundColor != Color.Transparent) {
           ContainerSpan() {
-            Span(child.text).configSpanStyle(child)
+            if(child.style.href && this.onLinkClick){
+              Span(child.text).configSpanStyle(child).onClick((_)=>{
+                this.onLinkClick?.(child.style.href??"")
+              })
+            }else{
+              Span(child.text).configSpanStyle(child)
+            }
+
           }.textBackgroundStyle({ color: child.style.backgroundColor })
         } else {
-          Span(child.text).configSpanStyle(child)
+          if(child.style.href && this.onLinkClick){
+            Span(child.text).configSpanStyle(child).onClick((_)=>{
+              this.onLinkClick?.(child.style.href??"")
+            })
+          }else{
+            Span(child.text).configSpanStyle(child)
+          }
         }
       })
     }
@@ -211,9 +198,5 @@ function configSpanStyle(vNode: VNode) {
   .backgroundColor(vNode.style.backgroundColor)
   .fontColor(vNode.style.href ? vNode.style.hrefFontColor : vNode.style.fontColor)
   .fontSize(vNode.style.fontSize)
-  .onClick((event: ClickEvent) => {
-    if (vNode.style.href) {
-      promptAction.showToast({ message: vNode.style.href })
-    }
-  })
+
 }

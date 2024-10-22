@@ -13,13 +13,16 @@ export class Style{
   hrefFontColor:string|Resource|Color = Color.Blue
   href:string | undefined
 }
-export function copyStyle(style:Style):Style{
+export function copyStyle(style?:Style):Style{
   let tmp:Style = new Style()
-  tmp.backgroundColor = style.backgroundColor
-  tmp.fontSize = style.fontSize
-  tmp.fontColor = style.fontColor
-  tmp.hrefFontColor = style.hrefFontColor
-  tmp.href = style.href
+  if(style){
+    tmp.backgroundColor = style.backgroundColor
+    tmp.fontSize = style.fontSize
+    tmp.fontColor = style.fontColor
+    tmp.hrefFontColor = style.hrefFontColor
+    tmp.href = style.href
+  }
+
 
   return tmp;
 }
