@@ -6,9 +6,9 @@
         "type": "HarmonyOS",
         "material": {
           "certpath": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.cer",
-          "storePassword": "0000001BFE414A893A78A77522CE2CBFB85A55B1C8CD3674F5A8EFA982795F94F8E05E917F0C9CB1EBA1DF",
+          "storePassword": "0000001ADA4C06BA444182DA0AC197A558B262A82E1D3CC90E423931CDABEE0865B25F89CF657AD28B04",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B520837E43229A6F3BC066BE9C9F34502A154C225E92AA8A381CF1D356FD4FAD45FE054956089EC",
+          "keyPassword": "0000001A017E94563C4D4D174ABFD792D5E73842821DE6997F5BAA8FD047F7BA7B44FD155D9514B47307",
           "profile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p12"

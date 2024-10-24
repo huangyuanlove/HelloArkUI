@@ -22,8 +22,6 @@
     "pages/basic_knowledge/state_manager/AboutWatchAnno",
     "pages/basic_knowledge/state_manager/AboutDoubleDollar",
     "pages/basic_knowledge/NotificationPage",
-
-
     "pages/playground/SignatureWithCanvas",
     "pages/playground/Image3D",
     "pages/playground/AnimationOfSphericalPaths",
@@ -46,6 +44,7 @@
     "pages/playground/LineLimitFlexPage",
     "pages/playground/input/CanvasInputVerificationCode",
     "pages/playground/input/RecordKeyboardInputPage",
-    "WebViewPage"
+    "WebViewPage",
+    "pages/playground/observed_and_objectLink/ObservedLinkPage"
   ]
 }
