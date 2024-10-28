@@ -33,7 +33,8 @@ export struct  PlayGroundIndex {
         BaseListItem({ label: '限制行数的Flex', path: 'pages/playground/LineLimitFlexPage' })
         BaseListItem({ label: '富文本解析', path: 'pages/playground/html_parse/HtmlParsePage' })
         BaseListItem({ label: 'Observe', path: "pages/playground/observed_and_objectLink/ObservedLinkPage" })
-      }.width("100%").height("100%").padding({ top: 48 })
+        BaseListItem({ label: '常见问题', path: "pages/playground/FAQ/IndexPage" })
+      }.width("100%").height("100%")
     }
   }
 

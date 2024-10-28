@@ -45,6 +45,12 @@
     "pages/playground/input/CanvasInputVerificationCode",
     "pages/playground/input/RecordKeyboardInputPage",
     "WebViewPage",
-    "pages/playground/observed_and_objectLink/ObservedLinkPage"
+    "pages/playground/observed_and_objectLink/ObservedLinkPage",
+    "pages/playground/FAQ/keyboard_show/InputCodePage",
+    "pages/playground/FAQ/keyboard_show/KeyBoardPage",
+    "pages/playground/FAQ/IndexPage",
+    "pages/playground/FAQ/for_each/ForeachPage",
+    "pages/playground/FAQ/as_bug/UseASPage",
+    "pages/playground/FAQ/as_bug/FirstASTestPage"
   ]
 }

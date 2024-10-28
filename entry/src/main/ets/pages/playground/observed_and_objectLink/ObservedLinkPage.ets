@@ -45,31 +45,93 @@ struct ObservedLinkPage {
     secondLevel22.max = 100
     secondLevel22.value = 24
     firstLevel2.contents.push(secondLevel22)
-
-
   }
+
+  initWithAS(){
+    this.root = new Root()
+    let firstLevel: FirstLevel = new FirstLevel()
+    this.root.firstLevel.push(firstLevel)
+
+    let secondLevel1 = {
+      max:100,
+      value:24
+    } as  SecondLevel
+    firstLevel.contents.push(secondLevel1)
+
+    let secondLevel2 = {
+      max:100,
+      value:24
+    } as SecondLevel
+
+    firstLevel.contents.push(secondLevel2)
+
+
+    let firstLevel2: FirstLevel = new FirstLevel()
+    this.root.firstLevel.push(firstLevel2)
+
+    let secondLevel21 = {
+      max:100,
+      value:24
+    } as SecondLevel
+    firstLevel2.contents.push(secondLevel21)
+
+    let secondLevel22 = {
+      max:100,
+      value:24
+    } as SecondLevel
+    firstLevel2.contents.push(secondLevel22)
+  }
+
+
+
+  @Builder
+  buildFirstLevel(){
+    ForEach(this.root.firstLevel,(firstLevel:FirstLevel,index:number)=>{
+      ListItem(){
+        Column(){
+          Text(`第一层 第 ${index} 个`)
+
+          this.buildSecondLevel(firstLevel.contents)
+
+
+        }.margin(10).backgroundColor(Color.Grey)
+      }
+    })
+  }
+  @Builder
+  buildSecondLevel(contents: SecondLevel[]){
+    ForEach(contents, (content: SecondLevel,secondIndex:number) => {
+
+        this.buildMessage(secondIndex,content)
+    })
+  }
+  @Builder
+  buildMessage(secondIndex:number,content: SecondLevel){
+    ListItem() {
+      Column(){
+        Text(`第二层 第 ${secondIndex} 个`)
+        ProgressView({ content: content })
+      }.margin(10).backgroundColor(Color.Gray)
+
+    }
+  }
+
+
 
   build() {
     Column() {
-      List() {
-
-        ForEach(this.root.firstLevel,(firstLevel:FirstLevel,index:number)=>{
-              ListItem(){
-                Column(){
-                  Text(`第一层 第 ${index} 个`)
-                  ForEach(firstLevel.contents, (content: SecondLevel,secondIndex:number) => {
-                    ListItem() {
-                      Column(){
-                        Text(`第二层 第 ${secondIndex} 个`)
-                        ProgressView({ content: content })
-                      }.margin(10).backgroundColor(Color.Gray)
-
-                    }
-
-                  })
-                }.margin(10).backgroundColor(Color.Grey)
-              }
+      Row(){
+        Button('使用 new 初始化').onClick((_)=>{
+          this.initData()
         })
+        Button('使用 as 初始化').onClick((_)=>{
+          this.initWithAS()
+        })
+      }
+      List() {
+        this.buildFirstLevel()
+
+
 
 
       }

@@ -22,14 +22,27 @@ struct FourText{
 
   aboutToAppear() {
     hilog.error(0x01,"FourText","aboutToAppear")
-    this.inputAttach().then(() => {
-      this.inputListener();
-      this.inputController.showTextInput().then(()=>{
-        hilog.error(0x01,"FourText","调起键盘成功")
-      }).catch((error:BusinessError)=>{
-        hilog.error(0x01,"FourText",`调起键盘失败--> ${JSON.stringify(error)}`)
-      })
-    });
+
+    // setTimeout(()=>{
+    //   this.inputAttach().then(() => {
+    //     this.inputListener();
+    //     this.inputController.showTextInput().then(()=>{
+    //       hilog.error(0x01,"FourText","调起键盘成功")
+    //     }).catch((error:BusinessError)=>{
+    //       hilog.error(0x01,"FourText",`调起键盘失败--> ${JSON.stringify(error)}`)
+    //     })
+    //   });
+    // },500)
+      this.inputAttach().then(() => {
+        this.inputListener();
+        this.inputController.showTextInput().then(()=>{
+          hilog.error(0x01,"FourText","调起键盘成功")
+        }).catch((error:BusinessError)=>{
+          hilog.error(0x01,"FourText",`调起键盘失败--> ${JSON.stringify(error)}`)
+        })
+      });
+
+
 
   }
 

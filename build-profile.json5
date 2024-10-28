@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.cer",
-          "storePassword": "0000001ADA4C06BA444182DA0AC197A558B262A82E1D3CC90E423931CDABEE0865B25F89CF657AD28B04",
+          "certpath": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.cer",
+          "storePassword": "0000001BC9DD5E0A3E16B49BC37366820B4D1013E12394009FC19E5898A5A21606894BC7C6C8424C86ECEC",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A017E94563C4D4D174ABFD792D5E73842821DE6997F5BAA8FD047F7BA7B44FD155D9514B47307",
-          "profile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p7b",
+          "keyPassword": "0000001BDC90ABE4DF576F3DA98C83577B48D20977D8788F09089D1FF06105BE29DE1471E3F4B587F76964",
+          "profile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p12"
+          "storeFile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p12"
         }
       }
     ],
