@@ -1,24 +1,166 @@
-import { showDialog } from './DialogControllerUtils';
+import { CustomDialogExample, showDialog } from './DialogControllerUtils';
+import { promptAction } from '@kit.ArkUI';
+import { confirmOrCancelDialogBuilder, DialogData } from '../../../../widget/ConfirmOrCancelDialogBuilder';
+import { HtmlRender } from '../../html_parse/HtmlRender';
 
 @Entry
 @Component
 struct DialogControllerPage {
   @State message: string = 'Hello World';
 
+  dialogID:number = 0
+
+
+  dialogController: CustomDialogController | null = new CustomDialogController({
+    builder: CustomDialogExample({
+      cancel: () => {
+
+        let contentNode: ComponentContent<Object>
+
+
+      },
+      confirm: () => {
+
+      },
+
+    }),
+  })
+
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('DialogControllerPageHelloWorld')
-        .fontSize(50)
+    Column() {
+      Text(this.message).margin(10)
+        .fontSize(30)
         .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        }).onClick((_)=>{
+        .onClick((_) => {
           showDialog()
-      })
+        })
+      Text(this.message).margin(10)
+        .fontSize(30)
+        .fontWeight(FontWeight.Bold)
+        .onClick((_) => {
+          let dialogController: CustomDialogController | null = new CustomDialogController({
+            builder: CustomDialogExample({
+              cancel: () => {
+
+              },
+              confirm: () => {
+
+              },
+
+            }),
+          })
+          dialogController.open()
+        })
+      Text(this.message).margin(10)
+        .fontSize(30)
+        .fontWeight(FontWeight.Bold)
+        .onClick((_) => {
+          this.dialogController?.open()
+        })
+
+
+      Text('推荐方案').margin(10)
+        .fontSize(30)
+        .fontWeight(FontWeight.Bold)
+        .onClick((_) => {
+          let dialogData: DialogData = new DialogData()
+          dialogData.title = '推荐方案'
+          dialogData.message = '使用  promptAction.openCustomDialog'
+          dialogData.onCancel = () => {
+            promptAction.closeCustomDialog(this.dialogID)
+          }
+          dialogData.onConfirm = ()=>{
+            promptAction.closeCustomDialog(this.dialogID)
+          }
+
+          promptAction.openCustomDialog({
+            builder: confirmOrCancelDialogBuilder(dialogData)
+
+          }).then((dialogID:number)=>{
+            this.dialogID = dialogID
+          })
+        })
+
+
+      Text('推荐方案111').margin(10)
+        .fontSize(30)
+        .fontWeight(FontWeight.Bold)
+        .onClick((_) => {
+          let dialogData: DialogData1 = new DialogData1()
+          dialogData.title = '推荐方案'
+          dialogData.message = '使用  promptAction.openCustomDialog'
+          dialogData.onCancel = () => {
+            promptAction.closeCustomDialog(this.dialogID)
+          }
+          dialogData.onConfirm = ()=>{
+            promptAction.closeCustomDialog(this.dialogID)
+          }
+
+          promptAction.openCustomDialog({
+            builder: () => {
+              confirmOrCancelDialogBuilder1(dialogData)
+            },
+
+          }).then((dialogID:number)=>{
+            this.dialogID = dialogID
+          })
+        })
+
     }
     .height('100%')
     .width('100%')
   }
+}
+
+
+
+
+
+@Builder
+ function confirmOrCancelDialogBuilder1(dialogData:DialogData1){
+  Column(){
+    if(dialogData.title){
+      Text(dialogData.title).fontColor("#1a1a1a").fontSize(18).margin({left:20,right:20,bottom:12})
+    }
+    if(dialogData.message){
+      Text(dialogData.message).fontColor("#666666").fontSize(15).margin({left:15,right:15}).textAlign(TextAlign.Center)
+    }
+    if(dialogData.htmlMessage){
+      HtmlRender({
+        htmlContent: dialogData.htmlMessage
+      }).margin({left:15,right:15})
+    }
+
+    Divider().vertical(false).color("#ededed").margin({top:18}).height(1)
+    Row(){
+      if (dialogData.cancelButton == undefined || dialogData.cancelButton.length > 0) {
+        Text(dialogData.cancelButton?dialogData.cancelButton:"取消").layoutWeight(1).textAlign(TextAlign.Center).fontSize(16).fontColor("#999999").padding(15)
+          .onClick((_)=>{
+            if(dialogData.onCancel){
+              dialogData.onCancel()
+            }
+          })
+
+        Divider().height(44).color("#EDEDED").width(1)
+      }
+
+      Text(dialogData.confirmButton?dialogData.confirmButton:"确定").layoutWeight(1).textAlign(TextAlign.Center).fontSize(16).fontColor("#1b91e0").padding(15)
+        .onClick((_)=>{
+          if(dialogData.onConfirm){
+            dialogData.onConfirm()
+          }
+        })
+    }
+  }.padding({top:20})
+}
+
+export class DialogData1{
+  title?:string
+  message?:string
+  htmlMessage?:string
+  cancelButton?:string
+  confirmButton?:string
+  onConfirm?:()=>void
+  onCancel?:()=>void
+
 }

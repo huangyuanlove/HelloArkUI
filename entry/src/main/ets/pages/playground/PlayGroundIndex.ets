@@ -7,6 +7,7 @@ export struct  PlayGroundIndex {
   build() {
     Scroll() {
       Flex({ wrap: FlexWrap.Wrap }) {
+        BaseListItem({ label: '常见问题', path: "pages/playground/FAQ/IndexPage" })
         BaseListItem({ label: '手写签名', path: 'pages/playground/SignatureWithCanvas' })
         BaseListItem({ label: '3D翻转卡片', path: 'pages/playground/Image3D' })
         BaseListItem({ label: '球面动画', path: 'pages/playground/AnimationOfSphericalPaths' })
@@ -33,7 +34,8 @@ export struct  PlayGroundIndex {
         BaseListItem({ label: '限制行数的Flex', path: 'pages/playground/LineLimitFlexPage' })
         BaseListItem({ label: '富文本解析', path: 'pages/playground/html_parse/HtmlParsePage' })
         BaseListItem({ label: 'Observe', path: "pages/playground/observed_and_objectLink/ObservedLinkPage" })
-        BaseListItem({ label: '常见问题', path: "pages/playground/FAQ/IndexPage" })
+        BaseListItem({ label: 'JSON解析', path: "pages/playground/JSONParsePage" })
+
       }.width("100%").height("100%")
     }
   }

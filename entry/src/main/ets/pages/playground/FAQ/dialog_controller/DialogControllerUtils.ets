@@ -18,7 +18,7 @@ export function showDialog() {
 
 @CustomDialog
 @Component
-struct CustomDialogExample {
+export struct CustomDialogExample {
    textValue='textValue'
   inputValue='inputValue'
   controller?: CustomDialogController
