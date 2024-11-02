@@ -45,10 +45,6 @@ struct JSONParsePage {
 }
 
 
-class TestJSONModel {
-}
-
-
 class User {
   name: string = ''
   age: number = 0

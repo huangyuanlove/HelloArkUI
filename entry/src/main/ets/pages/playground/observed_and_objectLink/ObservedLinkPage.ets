@@ -1,6 +1,7 @@
 import { FirstLevel, Root, SecondLevel } from './DataModel';
 import { promptAction } from '@kit.ArkUI';
 import { emitter } from '@kit.BasicServicesKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 @Entry
 @Component
@@ -17,7 +18,17 @@ struct ObservedLinkPage {
     })
   }
 
-  initData() {
+ async  initData() {
+
+
+ let p1 =  new Promise<string>((res,rej)=>{
+   setTimeout(()=>{
+     res('123')
+   },1000)
+  })
+
+  await p1
+    hilog.error(0x01,'a','initData')
     this.root = new Root()
     let firstLevel: FirstLevel = new FirstLevel()
     this.root.firstLevel.push(firstLevel)
@@ -47,7 +58,15 @@ struct ObservedLinkPage {
     firstLevel2.contents.push(secondLevel22)
   }
 
-  initWithAS(){
+ async initWithAS(){
+    let p1 =  new Promise<string>((res,rej)=>{
+      setTimeout(()=>{
+        res('123')
+      },1000)
+    })
+
+    await p1
+    hilog.error(0x01,'a','initWithAS')
     this.root = new Root()
     let firstLevel: FirstLevel = new FirstLevel()
     this.root.firstLevel.push(firstLevel)
@@ -89,7 +108,6 @@ struct ObservedLinkPage {
     ForEach(this.root.firstLevel,(firstLevel:FirstLevel,index:number)=>{
       ListItem(){
         Column(){
-          Text(`第一层 第 ${index} 个`)
 
           this.buildSecondLevel(firstLevel.contents)
 
@@ -109,7 +127,6 @@ struct ObservedLinkPage {
   buildMessage(secondIndex:number,content: SecondLevel){
     ListItem() {
       Column(){
-        Text(`第二层 第 ${secondIndex} 个`)
         ProgressView({ content: content })
       }.margin(10).backgroundColor(Color.Gray)
 
@@ -131,13 +148,10 @@ struct ObservedLinkPage {
       List() {
         this.buildFirstLevel()
 
-
-
-
       }
 
       Flex({wrap:FlexWrap.Wrap}) {
-        Button('修改第一层 第一个进度').onClick((_) => {
+        Button('第一个进度').onClick((_) => {
           let eventData: emitter.EventData = {
             data: {
               "first": 0,
@@ -150,7 +164,7 @@ struct ObservedLinkPage {
           // promptAction.showToast({ message: `新进度 ${newProgress}` })
           // this.root.firstLevel[0].contents[0].value = newProgress
         })
-        Button('修改第一层 第二个进度').onClick((_) => {
+        Button('第二个进度').onClick((_) => {
           // let newProgress = Math.floor(Math.random() * 100)
           // promptAction.showToast({ message: `新进度 ${newProgress}` })
           // this.root.firstLevel[0].contents[1].value = newProgress
@@ -165,7 +179,7 @@ struct ObservedLinkPage {
           emitter.emit('change',eventData)
 
         })
-        Button('修改第二层第一个进度').onClick((_) => {
+        Button('第三个进度').onClick((_) => {
           // let newProgress = Math.floor(Math.random() * 100)
           // promptAction.showToast({ message: `新进度 ${newProgress}` })
           // this.root.firstLevel[1].contents[0].value = newProgress
@@ -180,7 +194,7 @@ struct ObservedLinkPage {
           emitter.emit('change',eventData)
 
         })
-        Button('修改第二层第二个进度').onClick((_) => {
+        Button('修改第四个进度').onClick((_) => {
           // let newProgress = Math.floor(Math.random() * 100)
           // promptAction.showToast({ message: `新进度 ${newProgress}` })
           // this.root.firstLevel[1].contents[1].value = newProgress

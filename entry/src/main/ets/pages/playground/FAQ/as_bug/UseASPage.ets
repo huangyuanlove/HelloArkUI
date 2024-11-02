@@ -12,8 +12,8 @@ struct UseASPage {
   aboutToAppear(): void {
      this.user=   router.getParams() as User
       hilog.error(0x01,'UseASPage','获取到的参数-->' + JSON.stringify(this.user))
-
   }
+
 
 
 
@@ -25,7 +25,7 @@ struct UseASPage {
 
       Button('调用对象方法').onClick((_)=>{
         if(this.user){
-          hilog.error(0x01,'UseASPage','调用对象方法-->' +this.user.getInfo())
+          hilog.error(0x01,'UseASPage','调用对象方法-->' +this.user.getInfo)
         }
       })
 
@@ -38,6 +38,6 @@ struct UseASPage {
 export class User{
   name:string = ''
   getInfo():string{
-    return JSON.stringify(this)
+    return "123"
   }
 }
