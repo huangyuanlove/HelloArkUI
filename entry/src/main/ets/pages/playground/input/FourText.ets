@@ -31,6 +31,8 @@ struct FourText{
     //     }).catch((error:BusinessError)=>{
     //       hilog.error(0x01,"FourText",`调起键盘失败--> ${JSON.stringify(error)}`)
     //     })
+    //   }).catch((error:BusinessError)=>{
+    //     hilog.error(0x01,"FourText",`inputAttach失败--> ${JSON.stringify(error)}`)
     //   });
     // },500)
       this.inputAttach().then(() => {
@@ -40,6 +42,8 @@ struct FourText{
         }).catch((error:BusinessError)=>{
           hilog.error(0x01,"FourText",`调起键盘失败--> ${JSON.stringify(error)}`)
         })
+      }).catch((error:BusinessError)=>{
+        hilog.error(0x01,"FourText",`inputAttach失败--> ${JSON.stringify(error)}`)
       });
 
 
@@ -89,6 +93,7 @@ struct FourText{
    * 输入监听
    */
   inputListener() {
+    hilog.error(0x01,"FourText",`inputListener`)
     this.inputController.on('insertText', (text: string) => {
       hilog.error(0x01,"FourText",`insertText-->输入的字符 ${text}`)
       if (this.verifyCodeStr.length >= this.verifyCodeLength || isNaN(Number(text)) || text === '') {
@@ -122,7 +127,6 @@ struct FourText{
       }) {
         ForEach(this.verifyCodeIdx, (item: number) => {
           Text(this.verifyCodeStr[item])
-            .focusable(false)
             .flexGrow(1)
             .flexShrink(1)
             .flexBasis(1)

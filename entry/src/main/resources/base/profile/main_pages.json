@@ -53,6 +53,7 @@
     "pages/playground/FAQ/as_bug/UseASPage",
     "pages/playground/FAQ/as_bug/FirstASTestPage",
     "pages/playground/FAQ/dialog_controller/DialogControllerPage",
-    "pages/playground/JSONParsePage"
+    "pages/playground/JSONParsePage",
+    "pages/playground/video_recorder/VideoRecodPreparePage"
   ]
 }

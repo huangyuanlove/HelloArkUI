@@ -1,23 +1,17 @@
 import ActionBar from '../../../../comm/ActionBar';
-import { ForeachModel } from './ForEachMode';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { systemDateTime } from '@kit.BasicServicesKit';
 
 @Entry
 @Component
 struct ForeachPage {
-  @State message: string = 'Hello World';
   @State foreachModelList: ForeachModel[] = []
-  refresh_time: number = 0
 
   aboutToAppear(): void {
-    this.initData()
-
-
+    // this.initData()
   }
 
   initData() {
-    this.refresh_time = systemDateTime.getTime()
     this.foreachModelList = []
     for (let i = 0; i < 5; i++) {
       let model: ForeachModel = new ForeachModel()
@@ -29,7 +23,6 @@ struct ForeachPage {
       }
       this.foreachModelList.push(model)
     }
-
   }
 
   build() {
@@ -37,31 +30,41 @@ struct ForeachPage {
       ActionBar({ title: '循环渲染' })
       Row() {
         Button('重新赋值').onClick((_) => {
+          hilog.error(0x01,'ForeachPage','重新赋值开始')
           this.initData()
+          hilog.error(0x01,'ForeachPage','重新赋值结束')
         })
+        Button('改变最后一项的值').onClick((_) => {
+          hilog.error(0x01,'ForeachPage','改变最后一项的值开始')
+          let length = this.foreachModelList.length
+          this.foreachModelList[length-1].name = '改变后的值'
+          hilog.error(0x01,'ForeachPage','改变最后一项值结束')
+        })
+
+
+      }
+      Row(){
         Button('添加一项').onClick((_) => {
+          hilog.error(0x01,'ForeachPage','添加一项开始')
           let model: ForeachModel = new ForeachModel()
           model.name = `第 ${this.foreachModelList.length} 项`
           this.foreachModelList.push(model)
+          hilog.error(0x01,'ForeachPage','添加一项结束')
         })
-
+        Button('删除一项').onClick((_) => {
+          hilog.error(0x01,'ForeachPage','删除一项开始')
+          if (this.foreachModelList.length > 1) {
+            this.foreachModelList.pop()
+            hilog.error(0x01,'ForeachPage','删除一项结束')
+          }
+        })
       }
 
       ForEach(this.foreachModelList, (model: ForeachModel) => {
-        Row() {
-          Text(model.name)
-          Checkbox().select(model.defaultSelect).onChange((checked: boolean) => {
-            model.defaultSelect = checked
-            hilog.error(0x01, 'ForeachPage', `checked ${JSON.stringify(this.foreachModelList)}`)
-
-          })
-        }
-      }
-      , (item: ForeachModel, index: number) => {
-
-        //ForEach提供了一个名为keyGenerator的参数，这是一个函数，开发者可以通过它自定义键值的生成规则。如果开发者没有定义keyGenerator函数，则ArkUI框架会使用默认的键值生成函数，即(item: Object, index: number) => { return index + '__' + JSON.stringify(item); }。
-        let key = index + '__' + JSON.stringify(item) + "__" + this.refresh_time;
-        hilog.error(0x01, 'ForeachPage', `key ${key}`)
+        SimpleView({ model: model })
+      }, (item: ForeachModel, index: number) => {
+        let key = index + '__' + item.name + '__' + item.defaultSelect;
+        hilog.error(0x01, 'ForeachPage', key)
         return key
       })
 
@@ -69,4 +72,29 @@ struct ForeachPage {
     .height('100%')
     .width('100%')
   }
+}
+
+@Component
+struct SimpleView {
+ @Watch('onForeachModelChange')  @ObjectLink model: ForeachModel
+
+  onForeachModelChange(){
+    hilog.error(0x01, 'ForeachPage', `onForeachModelChange`)
+  }
+
+  build() {
+    Row() {
+      Text(this.model.name)
+      Checkbox().select(this.model.defaultSelect).onChange((checked: boolean) => {
+        this.model.defaultSelect = checked
+        hilog.error(0x01, 'ForeachPage', `checked ${JSON.stringify(this.model.name)}`)
+      })
+    }
+  }
+}
+
+@Observed
+class ForeachModel {
+  name: string = ''
+  defaultSelect: boolean = false
 }

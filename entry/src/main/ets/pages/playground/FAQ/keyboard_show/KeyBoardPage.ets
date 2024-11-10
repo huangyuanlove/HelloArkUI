@@ -11,11 +11,12 @@ struct  KeyBoardPage{
   build() {
     Column(){
       ActionBar({title:'登录页面'})
+
       TextInput().onChange((value: string, previewText?: PreviewText)=>{
-        if(value.length ===4){
-          inputMethod.getController().hideTextInput()
-          router.pushUrl({url:'pages/playground/FAQ/keyboard_show/InputCodePage'})
-        }
+
+      })
+      Text('获取验证码').onClick((_)=>{
+        router.pushUrl({url:'pages/playground/FAQ/keyboard_show/InputCodePage'})
       })
     }
 
