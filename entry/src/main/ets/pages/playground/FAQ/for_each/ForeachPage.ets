@@ -77,7 +77,6 @@ struct ForeachPage {
 @Component
 struct SimpleView {
  @Watch('onForeachModelChange')  @ObjectLink model: ForeachModel
-
   onForeachModelChange(){
     hilog.error(0x01, 'ForeachPage', `onForeachModelChange`)
   }

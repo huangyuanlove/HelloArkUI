@@ -12,44 +12,30 @@ struct DialogControllerPage {
   dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogExample({
       cancel: () => {
-
-        let contentNode: ComponentContent<Object>
-
-
       },
       confirm: () => {
-
       },
-
     }),
   })
 
   build() {
     Column() {
-      Text(this.message).margin(10)
-        .fontSize(30)
-        .fontWeight(FontWeight.Bold)
-        .onClick((_) => {
-          showDialog()
-        })
-      Text(this.message).margin(10)
+      Text('在 Click 事件中定义').margin(10)
         .fontSize(30)
         .fontWeight(FontWeight.Bold)
         .onClick((_) => {
           let dialogController: CustomDialogController | null = new CustomDialogController({
             builder: CustomDialogExample({
               cancel: () => {
-
               },
               confirm: () => {
-
               },
-
             }),
           })
           dialogController.open()
         })
-      Text(this.message).margin(10)
+      CustomDialogView()
+      Text('在页面中定义').margin(10)
         .fontSize(30)
         .fontWeight(FontWeight.Bold)
         .onClick((_) => {
@@ -219,7 +205,7 @@ function  glaobleConfirmOrCancelDialogBuilder1(dialogData: DialogData1) {
           }
         })
     }
-  }.padding({ top: 20 })
+  }.padding({ top: 20 }).backgroundColor(Color.White).borderRadius(6)
 }
 
 export class DialogData1 {
@@ -230,4 +216,24 @@ export class DialogData1 {
   confirmButton?: string
   onConfirm?: () => void
   onCancel?: () => void
+}
+
+@Component
+struct CustomDialogView{
+  dialogController: CustomDialogController | null = new CustomDialogController({
+    builder: CustomDialogExample({
+      cancel: () => {
+      },
+      confirm: () => {
+      },
+    }),
+  })
+  build() {
+    Text('在自定义组件中定义').margin(10)
+      .fontSize(30)
+      .fontWeight(FontWeight.Bold)
+      .onClick((_) => {
+        this.dialogController?.open()
+      })
+  }
 }

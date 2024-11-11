@@ -4,12 +4,9 @@ export function showDialog() {
   let dialogController: CustomDialogController | null = new CustomDialogController({
     builder: CustomDialogExample({
       cancel: () => {
-
       },
       confirm: () => {
-
       },
-
     }),
   })
   dialogController.open()
