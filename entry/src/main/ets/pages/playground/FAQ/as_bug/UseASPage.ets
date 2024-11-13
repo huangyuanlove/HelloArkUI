@@ -70,7 +70,11 @@ struct UseASPage {
       time:systemDateTime.getTime(),
       secondLevel:secondLevel
     }
-
+  }
+  initWithPlainToText(){
+    let str = `{"time":${systemDateTime.getTime()},"secondLevel":{"name":"new SecondLevel","age":1}}`
+    let tmp:FirstLevel = JSON.parse(str) as FirstLevel
+    this.firstLevel = plainToClass(FirstLevel,tmp)
   }
 
   build() {
@@ -84,16 +88,14 @@ struct UseASPage {
       })
       Divider().color(Color.Red)
       Row() {
-        Button('initWithNew').margin(10).onClick((_) => {
+        Button('使用New').margin(10).onClick((_) => {
           this.initWithNew()
         })
-        Button('initWithPlainToClass').margin(10).onClick((_) => {
-          let str = JSON.stringify(this.firstLevel)
-          let tmp:FirstLevel = JSON.parse(str) as FirstLevel
-          this.firstLevel = plainToClass(FirstLevel,tmp)
+        Button('使用PlainToClass').margin(10).onClick((_) => {
+         this.initWithPlainToText()
         })
 
-        Button('initWithAs').margin(10).onClick((_) => {
+        Button('使用As').margin(10).onClick((_) => {
           this.initWithAs()
         })
       }
@@ -106,17 +108,14 @@ struct UseASPage {
         })
 
         Button('修改 name、age 属性').margin(10).onClick((_) => {
-          if(this.firstLevel){
-          this.firstLevel.secondLevel.name = '新名字'
-          this.firstLevel.secondLevel.age = 123
+          if(this.firstLevel) {
+            this.firstLevel.secondLevel.name = '新名字 ' + Math.floor(Math.random() * 10)
+            this.firstLevel.secondLevel.age = Math.floor(Math.random() * 100)
           }
         })
       }
       if(this.firstLevel){
         ShowFistLevel({firstLevel:this.firstLevel})
-        // if(this.firstLevel.secondLevel){
-        //   ShowSecondLevel({secondLevel:this.firstLevel.secondLevel})
-        // }
       }
 
     }
@@ -138,7 +137,6 @@ struct  ShowFistLevel{
       ShowSecondLevel({secondLevel:this.firstLevel.secondLevel})
     }.margin(15)
     .backgroundColor("#e7e7e7e7")
-
   }
 }
 
@@ -154,7 +152,6 @@ struct  ShowSecondLevel{
       Text(this.secondLevel.age.toString())
     }.margin(15)
     .backgroundColor("#e7e7e7e7")
-
   }
 }
 
