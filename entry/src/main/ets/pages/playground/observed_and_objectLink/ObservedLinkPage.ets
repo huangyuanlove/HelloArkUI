@@ -11,37 +11,37 @@ struct ObservedLinkPage {
 
   aboutToAppear(): void {
     this.initData()
-    emitter.on("change",(data)=>{
+    emitter.on("change", (data) => {
       let newProgress = Math.floor(Math.random() * 100)
       promptAction.showToast({ message: `新进度 ${newProgress}` })
       this.root.firstLevel[data.data?.['first']].contents[data.data?.['second']].value = newProgress
     })
   }
 
- async  initData() {
+  async initData() {
 
 
- let p1 =  new Promise<string>((res,rej)=>{
-   setTimeout(()=>{
-     res('123')
-   },1000)
-  })
+    let p1 = new Promise<string>((res, rej) => {
+      setTimeout(() => {
+        res('123')
+      }, 1000)
+    })
 
-  await p1
-    hilog.error(0x01,'a','initData')
+    await p1
+    hilog.error(0x01, 'a', 'initData')
     this.root = new Root()
     let firstLevel: FirstLevel = new FirstLevel()
     this.root.firstLevel.push(firstLevel)
 
-      let secondLevel1 = new SecondLevel()
-      secondLevel1.max = 100
-      secondLevel1.value = 24
-      firstLevel.contents.push(secondLevel1)
+    let secondLevel1 = new SecondLevel()
+    secondLevel1.max = 100
+    secondLevel1.value = 24
+    firstLevel.contents.push(secondLevel1)
 
-      let secondLevel2 = new SecondLevel()
-      secondLevel2.max = 100
-      secondLevel2.value = 24
-      firstLevel.contents.push(secondLevel2)
+    let secondLevel2 = new SecondLevel()
+    secondLevel2.max = 100
+    secondLevel2.value = 24
+    firstLevel.contents.push(secondLevel2)
 
 
     let firstLevel2: FirstLevel = new FirstLevel()
@@ -58,28 +58,28 @@ struct ObservedLinkPage {
     firstLevel2.contents.push(secondLevel22)
   }
 
- async initWithAS(){
-    let p1 =  new Promise<string>((res,rej)=>{
-      setTimeout(()=>{
+  async initWithAS() {
+    let p1 = new Promise<string>((res, rej) => {
+      setTimeout(() => {
         res('123')
-      },1000)
+      }, 1000)
     })
 
     await p1
-    hilog.error(0x01,'a','initWithAS')
+    hilog.error(0x01, 'a', 'initWithAS')
     this.root = new Root()
     let firstLevel: FirstLevel = new FirstLevel()
     this.root.firstLevel.push(firstLevel)
 
     let secondLevel1 = {
-      max:100,
-      value:24
-    } as  SecondLevel
+      max: 100,
+      value: 24
+    } as SecondLevel
     firstLevel.contents.push(secondLevel1)
 
     let secondLevel2 = {
-      max:100,
-      value:24
+      max: 100,
+      value: 24
     } as SecondLevel
 
     firstLevel.contents.push(secondLevel2)
@@ -89,25 +89,23 @@ struct ObservedLinkPage {
     this.root.firstLevel.push(firstLevel2)
 
     let secondLevel21 = {
-      max:100,
-      value:24
+      max: 100,
+      value: 24
     } as SecondLevel
     firstLevel2.contents.push(secondLevel21)
 
     let secondLevel22 = {
-      max:100,
-      value:24
+      max: 100,
+      value: 24
     } as SecondLevel
     firstLevel2.contents.push(secondLevel22)
   }
 
-
-
   @Builder
-  buildFirstLevel(){
-    ForEach(this.root.firstLevel,(firstLevel:FirstLevel,index:number)=>{
-      ListItem(){
-        Column(){
+  buildFirstLevel() {
+    ForEach(this.root.firstLevel, (firstLevel: FirstLevel, index: number) => {
+      ListItem() {
+        Column() {
 
           this.buildSecondLevel(firstLevel.contents)
 
@@ -116,41 +114,42 @@ struct ObservedLinkPage {
       }
     })
   }
-  @Builder
-  buildSecondLevel(contents: SecondLevel[]){
-    ForEach(contents, (content: SecondLevel,secondIndex:number) => {
 
-        this.buildMessage(secondIndex,content)
+  @Builder
+  buildSecondLevel(contents: SecondLevel[]) {
+    ForEach(contents, (content: SecondLevel, secondIndex: number) => {
+
+      this.buildMessage(secondIndex, content)
     })
   }
+
   @Builder
-  buildMessage(secondIndex:number,content: SecondLevel){
+  buildMessage(secondIndex: number, content: SecondLevel) {
     ListItem() {
-      Column(){
+      Column() {
         ProgressView({ content: content })
       }.margin(10).backgroundColor(Color.Gray)
 
     }
   }
 
-
-
   build() {
     Column() {
-      Row(){
-        Button('使用 new 初始化').onClick((_)=>{
+      Row() {
+        Button('使用 new 初始化').onClick((_) => {
           this.initData()
         })
-        Button('使用 as 初始化').onClick((_)=>{
+        Button('使用 as 初始化').onClick((_) => {
           this.initWithAS()
         })
       }
+
       List() {
         this.buildFirstLevel()
 
       }
 
-      Flex({wrap:FlexWrap.Wrap}) {
+      Flex({ wrap: FlexWrap.Wrap }) {
         Button('第一个进度').onClick((_) => {
           let eventData: emitter.EventData = {
             data: {
@@ -158,7 +157,7 @@ struct ObservedLinkPage {
               "second": 0,
             }
           };
-          emitter.emit('change',eventData)
+          emitter.emit('change', eventData)
 
           // let newProgress = Math.floor(Math.random() * 100)
           // promptAction.showToast({ message: `新进度 ${newProgress}` })
@@ -176,7 +175,7 @@ struct ObservedLinkPage {
               "second": 1,
             }
           };
-          emitter.emit('change',eventData)
+          emitter.emit('change', eventData)
 
         })
         Button('第三个进度').onClick((_) => {
@@ -191,7 +190,7 @@ struct ObservedLinkPage {
               "second": 0,
             }
           };
-          emitter.emit('change',eventData)
+          emitter.emit('change', eventData)
 
         })
         Button('修改第四个进度').onClick((_) => {
@@ -206,7 +205,7 @@ struct ObservedLinkPage {
               "second": 1,
             }
           };
-          emitter.emit('change',eventData)
+          emitter.emit('change', eventData)
 
         })
 
