@@ -1,7 +1,7 @@
 import ActionBar from '../../../../comm/ActionBar';
 import { router } from '@kit.ArkUI';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { plainToClass } from 'class-transformer';
+import {Type, plainToClass } from 'class-transformer';
 import { systemDateTime } from '@kit.BasicServicesKit';
 
 
@@ -56,7 +56,7 @@ struct UseASPage {
     this.firstLevel.time = systemDateTime.getTime()
     let secondLevel:SecondLevel = new SecondLevel()
     secondLevel.name = 'new SecondLevel'
-    secondLevel.age = 1
+    secondLevel.age = Math.floor(Math.random() * 100)
     this.firstLevel.secondLevel = secondLevel
   }
 
@@ -64,7 +64,7 @@ struct UseASPage {
 
     let secondLevel:SecondLevel = {
       name: 'as SecondLevel',
-      age: 2
+      age: Math.floor(Math.random() * 100)
     }
     this.firstLevel = {
       time:systemDateTime.getTime(),
@@ -72,7 +72,7 @@ struct UseASPage {
     }
   }
   initWithPlainToText(){
-    let str = `{"time":${systemDateTime.getTime()},"secondLevel":{"name":"new SecondLevel","age":1}}`
+    let str = `{"time":${systemDateTime.getTime()},"secondLevel":{"name":"PlainToText${Math.floor(Math.random() * 100)}","age":${Math.floor(Math.random() * 100)}}}`
     let tmp:FirstLevel = JSON.parse(str) as FirstLevel
     this.firstLevel = plainToClass(FirstLevel,tmp)
   }
@@ -160,6 +160,7 @@ struct  ShowSecondLevel{
 @Observed
 class FirstLevel {
   time: number = 0
+  @Type(()=>SecondLevel)
   secondLevel: SecondLevel = new SecondLevel()
 }
 
