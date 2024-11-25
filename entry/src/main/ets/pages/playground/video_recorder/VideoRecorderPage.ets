@@ -120,16 +120,6 @@ struct VideoRecorderPage {
             router.back()
           })
 
-          Progress({ value: this.currenDuration, total: this.maxRecorderDuration, type: ProgressType.Ring })
-            .width(100).color(Color.Orange)
-            .style({ strokeWidth: 20, enableScanEffect: true }).onTouch((event) => {
-            if (event.type === TouchType.Down) {
-              //延迟 500 毫秒开始录制
-            } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
-              //停止录像，计算时长；展示录像预览、返回、确认按钮
-            }
-          })
-
           Image(this.recording ? $r('app.media.camera_pause_video_4x') : $r('app.media.camera_take_video_4x'))
             .width(px2vp(CommonConstants.IMAGE_SIZE))
             .height(px2vp(CommonConstants.IMAGE_SIZE))
@@ -474,7 +464,7 @@ struct VideoRecorderPage {
     if(supportFocusModeContinuousAuto){
       try {
         // 设置自动对焦模式
-        this.captureSession.setFocusMode(camera.FocusMode.FOCUS_MODE_AUTO);
+        this.captureSession.setFocusMode(camera.FocusMode.FOCUS_MODE_CONTINUOUS_AUTO);
         // 设置对焦点
           // const focusPoint: camera.Point = {x: this.availableWidth/2, y: this.availableWidth / this.videoAspectRatio/2};
           // this.captureSession.setFocusPoint(focusPoint);
