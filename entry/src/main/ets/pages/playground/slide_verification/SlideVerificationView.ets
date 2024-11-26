@@ -53,10 +53,17 @@ export struct SlideVerificationView {
 
               if(this.imageData){
 
+                this.canvasRendering2.reset()
                 let imageWidth = px2vp(this.imageData.width)
                 let imageHeight = px2vp(this.imageData.height)
+                let width = this.imageData.width
+                let height = this.imageData.height
+                let rate = height/width
+                for(let i =0;i<this.imageData.data.length;i++){
 
-                this.canvasRendering2.reset()
+                }
+                this.canvasRendering2.putImageData(this.imageData, event.offsetX, 50)
+
 
                 let path:Path2D = new Path2D()
                 path.moveTo(event.offsetX + imageWidth/2,50)
@@ -65,11 +72,11 @@ export struct SlideVerificationView {
                 path.lineTo(event.offsetX + imageWidth/2,50)
 
 
-                this.canvasRendering2.fillStyle = "#1b91e0"
+                this.canvasRendering2.fillStyle = "#11ffffff"
                 this.canvasRendering2.fill(path)
-                this.canvasRendering2.globalCompositeOperation = 'source-in'
+                this.canvasRendering2.globalCompositeOperation = 'source-out'
 
-                this.canvasRendering2.putImageData(this.imageData, event.offsetX, 50)
+
               }
 
 
