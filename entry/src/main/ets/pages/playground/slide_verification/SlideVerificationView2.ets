@@ -2,7 +2,7 @@ import { hilog } from "@kit.PerformanceAnalysisKit"
 import { promptAction } from "@kit.ArkUI"
 
 @Component
-export struct SlideVerificationView {
+export struct SlideVerificationView2 {
   private settings: RenderingContextSettings = new RenderingContextSettings(true)
   private canvasRendering: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
   private canvasRendering2: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
@@ -11,11 +11,15 @@ export struct SlideVerificationView {
   private clip_start_y: number = 100
   private clip_image_width = 120
   private clip_image_height = 120
-  private imageData?: ImageData
 
   build() {
     Stack() {
+
+
       Canvas(this.canvasRendering).width("100%").height("100%").onReady(() => {
+
+
+
 
         let imageBitMap: ImageBitmap = new ImageBitmap("pages/playground/cat.webp")
         this.canvasRendering.drawImage(imageBitMap, 0, 0)
@@ -30,12 +34,10 @@ export struct SlideVerificationView {
         hilog.error(0x01, 'SlideVerificationView2', 'clip_start_x --> ' + this.clip_start_x)
         hilog.error(0x01, 'SlideVerificationView2', 'clip_start_y --> ' + this.clip_start_y)
 
-        this.imageData = this.canvasRendering.getImageData(this.clip_start_x, this.clip_start_y, this.clip_image_width, this.clip_image_height)
-
 
         this.canvasRendering.lineWidth = 2
 
-        this.canvasRendering.fillStyle = '#66FFFFFF'
+        this.canvasRendering.strokeStyle = '#FFFFFF'
 
         //在对应的区域绘制标识
         this.canvasRendering.moveTo(this.clip_start_x + this.clip_image_width / 2, this.clip_start_y)
@@ -43,7 +45,7 @@ export struct SlideVerificationView {
           this.clip_start_y + this.clip_image_height)
         this.canvasRendering.lineTo(this.clip_start_x, this.clip_start_y + this.clip_image_height)
         this.canvasRendering.lineTo(this.clip_start_x + this.clip_image_width / 2, this.clip_start_y)
-        this.canvasRendering.fill()
+        this.canvasRendering.stroke()
 
 
       })
@@ -56,33 +58,17 @@ export struct SlideVerificationView {
 
             })
             .onActionUpdate((event: GestureEvent) => {
-              hilog.error(0x01, 'SlideVerificationView', event.offsetX.toString())
+              hilog.error(0x01, 'SlideVerificationView2', event.offsetX.toString())
+              this.canvasRendering2.reset()
 
+              this.canvasRendering2.moveTo(event.offsetX + this.clip_image_width/2, this.clip_start_y)
+              this.canvasRendering2.lineTo(event.offsetX + this.clip_image_width, this.clip_start_y + this.clip_image_height)
+              this.canvasRendering2.lineTo(event.offsetX, this.clip_start_y + this.clip_image_height)
+              this.canvasRendering2.lineTo(event.offsetX + this.clip_image_width/2, this.clip_start_y)
 
-              if (this.imageData) {
-
-                this.canvasRendering2.reset()
-
-                let width = this.imageData.width * 4
-                let height = this.imageData.height
-                let rate = width / height
-                let widthCenter = Math.floor(width / 2)
-                for (let i = 0; i < height; i++) {
-                  //第几行
-
-                  for (let j = 0; j < width; j++) {
-                    //第几列
-                    if (j < widthCenter - rate * i / 2) {
-                      this.imageData.data[i * width +j] = 0
-                    } else if (j > widthCenter + rate * i / 2) {
-                      this.imageData.data[i * width +j] = 0
-                    }
-
-                  }
-                }
-
-                this.canvasRendering2.putImageData(this.imageData, event.offsetX, this.clip_start_y)
-              }
+              this.canvasRendering2.strokeStyle = Color.Pink
+              this.canvasRendering2.lineWidth = 2
+              this.canvasRendering2.stroke()
 
 
             })
@@ -95,6 +81,8 @@ export struct SlideVerificationView {
                 promptAction.showToast({ message: '验证失败' })
                 this.canvasRendering2.reset()
               }
+
+
             })
         )
     }
