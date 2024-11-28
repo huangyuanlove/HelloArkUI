@@ -39,11 +39,32 @@ export struct SlideVerificationView {
 
         //在对应的区域绘制标识
         this.canvasRendering.moveTo(this.clip_start_x + this.clip_image_width / 2, this.clip_start_y)
-        this.canvasRendering.lineTo(this.clip_start_x + this.clip_image_width,
-          this.clip_start_y + this.clip_image_height)
+        this.canvasRendering.lineTo(this.clip_start_x + this.clip_image_width, this.clip_start_y + this.clip_image_height)
         this.canvasRendering.lineTo(this.clip_start_x, this.clip_start_y + this.clip_image_height)
         this.canvasRendering.lineTo(this.clip_start_x + this.clip_image_width / 2, this.clip_start_y)
         this.canvasRendering.fill()
+
+        //将ImageData处理成三角形
+        if(this.imageData){
+          let width = this.imageData.width * 4
+          let height = this.imageData.height
+          let rate = width / height
+          let widthCenter = Math.floor(width / 2)
+          for (let i = 0; i < height; i++) {
+            //第几行
+
+            for (let j = 0; j < width; j++) {
+              //第几列
+              if (j < widthCenter - rate * i / 2) {
+                this.imageData.data[i * width +j] = 0
+              } else if (j > widthCenter + rate * i / 2) {
+                this.imageData.data[i * width +j] = 0
+              }
+
+            }
+          }
+        }
+
 
 
       })
@@ -62,24 +83,6 @@ export struct SlideVerificationView {
               if (this.imageData) {
 
                 this.canvasRendering2.reset()
-
-                let width = this.imageData.width * 4
-                let height = this.imageData.height
-                let rate = width / height
-                let widthCenter = Math.floor(width / 2)
-                for (let i = 0; i < height; i++) {
-                  //第几行
-
-                  for (let j = 0; j < width; j++) {
-                    //第几列
-                    if (j < widthCenter - rate * i / 2) {
-                      this.imageData.data[i * width +j] = 0
-                    } else if (j > widthCenter + rate * i / 2) {
-                      this.imageData.data[i * width +j] = 0
-                    }
-
-                  }
-                }
 
                 this.canvasRendering2.putImageData(this.imageData, event.offsetX, this.clip_start_y)
               }
