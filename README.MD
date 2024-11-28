@@ -1,10 +1,5 @@
 ## Hello ArkUI
-基于~~鸿蒙 3.1/4.0~~ API12 ,使用 Stage 模型和 ArkUI 进行开发的 demo
-列举了常见控件和状态管理，还有一个元服务卡片，卡片中有一个典型的错误示例：元服务卡片中的图片不能直接使用网络地址做展示，需要在 Ability
-中下载到本地，然后通知元服务卡片进行展示，具体可以看官方文档示例：[服务卡片概述](https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/service-widget-overview-0000001536226057-V3) 链接是：https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/service-widget-overview-0000001536226057-V3
-#### 说明
-~~这里只是基础，也就是文档中的`入门`阶段，官方文档可以看这里 [开发准备-快速入门](https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/start-overview-0000001478061421-V3?catalogVersion=V3)
-链接是：https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/start-overview-0000001478061421-V3?catalogVersion=V3~~
+基于API12 ,使用 Stage 模型和 ArkUI 进行开发的 demo
 
 
 #### 仓库后续
@@ -19,10 +14,7 @@
 
 
 ##### 指南
-
 ......
-
-
 
 ##### 实验
 
@@ -50,5 +42,6 @@
       <img src='image/verification_code/four_text.gif' width='20%' heigh='20%'/>
       <img src='image/verification_code/canvas_input.gif' width='20%' heigh='20%'/>
     </div>
-
-
+* 图片滑块验证码  
+  <img src ="image/slide_code.gif" width=20% height=20%/>  
+* 自定义录像
