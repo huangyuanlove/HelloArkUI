@@ -32,12 +32,9 @@ export struct SlideVerificationView {
 
         this.imageData = this.canvasRendering.getImageData(this.clip_start_x, this.clip_start_y, this.clip_image_width, this.clip_image_height)
 
-
-        this.canvasRendering.lineWidth = 2
-
-        this.canvasRendering.fillStyle = '#66FFFFFF'
-
         //在对应的区域绘制标识
+        this.canvasRendering.lineWidth = 2
+        this.canvasRendering.fillStyle = '#66FFFFFF'
         this.canvasRendering.moveTo(this.clip_start_x + this.clip_image_width / 2, this.clip_start_y)
         this.canvasRendering.lineTo(this.clip_start_x + this.clip_image_width, this.clip_start_y + this.clip_image_height)
         this.canvasRendering.lineTo(this.clip_start_x, this.clip_start_y + this.clip_image_height)
@@ -64,30 +61,20 @@ export struct SlideVerificationView {
             }
           }
         }
-
-
-
       })
       Canvas(this.canvasRendering2).width("100%").height("100%").onReady(() => {
-
       })
         .priorityGesture(
           PanGesture()
             .onActionStart((event: GestureEvent) => {
-
             })
             .onActionUpdate((event: GestureEvent) => {
               hilog.error(0x01, 'SlideVerificationView', event.offsetX.toString())
 
-
               if (this.imageData) {
-
                 this.canvasRendering2.reset()
-
                 this.canvasRendering2.putImageData(this.imageData, event.offsetX, this.clip_start_y)
               }
-
-
             })
             .onActionEnd((event: GestureEvent) => {
               hilog.error(0x01, 'SlideVerificationView', `onActionEnd ${event.offsetX.toString()}`)
