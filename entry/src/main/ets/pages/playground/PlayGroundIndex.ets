@@ -1,11 +1,17 @@
 
 import { BaseListItem } from '../../comm/BaseListItem'
+import { router, UIContext } from '@kit.ArkUI'
+import { common } from '@kit.AbilityKit'
+import { reqPermissionsFromUser, RequestPermissionCallBack } from '../../util/PermissionUtils'
+import { HMRouterMgr } from '@hadss/hmrouter'
 
 @Component
 export struct  PlayGroundIndex {
 
   build() {
     Scroll() {
+
+
       Flex({ wrap: FlexWrap.Wrap }) {
         BaseListItem({ label: '常见问题', path: "pages/playground/FAQ/IndexPage" })
         BaseListItem({ label: '手写签名', path: 'pages/playground/SignatureWithCanvas' })
@@ -35,8 +41,37 @@ export struct  PlayGroundIndex {
         BaseListItem({ label: '富文本解析', path: 'pages/playground/html_parse/HtmlParsePage' })
         BaseListItem({ label: 'Observe', path: "pages/playground/observed_and_objectLink/ObservedLinkPage" })
         BaseListItem({ label: 'JSON解析', path: "pages/playground/JSONParsePage" })
+        Button('自定义拍照').onClick((_)=>{
 
-      }.width("100%").height("100%")
+          const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+          const uiContent = this.getUIContext()
+          reqPermissionsFromUser(['ohos.permission.CAMERA'], context, uiContent, {
+            onGrant: () => {
+              router.pushUrl({url:'pages/playground/take_photo/TakePhotoPage'})
+            }
+          } as RequestPermissionCallBack)
+
+        })
+        Button('自定义录像').onClick((_)=>{
+
+          const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
+          const uiContent = this.getUIContext()
+          reqPermissionsFromUser(['ohos.permission.MICROPHONE', 'ohos.permission.CAMERA'], context, uiContent, {
+            onGrant: () => {
+              router.pushUrl({url:'pages/playground/video_recorder/VideoRecorderPage'})
+            }
+          } as RequestPermissionCallBack)
+
+        })
+        Button('HMRouter').onClick((_)=>{
+          HMRouterMgr.push({pageUrl: 'pages/playground/hmrouter_page/HMRouterAPage',param:{
+            'key1':'value1',
+            'key2':123
+          }})
+
+        })
+
+      }
     }
   }
 

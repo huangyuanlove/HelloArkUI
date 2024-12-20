@@ -1,5 +1,8 @@
 import { appTasks, OhosAppContext, OhosPluginId } from '@ohos/hvigor-ohos-plugin';
 import { hvigor,getNode } from '@ohos/hvigor'
+import { hapTasks } from '@ohos/hvigor-ohos-plugin';
+import { hapPlugin } from '@hadss/hmrouter-plugin';
+
 // 获取根节点
 const rootNode = getNode(__filename);
 // 为根节点添加一个afterNodeEvaluate hook 在hook中修改根目录下的build-profile.json5的内容并使能
@@ -22,4 +25,5 @@ rootNode.afterNodeEvaluate(node => {
 export default {
   system: appTasks,  /* Built-in plugin of Hvigor. It cannot be modified. */
   plugins:[]         /* Custom plugin to extend the functionality of Hvigor. */
+
 }

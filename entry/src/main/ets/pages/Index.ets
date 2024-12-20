@@ -1,12 +1,13 @@
 import BasicKnowledgePage from './basic_knowledge/BasicKnowledgePage'
 import { PlayGroundIndex } from './playground/PlayGroundIndex'
-import { promptAction } from '@kit.ArkUI'
+import { AttributeUpdater, promptAction } from '@kit.ArkUI'
 import BuildProfile from 'BuildProfile'
+import { HMDefaultGlobalAnimator, HMNavigation } from '@hadss/hmrouter'
 
 
 @Entry
 @Component
-struct Index {
+export struct Index {
   scroller: Scroller = new Scroller()
 
   private tabText:string[] =["指南","实验"]
@@ -16,10 +17,8 @@ struct Index {
 
   @State currentIndex:number = 0
 
+  modifier: NavModifier = new NavModifier();
 
-  aboutToAppear(): void {
-
-  }
 
   @Builder
   tabBar(index:number){
@@ -33,18 +32,39 @@ struct Index {
 
 
   build() {
-    Column() {
-      Tabs({ barPosition: BarPosition.End }) {
-        TabContent() {
-          BasicKnowledgePage()
-        }.tabBar(this.tabBar(0))
-        TabContent() {
-          PlayGroundIndex().width('100%').height('100%')
-        }.tabBar(this.tabBar(1))
 
-      }.onChange((index)=>{
-        this.currentIndex = index
-      })
+    Column(){
+      HMNavigation({
+        navigationId: 'mainNavigation', options: {
+          standardAnimator: HMDefaultGlobalAnimator.STANDARD_ANIMATOR,
+          dialogAnimator: HMDefaultGlobalAnimator.DIALOG_ANIMATOR,
+          modifier: this.modifier
+        }
+      }){
+        Column() {
+          Tabs({ barPosition: BarPosition.End }) {
+            TabContent() {
+              BasicKnowledgePage()
+            }.tabBar(this.tabBar(0))
+            TabContent() {
+              PlayGroundIndex().width('100%').height('100%')
+            }.tabBar(this.tabBar(1))
+
+          }.onChange((index)=>{
+            this.currentIndex = index
+          })
+        }
+      }
     }
+
+
+  }
+}
+class NavModifier extends AttributeUpdater<NavigationAttribute> {
+  initializeModifier(instance: NavigationAttribute): void {
+    instance.mode(NavigationMode.Stack);
+    instance.navBarWidth('100%');
+    instance.hideTitleBar(true);
+    instance.hideToolBar(true);
   }
 }

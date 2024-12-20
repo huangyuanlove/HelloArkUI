@@ -26,7 +26,6 @@ struct PlayLocalVideoPage {
       if(this.path){
         Video({
           src: 'file://' + this.path
-
         }).objectFit(ImageFit.Contain).width("100%").height("100%")
       }else{
         Text('路径为空')

@@ -1,5 +1,6 @@
 {
   "modelVersion": "5.0.0",
   "dependencies": {
+    "@hadss/hmrouter-plugin": "1.0.0-rc.10" // 使用npm仓版本号
   }
 }

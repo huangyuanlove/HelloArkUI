@@ -1,14 +1,12 @@
-import { display, promptAction } from '@kit.ArkUI';
+import { display, promptAction, router } from '@kit.ArkUI';
 import { common } from '@kit.AbilityKit';
 import { camera } from '@kit.CameraKit';
 import { media } from '@kit.MediaKit';
 import { fileUri } from '@kit.CoreFileKit';
-import { router } from '@kit.ArkUI';
-import { BusinessError } from '@kit.BasicServicesKit';
+import { BusinessError, emitter } from '@kit.BasicServicesKit';
 import Logger from './Logger';
 import { FileUtil } from './FileUtil';
 import { CommonConstants } from './CommonConstants';
-import { RouterParams } from './RouterParams';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
 const TAG: string = 'Record';
@@ -24,7 +22,7 @@ struct VideoRecorderPage {
   @State path: string = '';
   @State cameraManager: camera.CameraManager | undefined = undefined;
   @State videoOutput: camera.VideoOutput | undefined = undefined;
-  @State captureSession: camera.VideoSession |camera.PhotoSession | undefined = undefined;
+  @State captureSession: camera.VideoSession | camera.PhotoSession | undefined = undefined;
   @State cameraInput: camera.CameraInput | undefined = undefined;
   @State previewOutput: camera.PreviewOutput | undefined = undefined;
   @State avRecorder: media.AVRecorder | undefined = undefined;
@@ -36,30 +34,27 @@ struct VideoRecorderPage {
   //当前使用的哪个摄像头
   private currentCameraIndex = 0
   //最长录制时间
-  private maxRecorderDuration: number = 6000
+  private maxRecorderDuration: number = 10 * 1000
   @State currenDuration: number = 0
   @State availableWidth: number = 0
   @State availableHeight: number = 0
-
-  @State videoAspectRatio:number = 1
-
-
+  @State videoAspectRatio: number = 1
   zoomRatioRange: Array<number> = [];
   currentZoomRatioIndex = 1
+  //定时器 id
+  private intervalID: number = -1
 
   aboutToAppear(): void {
     this.availableWidth = display.getDefaultDisplaySync().width
     this.availableHeight = display.getDefaultDisplaySync().height
-    let displayAspectRatio =  this.availableWidth/ this.availableHeight
-
-    // if( Math.abs(displayAspectRatio - 9/16) >   Math.abs(displayAspectRatio - 3/4)){
-    //   this.videoAspectRatio = 3/4
-    // }else{
-      this.videoAspectRatio = 9 /16
-    // }
+    this.videoAspectRatio = 9 / 16
   }
+
   aboutToDisappear(): void {
     this.stopRecord()
+    if (this.intervalID < 0) {
+      clearInterval(this.intervalID)
+    }
   }
 
   initVideoFilePath() {
@@ -71,115 +66,86 @@ struct VideoRecorderPage {
 
   switchCamera() {
     this.currentCameraIndex++
+    this.currenDuration = 0
     this.stopRecord()
     this.initCamera(getContext(this), this.surfaceId);
   }
+
   build() {
-    Stack({ alignContent: Alignment.Top }) {
-      XComponent({
-        id: 'componentId',
-        type: XComponentType.SURFACE,
-        controller: this.mXComponentController,
-      })
 
-        .onLoad(async () => {
-          this.surfaceId = this.mXComponentController.getXComponentSurfaceId();
-          this.mXComponentController.setXComponentSurfaceRect({surfaceWidth:1080,surfaceHeight:1920})
-          await this.initCamera(getContext(this), this.surfaceId);
+      Stack({ alignContent: Alignment.Top }) {
+        XComponent({
+          id: 'componentId',
+          type: XComponentType.SURFACE,
+          controller: this.mXComponentController,
         })
-        // .height("70%")
-        .width(px2vp(1080))
-        .height(px2vp(1920))
-
-        // .width(px2vp(this.availableWidth))
-        // .height(px2vp(this.availableWidth / this.videoAspectRatio))
-
-      Column() {
-        Blank() .onClick((event:ClickEvent)=>{
-          if(this.captureSession){
-            const focusPoint: camera.Point = {x:event.x, y:event.y};
-            this.captureSession.setFocusPoint(focusPoint);
-            Logger.info(TAG, `点击位置:  ${event}`);
-          }
-
-        })
-        Row() {
-          Button("+").padding(10).onClick((_)=>{
-            this.currentZoomRatioIndex +=0.1
-            if(this.currentCameraIndex > this.zoomRatioRange[1]){
-              this.currentCameraIndex = this.zoomRatioRange[1]
-            }else if(this.currentCameraIndex <= this.zoomRatioRange[0]){
-              this.currentCameraIndex = this.zoomRatioRange[0]
-            }
-            if(this.captureSession){
-              this.captureSession.setZoomRatio(this.currentZoomRatioIndex)
-            }
+          .onLoad(async () => {
+            this.surfaceId = this.mXComponentController.getXComponentSurfaceId();
+            await this.initCamera(getContext(this), this.surfaceId);
           })
+          .width(px2vp(this.availableWidth))
+          .height(px2vp(this.availableWidth / this.videoAspectRatio))
+          .borderWidth(4)
+          .borderColor(Color.Red)
 
-          Text('取消').fontColor(Color.White).fontSize(16).onClick((_) => {
-            router.back()
-          })
+        Column() {
+          Blank()
+          Row() {
 
-          Progress({ value: this.currenDuration, total: this.maxRecorderDuration, type: ProgressType.Ring })
-            .width(100).color(Color.Orange)
-            .style({ strokeWidth: 20, enableScanEffect: true }).onTouch((event) => {
-            if (event.type === TouchType.Down) {
-              //延迟 500 毫秒开始录制
-            } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
-              //停止录像，计算时长；展示录像预览、返回、确认按钮
-            }
-          })
 
-          Image(this.recording ? $r('app.media.camera_pause_video_4x') : $r('app.media.camera_take_video_4x'))
-            .width(px2vp(CommonConstants.IMAGE_SIZE))
-            .height(px2vp(CommonConstants.IMAGE_SIZE))
-            .onClick(async () => {
-              if (this.recording) {
-                await this.stopRecord();
-
-                router.pushUrl({
-                  url: "playground/video_recorder/PlayLocalVideoPage",
-                  params: new RouterParams('Sandbox path', this.path)
-                });
-              } else {
-                this.startRecord();
-              }
-              this.recording = !this.recording;
+            Text('取消').fontColor(Color.White).fontSize(16).onClick((_) => {
+              router.back()
             })
-          if (this.needShowSwitchCameraView) {
-            Image($r('app.media.switch_camera')).width(35).height(26).onClick((_) => {
-              this.switchCamera()
-            })
+            Blank().width(20)
+            Stack(){
+              Circle().width(60).height(60).fill(Color.White)
+              Progress({ value: this.currenDuration, total: this.maxRecorderDuration, type: ProgressType.Ring })
+                .width(60)
+                .color("#1b91e0")
+                .backgroundColor(Color.White)
+                .style({ strokeWidth: 2, enableScanEffect: true })
+                .onTouch(async (event) => {
+                  if (event.type === TouchType.Down) {
+                    //延迟 500 毫秒开始录制
+                    setTimeout(async () => {
+                      this.recording = true
+                      this.startRecord();
+                    }, 500)
+                  } else if (event.type === TouchType.Up || event.type === TouchType.Cancel) {
+                    //停止录像，计算时长；展示录像预览、返回、确认按钮
+                    if (this.recording) {
+                      this.recording = false
+                      await this.stopRecord();
+                      router.pushUrl({url:'pages/playground/video_recorder/PlayLocalVideoPage',params:{
+                        data:this.path
+                      }})
+                    }
+
+                  }
+                })
+            }
+
+            Blank().width(20)
+            if (this.needShowSwitchCameraView) {
+              Image($r('app.media.switch_camera')).width(35).height(26).onClick((_) => {
+                this.switchCamera()
+              })
+            }
           }
-          Button("-").padding(10).onClick((_)=>{
-            this.currentZoomRatioIndex -=0.1
-            if(this.currentCameraIndex <= this.zoomRatioRange[0]){
-             this.currentCameraIndex = this.zoomRatioRange[0]
-            }else if(this.currentCameraIndex>=this.zoomRatioRange[1]){
-              this.currentCameraIndex = this.zoomRatioRange[1]
-            }
+          .width(CommonConstants.FULL_PERCENT)
 
-            if(this.captureSession){
-              this.captureSession.setZoomRatio(this.currentZoomRatioIndex)
-            }
-          })
-
-
+          .margin({ bottom: 20 })
+          .justifyContent(FlexAlign.Center)
+          .alignItems(VerticalAlign.Center)
         }
         .width(CommonConstants.FULL_PERCENT)
-        .height(120)
-        .margin({ bottom: 60 })
-        .justifyContent(FlexAlign.Center)
-        .alignItems(VerticalAlign.Center)
-      }
-      .width(CommonConstants.FULL_PERCENT)
-      .height(CommonConstants.FULL_PERCENT)
-      .justifyContent(FlexAlign.Start)
-      .alignItems(HorizontalAlign.Start)
-    }
-    .backgroundColor(Color.Black)
-    .width("100%")
-    .height("100%")
+        .height(CommonConstants.FULL_PERCENT)
+        .justifyContent(FlexAlign.Start)
+        .alignItems(HorizontalAlign.Start)
+      }.backgroundColor(Color.Black)
+      .width("100%")
+      .height("100%")
+
   }
 
   async initCamera(context: common.Context, surfaceId: string) {
@@ -210,7 +176,7 @@ struct VideoRecorderPage {
 
     if (cameraArray.length <= 0) {
       Logger.error(TAG, 'cameraManager.getSupportedCameras error');
-      promptAction.showToast({message:"无可用相机"})
+      promptAction.showToast({ message: "无可用相机" })
       return;
     }
     if (cameraArray.length == 1) {
@@ -229,9 +195,6 @@ struct VideoRecorderPage {
     }
 
 
-
-
-
     Logger.info(TAG, 'outputCapability: ' + JSON.stringify(cameraOutputCap));
     Logger.info(TAG, 'availableWidth: ' + this.availableWidth);
     Logger.info(TAG, 'availableHeight: ' + this.availableHeight);
@@ -240,16 +203,8 @@ struct VideoRecorderPage {
     let finalHeight = 1080
 
 
-
     cameraOutputCap.videoProfiles.forEach((videoProfile: camera.VideoProfile) => {
       Logger.info(TAG, 'videoProfile: ' + JSON.stringify(videoProfile));
-      // if (videoProfile.size.width < this.availableWidth) {
-      //   let profileAspectRatio = videoProfile.size.height / videoProfile.size.width
-      //   if (profileAspectRatio === this.videoAspectRatio) {
-      //     finalWidth = videoProfile.size.width
-      //     finalHeight = videoProfile.size.height
-      //   }
-      // }
 
     })
     Logger.error(TAG, `选择了width: ${finalWidth}   height: ${finalHeight}`);
@@ -257,7 +212,7 @@ struct VideoRecorderPage {
     let previewProfilesArray: Array<camera.Profile> = cameraOutputCap.previewProfiles;
     if (!previewProfilesArray) {
       Logger.error(TAG, 'createOutput previewProfilesArray === null || undefined');
-    }else{
+    } else {
 
     }
 
@@ -301,8 +256,6 @@ struct VideoRecorderPage {
       url: this.url,
       rotation: cameraArray[cameraIndex].cameraOrientation
     };
-
-
 
 
     try {
@@ -361,6 +314,22 @@ struct VideoRecorderPage {
       return;
     }
 
+    this.captureSession.on('focusStateChange', (err: BusinessError, focusState: camera.FocusState) => {
+      let focusStateStr = ''
+      if (focusState == camera.FocusState.FOCUS_STATE_SCAN) {
+        focusStateStr = '触发对焦'
+      } else if (focusState == camera.FocusState.FOCUS_STATE_FOCUSED) {
+        focusStateStr = '对焦成功'
+      } else if (focusState == camera.FocusState.FOCUS_STATE_UNFOCUSED) {
+        focusStateStr = '未完成对焦'
+      }
+      Logger.error(TAG, `focusStateChange  ${focusStateStr}`);
+      if (!err) {
+        Logger.error(TAG, 'focusStateChange error ' + JSON.stringify(err));
+      }
+    })
+
+
     try {
       this.captureSession.beginConfig();
     } catch (error) {
@@ -406,10 +375,10 @@ struct VideoRecorderPage {
         return profile.size.width === videoSize.width && profile.size.height === videoSize.height;
       });
 
-     if(!previewProfile){
-       Logger.error(TAG, `没有找到对应的预览配置文件`);
-       previewProfile = previewProfilesArray[0]
-     }
+      if (!previewProfile) {
+        Logger.error(TAG, `没有找到对应的预览配置文件`);
+        previewProfile = previewProfilesArray[0]
+      }
       previewOutput = this.cameraManager.createPreviewOutput(previewProfile, surfaceId);
     } catch (error) {
       let err = error as BusinessError;
@@ -465,25 +434,26 @@ struct VideoRecorderPage {
     let supportFocusModeContinuousAuto: boolean = false;
     try {
       // 以检查是否支持连续自动对焦模式为例
-      supportFocusModeContinuousAuto =  this.captureSession.isFocusModeSupported(camera.FocusMode.FOCUS_MODE_CONTINUOUS_AUTO);
+      supportFocusModeContinuousAuto =
+        this.captureSession.isFocusModeSupported(camera.FocusMode.FOCUS_MODE_CONTINUOUS_AUTO);
     } catch (error) {
       // 失败返回错误码error.code并处理
       let err = error as BusinessError;
       Logger.error(TAG, `The isFocusModeSupported call failed. error code: ${err.code}`);
     }
-    if(supportFocusModeContinuousAuto){
+    if (supportFocusModeContinuousAuto) {
       try {
         // 设置自动对焦模式
-        this.captureSession.setFocusMode(camera.FocusMode.FOCUS_MODE_AUTO);
+        this.captureSession.setFocusMode(camera.FocusMode.FOCUS_MODE_CONTINUOUS_AUTO);
         // 设置对焦点
-          // const focusPoint: camera.Point = {x: this.availableWidth/2, y: this.availableWidth / this.videoAspectRatio/2};
-          // this.captureSession.setFocusPoint(focusPoint);
+        // const focusPoint: camera.Point = {x: this.availableWidth/2, y: this.availableWidth / this.videoAspectRatio/2};
+        // this.captureSession.setFocusPoint(focusPoint);
       } catch (error) {
         // 失败返回错误码error.code并处理
         let err = error as BusinessError;
         Logger.error(TAG, `The setFocusMode and setFocusPoint call failed. error code: ${err.code}`);
       }
-    }else{
+    } else {
       Logger.error(TAG, `不支持 FOCUS_MODE_CONTINUOUS_AUTO`);
     }
 
@@ -507,6 +477,16 @@ struct VideoRecorderPage {
     if (this.avRecorder) {
       try {
         await this.avRecorder.start();
+
+        this.intervalID = setInterval(() => {
+          this.currenDuration += 500
+          if (this.currenDuration > this.maxRecorderDuration) {
+            clearInterval(this.intervalID)
+            this.intervalID = -1
+            this.stopRecord()
+          }
+        }, 500)
+
       } catch (error) {
         let err = error as BusinessError;
         Logger.error(TAG, `avRecorder start error: ${JSON.stringify(err)}`);
@@ -515,6 +495,11 @@ struct VideoRecorderPage {
   }
 
   async stopRecord() {
+    if(this.intervalID > 0){
+      clearInterval(this.intervalID)
+    }
+
+
     if (this.avRecorder) {
       try {
         if (this.videoOutput) {
@@ -537,29 +522,52 @@ struct VideoRecorderPage {
         let err = error as BusinessError;
         Logger.error(TAG, `avRecorder stop error: ${JSON.stringify(err)}`);
       }
-      try {
-        if (this.captureSession) {
+
+      if (this.captureSession) {
+        try {
           this.captureSession.stop();
+        } catch (error) {
+          let err = error as BusinessError;
+          Logger.error(TAG, `captureSession.stop error: ${JSON.stringify(err)}`);
         }
-        if (this.cameraInput) {
+      }
+      if (this.cameraInput) {
+        try {
           this.cameraInput.close();
+        } catch (error) {
+          let err = error as BusinessError;
+          Logger.error(TAG, `cameraInput.close error: ${JSON.stringify(err)}`);
         }
-        if (this.previewOutput) {
+      }
+      if (this.previewOutput) {
+        try {
           this.previewOutput.release();
+        } catch (error) {
+          let err = error as BusinessError;
+          Logger.error(TAG, `previewOutput.release error: ${JSON.stringify(err)}`);
         }
-        if (this.videoOutput) {
+      }
+      if (this.videoOutput) {
+        try {
           this.videoOutput.release();
+        } catch (error) {
+          let err = error as BusinessError;
+          Logger.error(TAG, `videoOutput.release error: ${JSON.stringify(err)}`);
         }
-        if (this.captureSession) {
+      }
+      if (this.captureSession) {
+        try {
           this.captureSession.release();
+        } catch (error) {
+          let err = error as BusinessError;
+          Logger.error(TAG, `captureSession.release error: ${JSON.stringify(err)}`);
         }
-        if (this.captureSession) {
-          this.captureSession = undefined;
-        }
-      } catch (error) {
-        let err = error as BusinessError;
-        Logger.error(TAG, `avRecorder stop error: ${JSON.stringify(err)}`);
+      }
+
+      if (this.captureSession) {
+        this.captureSession = undefined;
       }
     }
   }
 }
+

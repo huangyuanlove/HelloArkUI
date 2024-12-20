@@ -4,11 +4,18 @@ import { AbilityConstant, common, Want } from '@kit.AbilityKit';
 import { UIContext, window, uiObserver as observer, uiObserver } from '@kit.ArkUI';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';
+import { HMRouterMgr } from '@hadss/hmrouter';
+
 export default class EntryAbility extends UIAbility {
 
   private uiContext: UIContext | null = null;
 
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+
+    HMRouterMgr.init({
+      context: this.context
+    })
+
     // 注册监听，范围是abilityContext内的page
     observer.on('routerPageUpdate', this.context, (info: observer.RouterPageInfo) => {
       if(info.state === observer.RouterPageState.ABOUT_TO_APPEAR){

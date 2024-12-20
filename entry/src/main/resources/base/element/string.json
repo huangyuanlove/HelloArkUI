@@ -33,9 +33,19 @@
     {
       "name": "user_grant_READ_MEDIA_reason",
       "value": "选择图片"
-    },    {
+    },
+    {
       "name": "user_grant_WRITE_MEDIA_reason",
       "value": "保存图片"
+    },
+    {
+      "name": "user_grant_recorder_video_reason",
+      "value": "录视频"
+    }
+  ,
+    {
+      "name": "user_grant_microphone_reason",
+      "value": "录音"
     }
   ]
 }

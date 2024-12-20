@@ -11,8 +11,9 @@
   "version": "1.0.0",
   "dependencies": {
     "@jg/push": "1.1.0",
-    "class-transformer": "^0.5.1",
-    "simplehtmlrender": "^1.0.0"
+    "class-transformer": "0.5.1",
+    "simplehtmlrender": "1.0.0",
+    "@hadss/hmrouter": "1.0.0-rc.10"
   },
   "dynamicDependencies": {}
 }
