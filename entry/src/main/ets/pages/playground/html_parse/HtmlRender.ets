@@ -171,21 +171,21 @@ export struct HtmlRender {
         if (child.style.backgroundColor != Color.Transparent) {
           ContainerSpan() {
             if(child.style.href && this.onLinkClick){
-              Span(child.text).configSpanStyle(child).onClick((_)=>{
+              Span(child.text).configSpanStyle(child).backgroundColor(vNode.style.backgroundColor).onClick((_)=>{
                 this.onLinkClick?.(child.style.href??"")
               })
             }else{
-              Span(child.text).configSpanStyle(child)
+              Span(child.text).configSpanStyle(child).backgroundColor(vNode.style.backgroundColor)
             }
 
           }.textBackgroundStyle({ color: child.style.backgroundColor })
         } else {
           if(child.style.href && this.onLinkClick){
-            Span(child.text).configSpanStyle(child).onClick((_)=>{
+            Span(child.text).configSpanStyle(child).backgroundColor(vNode.style.backgroundColor).onClick((_)=>{
               this.onLinkClick?.(child.style.href??"")
             })
           }else{
-            Span(child.text).configSpanStyle(child)
+            Span(child.text).configSpanStyle(child).backgroundColor(vNode.style.backgroundColor)
           }
         }
       })
@@ -195,7 +195,7 @@ export struct HtmlRender {
 
 @Extend(Span)
 function configSpanStyle(vNode: VNode) {
-  .backgroundColor(vNode.style.backgroundColor)
+
   .fontColor(vNode.style.href ? vNode.style.hrefFontColor : vNode.style.fontColor)
   .fontSize(vNode.style.fontSize)
 

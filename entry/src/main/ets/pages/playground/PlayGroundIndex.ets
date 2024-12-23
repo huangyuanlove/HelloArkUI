@@ -65,11 +65,7 @@ export struct  PlayGroundIndex {
 
         })
         Button('HMRouter').onClick((_)=>{
-          HMRouterMgr.push({pageUrl: 'pages/playground/hmrouter_page/HMRouterAPage',param:{
-            'key1':'value1',
-            'key2':123
-          }})
-
+          HMRouterMgr.push({pageUrl: 'pages/playground/hmrouter_page/HMRouterAPage'})
         })
 
       }
