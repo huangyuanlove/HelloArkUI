@@ -1,8 +1,8 @@
-import { HMRouter, HMRouterMgr } from "@hadss/hmrouter";
+import { HMLifecycleState, HMRouter, HMRouterMgr } from "@hadss/hmrouter";
+import { promptAction } from "@kit.ArkUI";
 
 
 @HMRouter({ pageUrl: 'pages/playground/hmrouter_page/HMRouterBPage', })
-@Entry
 @Component
 export struct  HMRouterBPage{
 

@@ -55,7 +55,6 @@
     "pages/playground/FAQ/dialog_controller/DialogControllerPage",
     "pages/playground/JSONParsePage",
     "pages/playground/video_recorder/PlayLocalVideoPage",
-    "pages/playground/hmrouter_page/HMRouterBPage",
     "pages/playground/take_photo/TakePhotoPage",
     "pages/playground/video_recorder/VideoRecorderPage",
     "pages/playground/slide_verification/SlideVerificationPage"

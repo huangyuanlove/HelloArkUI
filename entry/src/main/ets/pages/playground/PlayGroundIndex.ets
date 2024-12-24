@@ -3,7 +3,8 @@ import { BaseListItem } from '../../comm/BaseListItem'
 import { router, UIContext } from '@kit.ArkUI'
 import { common } from '@kit.AbilityKit'
 import { reqPermissionsFromUser, RequestPermissionCallBack } from '../../util/PermissionUtils'
-import { HMRouterMgr } from '@hadss/hmrouter'
+import { HMPopInfo, HMRouterMgr } from '@hadss/hmrouter'
+import hilog from '@ohos.hilog'
 
 @Component
 export struct  PlayGroundIndex {
@@ -65,8 +66,19 @@ export struct  PlayGroundIndex {
 
         })
         Button('HMRouter').onClick((_)=>{
-          HMRouterMgr.push({pageUrl: 'pages/playground/hmrouter_page/HMRouterAPage'})
+          HMRouterMgr.push({pageUrl: 'pages/playground/hmrouter_page/HMRouterAPage'},{
+            onResult: (popInfo: HMPopInfo) => {
+              hilog.error(0x01,'hmrouter','HMRouterAPageNav 页面返回值-->' + JSON.stringify(popInfo))
+            },
+            onArrival:(()=>{
+              hilog.error(0x01,'hmrouter','HMRouterAPageNav onArrival')
+            }),
+            onLost:(()=>{
+              hilog.error(0x01,'hmrouter','HMRouterAPageNav onLost')
+            })
+          })
         })
+
 
       }
     }

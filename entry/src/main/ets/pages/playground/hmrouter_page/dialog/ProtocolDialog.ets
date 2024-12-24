@@ -13,10 +13,10 @@ export struct  ProtocolDialog{
             HMRouterMgr.push({pageUrl:'protocol_detail'})
           })
       }.backgroundColor(Color.White).borderRadius(20)
-    }.width('100%').height('100%').backgroundColor("#f7e5e5e5")
+    }.width('100%').height('100%').backgroundColor("#88000000")
     .alignItems(HorizontalAlign.Center).justifyContent(FlexAlign.Center).onClick((_)=>{
       HMRouterMgr.pop()
-    })
+    }).expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP,SafeAreaEdge.BOTTOM])
 
   }
 }
