@@ -1,44 +1,115 @@
 import { camera } from '@kit.CameraKit';
 import { BusinessError, systemDateTime } from '@kit.BasicServicesKit';
 import { common } from '@kit.AbilityKit';
-import { image } from '@kit.ImageKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { promptAction, router } from '@kit.ArkUI';
-import { FileUtil } from '../video_recorder/FileUtil';
+import { display, promptAction } from '@kit.ArkUI';
+import { DialogHelper } from '@pura/harmony-dialog/src/main/ets/dialog/DialogHelper';
+import { image } from '@kit.ImageKit';
+import { fileIo, fileUri } from '@kit.CoreFileKit';
+
 
 const TAG: string = 'TakePhotoPage'
+
+const defaultWidth = 1920
+const defaultHeight = 1080
+
 
 @Entry
 @Component
 struct TakePhotoPage {
-
-  @State photoLocalPath:string = ''
-
-
-  private surfaceId: string = '';
   private mXComponentController: XComponentController = new XComponentController;
-  //是否展示切换摄像头
-  @State needShowSwitchCameraView: boolean = false;
-  //当前使用的哪个摄像头
-  private currentCameraIndex = 0
+  private cameraManager: camera.CameraManager = this.getCameraManager(getContext(this))
+  private cameraList: Array<camera.CameraDevice> = []
+  private surfaceId: string = ''
+  private currentCamera: camera.CameraDevice | undefined = undefined
+  @State supportPhotoProfileArray: camera.Profile[] = []
+  @State supportPreviewProfileArray: camera.Profile[] = []
+  @State currentPhotoProfile: camera.Profile | undefined = undefined
+  @State currentWidth: number = defaultWidth
+  @State currentHeight: number = defaultHeight
+  @State supportFlashMode: number [] = []
+  @State zoomRatioRangeStart: number = 1
+  @State zoomRatioRangeEnd: number = 1
+  private photoOutput: camera.PhotoOutput | undefined = undefined
+  private photoSession: camera.PhotoSession | undefined = undefined
 
-  private photoOutput : camera.PhotoOutput | undefined
+  aboutToAppear(): void {
+    this.cameraList = this.getCameraDevices()
+    //默认选择第一个相机
+    if (this.cameraList.length) {
+      this.currentCamera = this.cameraList[0]
+    }
+    this.onCameraStatusChange()
 
-
-  dialogController: CustomDialogController = new CustomDialogController({
-    builder: CustomDialogExample({
-      cancel: () => {
-      },
-      confirm: () => {
-      },
-      imagePath:this.photoLocalPath
-    }),
-  })
-
+  }
 
   build() {
+    Column() {
+      Scroll() {
+        Row() {
+          Text(this.cameraList.length + ' 个可用相机').onClick((_) => {
+            DialogHelper.showSelectDialog({
+              radioContent: this.getAllCamerasPositionStr(this.cameraList),
+              confirm: '确认',
+              title: '选择相机',
+              onCheckedChanged: (index) => {
 
-    Stack({ alignContent: Alignment.Top }) {
+              },
+              onAction: (action, dialogId, value) => {
+                promptAction.showToast({ message: `${action} --- ${value}` })
+                if (value) {
+                  this.currentCamera = this.cameraList[value]
+                }
+              }
+            })
+          }).margin(10).padding(10)
+          Text(this.supportPhotoProfileArray.length + ' 个可选像素').onClick((_) => {
+            DialogHelper.showSelectDialog({
+              radioContent: this.getAllSupportSizeStr(this.supportPhotoProfileArray),
+              confirm: '确认',
+              title: '选择像素',
+              onCheckedChanged: (index) => {
+
+              },
+              onAction: (action, dialogId, value) => {
+                promptAction.showToast({ message: `${action} --- ${value}` })
+                if (value) {
+                  this.currentPhotoProfile = this.supportPhotoProfileArray[value]
+                  this.currentWidth = this.currentPhotoProfile?.size.width
+                  this.currentHeight = this.currentPhotoProfile?.size.height
+                }
+              }
+            })
+          }).margin(10).padding(10)
+
+          if (this.supportFlashMode.length) {
+            Text('闪光灯模式').margin(10).padding(10).onClick((_) => {
+              DialogHelper.showSelectDialog({
+                radioContent: this.getSupportFlashModeStrs(),
+                confirm: '确认',
+                title: '闪光灯模式',
+                onCheckedChanged: (index) => {
+
+                },
+                onAction: (action, dialogId, value) => {
+                  promptAction.showToast({ message: `${action} --- ${value}` })
+                  if (value && this.photoSession) {
+                    this.photoSession.setFlashMode(this.supportFlashMode[value])
+                  }
+                }
+              })
+            })
+          }
+          if (this.zoomRatioRangeStart != this.zoomRatioRangeEnd) {
+            Text('变焦比').margin(10).padding(10).onClick((_) => {
+
+            })
+          }
+
+        }.justifyContent(FlexAlign.Start)
+
+      }.scrollable(ScrollDirection.Horizontal)
+
       XComponent({
         id: 'componentId',
         type: XComponentType.SURFACE,
@@ -46,522 +117,649 @@ struct TakePhotoPage {
       })
         .onLoad(async () => {
           this.surfaceId = this.mXComponentController.getXComponentSurfaceId();
-          await this.initCamera();
+          this.startPreviewOutput()
+
         })
         .width('100%')
+
+        .height(px2vp(this.currentWidth * display.getDefaultDisplaySync().width / this.currentHeight ))
 
         .borderWidth(4)
         .borderColor(Color.Red)
 
-      Column() {
-        Blank()
-        Row() {
+      Row() {
+        Button('拍照').onClick((_) => {
+          this.takePhoto()
+        })
+      }
+    }
 
+  }
 
-          Text('取消').fontColor(Color.White).fontSize(16).onClick((_) => {
-            router.back()
-          })
-          Blank().width(20)
-          Stack(){
-            Circle().width(60).height(60).fill(Color.White).onClick((_)=>{
-              if(this.photoOutput){
-                let settings: camera.PhotoCaptureSetting = {
-                  quality: camera.QualityLevel.QUALITY_LEVEL_HIGH,  // 设置图片质量高
-                  rotation: camera.ImageRotation.ROTATION_0,  // 设置图片旋转角度的camera.ImageRotation.ROTATION_0是通过说明中获取拍照角度的getPhotoRotation方法获取的值进行设置
-                  mirror: false  // 设置镜像使能开关(默认关)
-                };
-               this. photoOutput.capture(settings, (err: BusinessError) => {
-                  if (err) {
-                    hilog.error(0x01,TAG, `Failed to capture the photo. error: ${JSON.stringify(err)}`);
-                    return;
-                  }
-                 hilog.error(0x01,TAG,'Callback invoked to indicate the photo capture request success.');
-                });
-              }
-            })
-          }
-
-          Blank().width(20)
-          if (this.needShowSwitchCameraView) {
-            Image($r('app.media.switch_camera')).width(35).height(26).onClick((_) => {
-
-            })
-          }
+  getPreviewProfileBySize(): camera.Profile | undefined {
+    if (this.supportPreviewProfileArray && this.supportPreviewProfileArray.length) {
+      for (let i = 0; i < this.supportPreviewProfileArray.length; i++) {
+        let previewProfile = this.supportPreviewProfileArray[i]
+        if (previewProfile.size.width === this.currentWidth && previewProfile.size.height === this.currentHeight) {
+          return previewProfile
         }
-        .width("100%")
-
-        .margin({ bottom: 20 })
-        .justifyContent(FlexAlign.Center)
-        .alignItems(VerticalAlign.Center)
       }
-      .width("100%")
-      .height("100%")
-      .justifyContent(FlexAlign.Start)
-      .alignItems(HorizontalAlign.Start)
-
     }
+    hilog.error(0x01, TAG, `没找到对应的 previewProfile,width:${this.currentWidth} , height:${this.currentHeight}`)
+    return undefined
   }
 
-  async initCamera() {
-    let cameraManager = getCameraManager(getContext(this))
-    if (!cameraManager) {
-      hilog.error(0x01, TAG, 'camera.getCameraManager error')
-      return;
+  getPhotoProfileBySize(): camera.Profile | undefined {
+    if (this.supportPhotoProfileArray && this.supportPhotoProfileArray.length) {
+      for (let i = 0; i < this.supportPhotoProfileArray.length; i++) {
+        let photoProfile = this.supportPhotoProfileArray[i]
+        if (photoProfile.size.width === this.currentWidth && photoProfile.size.height === this.currentHeight) {
+          return photoProfile
+        }
+      }
     }
+    hilog.error(0x01, TAG, `没找到对应的 photoProfile ,width:${this.currentWidth} , height:${this.currentHeight}`)
+    return undefined
+  }
 
-    //添加监听
-    onCameraStatusChange(cameraManager)
-
-    let cameraArray: Array<camera.CameraDevice> = getCameraDevices(cameraManager)
-    if (cameraArray.length <= 0) {
-      hilog.error(0x01, TAG, 'cameraManager.getSupportedCameras error');
-      promptAction.showToast({ message: "无可用相机" })
-      return;
+  //展示在弹窗中的列表
+  getAllSupportSizeStr(profileArray: camera.Profile[]): string[] {
+    let result: string[] = []
+    for (let i = 0; i < profileArray.length; i++) {
+      result.push(this.getSupportSizeStr(profileArray[i]))
     }
-    cameraArray.forEach((cameraDevice: camera.CameraDevice) => {
-      hilog.error(0x01, TAG,
-        cameraDevice.cameraId + "  " + cameraDevice.cameraPosition + "  " + cameraDevice.cameraType + "  " +
-        cameraDevice.connectionType + "  " + cameraDevice.cameraOrientation)
+    return result
+  }
+
+  getSupportSizeStr(profile: camera.Profile): string {
+    return `宽：${profile.size.width} , 高：${profile.size.height}`
+  }
+
+  //展示在弹窗列表中的闪光灯模式说明
+  getSupportFlashModeStrs(): string[] {
+    let result: string [] = []
+    this.supportFlashMode.forEach((value) => {
+      if (value === camera.FlashMode.FLASH_MODE_CLOSE) {
+        result.push('闪光灯关闭')
+      } else if (value === camera.FlashMode.FLASH_MODE_OPEN) {
+        result.push('闪光灯打开')
+      } else if (value === camera.FlashMode.FLASH_MODE_AUTO) {
+        result.push('自动闪光灯')
+      } else if (value === camera.FlashMode.FLASH_MODE_ALWAYS_OPEN) {
+        result.push('闪光灯常亮')
+      }
     })
+    return result
+  }
 
-    //是否需要展示切换摄像头按钮
-    if (cameraArray.length == 1) {
-      this.needShowSwitchCameraView = false
+  //展示在弹窗中相机列表
+  getAllCamerasPositionStr(devices: camera.CameraDevice[]): string[] {
+    let result: string[] = []
+    for (let i = 0; i < devices.length; i++) {
+      result.push(this.getCameraPositionStr(devices[i]))
+    }
+    return result
+  }
+
+  getCameraPositionStr(device: camera.CameraDevice): string {
+    let result = ''
+    if (device.cameraPosition == camera.CameraPosition.CAMERA_POSITION_UNSPECIFIED) {
+      result += '未指定'
+    } else if (device.cameraPosition == camera.CameraPosition.CAMERA_POSITION_BACK) {
+      result += '后置相机'
+    } else if (device.cameraPosition == camera.CameraPosition.CAMERA_POSITION_FRONT) {
+      result += '前置相机'
+    } else if (device.cameraPosition == camera.CameraPosition.CAMERA_POSITION_FOLD_INNER) {
+      result += '折叠态相机'
+    }
+    return result
+  }
+
+  //相机管理
+  getCameraManager(context: common.BaseContext): camera.CameraManager {
+    let cameraManager: camera.CameraManager = camera.getCameraManager(context);
+    return cameraManager;
+  }
+
+  //获取可用相机列表
+  getCameraDevices(): Array<camera.CameraDevice> {
+    let cameraArray: Array<camera.CameraDevice> = this.cameraManager.getSupportedCameras();
+    hilog.error(0x01, TAG, '-------getCameraDevices----');
+    if (cameraArray != undefined && cameraArray.length > 0) {
+      for (let index = 0; index < cameraArray.length; index++) {
+        let camera: camera.CameraDevice = cameraArray[index]
+        hilog.info(0x01, TAG, 'cameraId : ' + camera.cameraId); // 获取相机ID
+        hilog.info(0x01, TAG, 'cameraPosition : ' + camera.cameraPosition); // 获取相机位置
+        hilog.info(0x01, TAG, 'cameraType : ' + camera.cameraType); // 获取相机类型
+        hilog.info(0x01, TAG, 'connectionType : ' + camera.connectionType); // 获取相机连接类型
+      }
+      return cameraArray;
     } else {
-      this.needShowSwitchCameraView = true
+      hilog.error(0x01, TAG, "cameraManager.getSupportedCameras error");
+      return [];
     }
-    let cameraIndex = this.currentCameraIndex % cameraArray.length
-    let currenCamera = cameraArray[cameraIndex]
-
-
-    let supportSceneMode: Array<camera.SceneMode> = getSupportedSceneMode(currenCamera, cameraManager)
-    supportSceneMode.forEach((sceneMode:camera.SceneMode)=>{
-      hilog.error(0x01,TAG,`sceneMode -> ${sceneMode}`)
-    })
-    let cameraOutputCap: camera.CameraOutputCapability | undefined =
-      await getSupportedOutputCapability(currenCamera, cameraManager, camera.SceneMode.NORMAL_PHOTO)
-
-    if (!cameraOutputCap) {
-      hilog.error(0x01, TAG, 'cameraManager.getSupportedOutputCapability error');
-      return;
-    }
-    hilog.error(0x01, TAG, 'outputCapability: ' + JSON.stringify(cameraOutputCap));
-    cameraOutputCap.photoProfiles.forEach((photoProfile: camera.Profile) => {
-      hilog.error(0x01, TAG, 'photoProfile: ' + JSON.stringify(photoProfile));
-    })
-    cameraOutputCap.previewProfiles.forEach((previewProfile: camera.Profile) => {
-      hilog.error(0x01, TAG, 'previewProfile: ' + JSON.stringify(previewProfile));
-    })
-
-    let photoSession = getSession(cameraManager)
-    if (!photoSession) {
-      hilog.error(0x01, TAG, 'getSession error');
-      return;
-    }
-
-
-
-    let cameraInput: camera.CameraInput | undefined = await createInput(currenCamera, cameraManager)
-    if (!cameraInput) {
-      hilog.error(0x01, TAG, 'cameraInput is null');
-      return
-    }
-
-    this.photoOutput = getPhotoOutput(cameraManager,cameraOutputCap)
-    if(!this.photoOutput){
-      hilog.error(0x01, TAG, 'photoOutput is null');
-      return
-    }
-
-    let previewOutput = getPreviewOutput(cameraManager,cameraOutputCap,this.surfaceId)
-    if(!previewOutput){
-      hilog.error(0x01, TAG, 'previewOutput is null');
-      return
-    }
-    this.setPhotoOutputCb(this.photoOutput)
-
-    beginConfig(photoSession)
-    configuringSession(photoSession)
-    startSession(photoSession, cameraInput, previewOutput, this.photoOutput)
-
   }
 
-
-   setPhotoOutputCb(photoOutput: camera.PhotoOutput) {
-  //设置回调之后，调用photoOutput的capture方法，就会将拍照的buffer回传到回调中
-  photoOutput.on('photoAvailable', (errCode: BusinessError, photo: camera.Photo): void => {
-    hilog.error(0x01, TAG, 'getPhoto start');
-    hilog.error(0x01, TAG, `err: ${JSON.stringify(errCode)}`);
-    if (errCode || photo === undefined) {
-      hilog.error(0x01, TAG, 'getPhoto failed');
-      return;
-    }
-    let imageObj: image.Image = photo.main;
-    imageObj.getComponent(image.ComponentType.JPEG, (errCode: BusinessError, component: image.Component): void => {
-      hilog.error(0x01, TAG, 'getComponent start');
-      if (errCode || component === undefined) {
-        hilog.error(0x01, TAG, 'getComponent failed');
+  // 监听相机状态
+  onCameraStatusChange(): void {
+    this.cameraManager.on('cameraStatus', (err: BusinessError, cameraStatusInfo: camera.CameraStatusInfo) => {
+      if (err !== undefined && err.code !== 0) {
+        hilog.error(0x01, TAG, `Callback Error, errorCode: ${err.code}`);
         return;
       }
-      let buffer: ArrayBuffer;
-      if (component.byteBuffer) {
-        buffer = component.byteBuffer;
-      } else {
-        hilog.error(0x01, TAG, 'byteBuffer is null');
-        return;
+      // 如果当通过USB连接相机设备时，回调函数会返回新的相机出现状态
+      if (cameraStatusInfo.status == camera.CameraStatus.CAMERA_STATUS_APPEAR) {
+        hilog.info(0x01, TAG, `New Camera device appear.`);
       }
-      // 如需要在图库中看到所保存的图片、视频资源，请使用用户无感的安全控件创建媒体资源。
-      let path = getContext().cacheDir +'/' + systemDateTime.getTime() +'.jpg'
-      let result = FileUtil.writeBufferToFile(path,buffer)
-
-      hilog.error(0x01, TAG, `${result}  finish save file ` + path);
-      if(result > 0){
-        this.photoLocalPath = path
+      // 如果当断开相机设备USB连接时，回调函数会返回相机被移除状态
+      if (cameraStatusInfo.status == camera.CameraStatus.CAMERA_STATUS_DISAPPEAR) {
+        hilog.info(0x01, TAG, `Camera device has been removed.`);
       }
-
-      // buffer处理结束后需要释放该资源，如果未正确释放资源会导致后续拍照获取不到buffer
-      imageObj.release();
-      this.dialogController?.open()
+      // 相机被关闭时，回调函数会返回相机可用状态
+      if (cameraStatusInfo.status == camera.CameraStatus.CAMERA_STATUS_AVAILABLE) {
+        hilog.info(0x01, TAG, `Current Camera is available.`);
+      }
+      // 相机被打开/占用时，回调函数会返回相机不可用状态
+      if (cameraStatusInfo.status == camera.CameraStatus.CAMERA_STATUS_UNAVAILABLE) {
+        hilog.info(0x01, TAG, `Current Camera has been occupied.`);
+      }
+      hilog.info(0x01, TAG, `camera: ${cameraStatusInfo.camera.cameraId}`);
+      hilog.info(0x01, TAG, `status: ${cameraStatusInfo.status}`);
     });
-  });
-}
-}
-
-//获取cameraManager对象。
-function getCameraManager(context: common.BaseContext): camera.CameraManager {
-  let cameraManager: camera.CameraManager = camera.getCameraManager(context);
-  return cameraManager;
-}
-
-//获取当前设备支持的相机列表，列表中存储了设备支持的所有相机ID。若列表不为空，则说明列表中的每个ID都支持独立创建相机对象；否则，说明当前设备无可用相机，不可继续后续操作。
-function getCameraDevices(cameraManager: camera.CameraManager): Array<camera.CameraDevice> {
-  let cameraArray: Array<camera.CameraDevice> = cameraManager.getSupportedCameras();
-  if (cameraArray != undefined && cameraArray.length > 0) {
-    for (let index = 0; index < cameraArray.length; index++) {
-      hilog.error(0x01, TAG, 'cameraId : ' + cameraArray[index].cameraId); // 获取相机ID
-      hilog.error(0x01, TAG, 'cameraPosition : ' + cameraArray[index].cameraPosition); // 获取相机位置
-      hilog.error(0x01, TAG, 'cameraType : ' + cameraArray[index].cameraType); // 获取相机类型
-      hilog.error(0x01, TAG, 'connectionType : ' + cameraArray[index].connectionType); // 获取相机连接类型
-    }
-    return cameraArray;
-  } else {
-    hilog.error(0x01, TAG, "cameraManager.getSupportedCameras error");
-    return [];
-  }
-}
-
-//在相机应用开发过程中，可以随时监听相机状态，包括新相机的出现、相机的移除、相机的可用状态
-function onCameraStatusChange(cameraManager: camera.CameraManager): void {
-  cameraManager.on('cameraStatus', (err: BusinessError, cameraStatusInfo: camera.CameraStatusInfo) => {
-    if (err !== undefined && err.code !== 0) {
-      hilog.error(0x01, TAG, `Callback Error, errorCode: ${err.code}`);
-      return;
-    }
-    // 如果当通过USB连接相机设备时，回调函数会返回新的相机出现状态
-    if (cameraStatusInfo.status == camera.CameraStatus.CAMERA_STATUS_APPEAR) {
-      hilog.error(0x01, TAG, `New Camera device appear.`);
-    }
-    // 如果当断开相机设备USB连接时，回调函数会返回相机被移除状态
-    if (cameraStatusInfo.status == camera.CameraStatus.CAMERA_STATUS_DISAPPEAR) {
-      hilog.error(0x01, TAG, `Camera device has been removed.`);
-    }
-    // 相机被关闭时，回调函数会返回相机可用状态
-    if (cameraStatusInfo.status == camera.CameraStatus.CAMERA_STATUS_AVAILABLE) {
-      hilog.error(0x01, TAG, `Current Camera is available.`);
-    }
-    // 相机被打开/占用时，回调函数会返回相机不可用状态
-    if (cameraStatusInfo.status == camera.CameraStatus.CAMERA_STATUS_UNAVAILABLE) {
-      hilog.error(0x01, TAG, `Current Camera has been occupied.`);
-    }
-    hilog.error(0x01, TAG, `camera: ${cameraStatusInfo.camera.cameraId}`);
-    hilog.error(0x01, TAG, `status: ${cameraStatusInfo.status}`);
-  });
-}
-
-async function createInput(cameraDevice: camera.CameraDevice,
-  cameraManager: camera.CameraManager): Promise<camera.CameraInput | undefined> {
-  // 创建相机输入流
-  let cameraInput: camera.CameraInput | undefined = undefined;
-  try {
-    cameraInput = cameraManager.createCameraInput(cameraDevice);
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, 'Failed to createCameraInput errorCode = ' + err.code);
-  }
-  if (cameraInput === undefined) {
-    return undefined;
-  }
-  // 监听cameraInput错误信息
-  cameraInput.on('error', cameraDevice, (error: BusinessError) => {
-    hilog.error(0x01, TAG, `Camera input error code: ${error.code}`);
-  });
-  // 打开相机
-  await cameraInput.open();
-  return cameraInput;
-}
-
-function getSupportedSceneMode(cameraDevice: camera.CameraDevice,
-  cameraManager: camera.CameraManager): Array<camera.SceneMode> {
-  // 获取相机设备支持的模式列表
-  let sceneModeArray: Array<camera.SceneMode> = cameraManager.getSupportedSceneModes(cameraDevice);
-  if (sceneModeArray != undefined && sceneModeArray.length > 0) {
-    for (let index = 0; index < sceneModeArray.length; index++) {
-      hilog.error(0x01, TAG, 'Camera SceneMode : ' + sceneModeArray[index]);
-    }
-    return sceneModeArray;
-  } else {
-    hilog.error(0x01, TAG, "cameraManager.getSupportedSceneModes error");
-    return [];
-  }
-}
-
-async function getSupportedOutputCapability(cameraDevice: camera.CameraDevice, cameraManager: camera.CameraManager,
-  sceneMode: camera.SceneMode): Promise<camera.CameraOutputCapability | undefined> {
-  // 获取相机设备支持的输出流能力
-  let cameraOutputCapability: camera.CameraOutputCapability =
-    cameraManager.getSupportedOutputCapability(cameraDevice, sceneMode);
-  if (!cameraOutputCapability) {
-    hilog.error(0x01, TAG, "cameraManager.getSupportedOutputCapability error");
-    return undefined;
-  }
-  console.info("outputCapability: " + JSON.stringify(cameraOutputCapability));
-  // 以NORMAL_PHOTO模式为例，需要添加预览流、拍照流
-  // previewProfiles属性为获取当前设备支持的预览输出流
-  let previewProfilesArray: Array<camera.Profile> = cameraOutputCapability.previewProfiles;
-  if (!previewProfilesArray) {
-    hilog.error(0x01, TAG, "createOutput previewProfilesArray == null || undefined");
-  }
-  //photoProfiles属性为获取当前设备支持的拍照输出流
-  let photoProfilesArray: Array<camera.Profile> = cameraOutputCapability.photoProfiles;
-  if (!photoProfilesArray) {
-    hilog.error(0x01, TAG, "createOutput photoProfilesArray == null || undefined");
-  }
-  return cameraOutputCapability;
-}
-
-function getSession(cameraManager: camera.CameraManager): camera.PhotoSession | undefined {
-  let session: camera.PhotoSession | undefined = undefined;
-  try {
-    session = cameraManager.createSession(camera.SceneMode.NORMAL_PHOTO) as camera.PhotoSession;
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to create the session instance. error: ${JSON.stringify(err)}`);
-  }
-  return session;
-}
-
-function beginConfig(photoSession: camera.PhotoSession): void {
-  try {
-    photoSession.beginConfig();
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to beginConfig. error: ${JSON.stringify(err)}`);
-  }
-}
-
-
-async function startSession(photoSession: camera.PhotoSession, cameraInput: camera.CameraInput,
-  previewOutput: camera.PreviewOutput, photoOutput: camera.PhotoOutput): Promise<void> {
-  try {
-    photoSession.addInput(cameraInput);
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to addInput. error: ${JSON.stringify(err)}`);
-  }
-  try {
-    photoSession.addOutput(previewOutput);
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to add previewOutput. error: ${JSON.stringify(err)}`);
-  }
-  try {
-    photoSession.addOutput(photoOutput);
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to add photoOutput. error: ${JSON.stringify(err)}`);
-  }
-  try {
-    await photoSession.commitConfig();
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to commitConfig. error: ${JSON.stringify(err)}`);
   }
 
-  try {
-    await photoSession.start();
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to start. error: ${JSON.stringify(err)}`);
-  }
-}
-
-async function switchOutput(photoSession: camera.PhotoSession, videoOutput: camera.VideoOutput,
-  photoOutput: camera.PhotoOutput): Promise<void> {
-  try {
-    await photoSession.stop();
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to stop. error: ${JSON.stringify(err)}`);
-  }
-
-  try {
-    photoSession.beginConfig();
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to beginConfig. error: ${JSON.stringify(err)}`);
-  }
-  // 从会话中移除拍照输出流
-  try {
-    photoSession.removeOutput(photoOutput);
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to remove photoOutput. error: ${JSON.stringify(err)}`);
-  }
-  // 向会话中添加视频输出流
-  try {
-    photoSession.addOutput(videoOutput);
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to add videoOutput. error: ${JSON.stringify(err)}`);
-  }
-}
-
-function getPreviewOutput(cameraManager: camera.CameraManager, cameraOutputCapability: camera.CameraOutputCapability,
-  surfaceId: string): camera.PreviewOutput | undefined {
-
-  let previewProfile: undefined | camera.Profile =
-    cameraOutputCapability.previewProfiles.find((previewProfile: camera.Profile) => {
-      return previewProfile.size.width === 1920 && previewProfile.size.height === 1080;
-    });
-  let previewOutput: camera.PreviewOutput | undefined = undefined;
-  try {
-     previewOutput = cameraManager.createPreviewOutput(previewProfile, surfaceId);
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, "Failed to create the PreviewOutput instance. error code: " + err.code);
-  }
-  return previewOutput;
-}
-
-function getPhotoOutput(cameraManager: camera.CameraManager,
-  cameraOutputCapability: camera.CameraOutputCapability): camera.PhotoOutput | undefined {
-
-
-  let photoProfile: undefined | camera.Profile =
-    cameraOutputCapability.photoProfiles.find((photoProfile: camera.Profile) => {
-      return photoProfile.size.width === 1920 && photoProfile.size.height === 1080;
-    });
-  let photoProfilesArray: Array<camera.Profile> = cameraOutputCapability.photoProfiles;
-  if (!photoProfilesArray) {
-    hilog.error(0x01, TAG, "createOutput photoProfilesArray == null || undefined");
-  }
-  let photoOutput: camera.PhotoOutput | undefined = undefined;
-  try {
-    photoOutput = cameraManager.createPhotoOutput(photoProfile)
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to createPhotoOutput. error: ${JSON.stringify(err)}`);
-  }
-  return photoOutput;
-}
-
-
-
-
-
-function configuringSession(photoSession: camera.PhotoSession): void {
-  // 判断设备是否支持闪光灯
-  let flashStatus: boolean = false;
-  try {
-    flashStatus = photoSession.hasFlash();
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to hasFlash. error: ${JSON.stringify(err)}`);
-  }
-  hilog.error(0x01, TAG, `Returned with the flash light support status: ${flashStatus}`);
-  if (flashStatus) {
-    // 判断是否支持自动闪光灯模式
-    let flashModeStatus: boolean = false;
+  //创建相机输入流
+  createInput(): camera.CameraInput | undefined {
+    // 创建相机输入流
+    let cameraInput: camera.CameraInput | undefined = undefined;
     try {
-      let status: boolean = photoSession.isFlashModeSupported(camera.FlashMode.FLASH_MODE_AUTO);
-      flashModeStatus = status;
+      cameraInput = this.cameraManager.createCameraInput(this.currentCamera);
     } catch (error) {
       let err = error as BusinessError;
-      hilog.error(0x01, TAG, `Failed to check whether the flash mode is supported. error: ${JSON.stringify(err)}`);
+      console.error('Failed to createCameraInput errorCode = ' + err.code);
     }
-    if (flashModeStatus) {
-      // 设置自动闪光灯模式
+    if (cameraInput === undefined) {
+      return undefined;
+    }
+    // 监听cameraInput错误信息
+    cameraInput.on('error', this.currentCamera, (error: BusinessError) => {
+      console.error(`Camera input error code: ${error.code}`);
+    });
+
+    return cameraInput;
+  }
+
+  getSupportedOutputCapability(): camera.CameraOutputCapability | undefined {
+    // 获取相机设备支持的输出流能力
+    let cameraOutputCapability: camera.CameraOutputCapability =
+      this.cameraManager.getSupportedOutputCapability(this.currentCamera, camera.SceneMode.NORMAL_PHOTO)
+
+    if (!cameraOutputCapability) {
+      console.error("cameraManager.getSupportedOutputCapability error");
+      return undefined;
+    }
+    return cameraOutputCapability;
+  }
+
+  async switchOutput(photoSession: camera.PhotoSession, videoOutput: camera.VideoOutput,
+    photoOutput: camera.PhotoOutput): Promise<void> {
+    try {
+      await photoSession.stop();
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`Failed to stop. error: ${JSON.stringify(err)}`);
+    }
+
+    try {
+      photoSession.beginConfig();
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`Failed to beginConfig. error: ${JSON.stringify(err)}`);
+    }
+    // 从会话中移除拍照输出流
+    try {
+      photoSession.removeOutput(photoOutput);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`Failed to remove photoOutput. error: ${JSON.stringify(err)}`);
+    }
+    // 向会话中添加视频输出流
+    try {
+      photoSession.addOutput(videoOutput);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`Failed to add videoOutput. error: ${JSON.stringify(err)}`);
+    }
+  }
+
+  createSession() {
+    //创建会话
+
+    try {
+      this.photoSession = this.cameraManager.createSession(camera.SceneMode.NORMAL_PHOTO) as camera.PhotoSession;
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to create the session instance. errorCode = ' + err.code);
+    }
+    if (this.photoSession === undefined) {
+      return;
+    }
+    // 监听session错误信息
+    this.photoSession.on('error', (error: BusinessError) => {
+      console.error(`Capture session error code: ${error.code}`);
+    });
+  }
+
+  async configSession(cameraInput: camera.CameraInput, previewOutput: camera.PreviewOutput) {
+    if (!this.photoSession) {
+      return
+    }
+
+    // 开始配置会话
+    try {
+      this.photoSession.beginConfig();
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to beginConfig. errorCode = ' + err.code);
+    }
+
+    // 向会话中添加相机输入流
+    try {
+      this.photoSession.addInput(cameraInput);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to addInput. errorCode = ' + err.code);
+    }
+
+    // 向会话中添加预览输出流
+    try {
+      this.photoSession.addOutput(previewOutput);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to addOutput(previewOutput). errorCode = ' + err.code);
+    }
+
+    // 向会话中添加拍照输出流
+    try {
+      this.photoSession.addOutput(this.photoOutput);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to addOutput(photoOutput). errorCode = ' + err.code);
+    }
+
+    // 提交会话配置
+    await this.photoSession.commitConfig();
+  }
+
+  getSupportFlashMode() {
+    this.supportFlashMode = []
+    if (!this.photoSession) {
+      return
+    }
+    // 判断设备是否支持闪光灯
+    let flashStatus: boolean = false;
+    try {
+      flashStatus = this.photoSession.hasFlash();
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to hasFlash. errorCode = ' + err.code);
+    }
+    console.info('Returned with the flash light support status:' + flashStatus);
+
+    if (flashStatus) {
+      // 判断支持的闪光灯模式
       try {
-        photoSession.setFlashMode(camera.FlashMode.FLASH_MODE_AUTO);
+        let status: boolean = this.photoSession.isFlashModeSupported(camera.FlashMode.FLASH_MODE_CLOSE);
+        if (status) {
+          this.supportFlashMode.push(camera.FlashMode.FLASH_MODE_CLOSE)
+        }
       } catch (error) {
         let err = error as BusinessError;
-        hilog.error(0x01, TAG, `Failed to set the flash mode. error: ${JSON.stringify(err)}`);
+        console.error('Failed to check whether the flash mode is supported. errorCode = ' + err.code);
+      }
+
+      try {
+        let status: boolean = this.photoSession.isFlashModeSupported(camera.FlashMode.FLASH_MODE_OPEN);
+        if (status) {
+          this.supportFlashMode.push(camera.FlashMode.FLASH_MODE_OPEN)
+        }
+      } catch (error) {
+        let err = error as BusinessError;
+        console.error('Failed to check whether the flash mode is supported. errorCode = ' + err.code);
+      }
+
+      try {
+        let status: boolean = this.photoSession.isFlashModeSupported(camera.FlashMode.FLASH_MODE_AUTO);
+        if (status) {
+          this.supportFlashMode.push(camera.FlashMode.FLASH_MODE_AUTO)
+        }
+      } catch (error) {
+        let err = error as BusinessError;
+        console.error('Failed to check whether the flash mode is supported. errorCode = ' + err.code);
+      }
+
+      try {
+        let status: boolean = this.photoSession.isFlashModeSupported(camera.FlashMode.FLASH_MODE_ALWAYS_OPEN);
+        if (status) {
+          this.supportFlashMode.push(camera.FlashMode.FLASH_MODE_ALWAYS_OPEN)
+        }
+      } catch (error) {
+        let err = error as BusinessError;
+        console.error('Failed to check whether the flash mode is supported. errorCode = ' + err.code);
       }
     }
   }
-  // 判断是否支持连续自动变焦模式
-  let focusModeStatus: boolean = false;
-  try {
-    let status: boolean = photoSession.isFocusModeSupported(camera.FocusMode.FOCUS_MODE_CONTINUOUS_AUTO);
-    focusModeStatus = status;
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to check whether the focus mode is supported. error: ${JSON.stringify(err)}`);
-  }
-  if (focusModeStatus) {
-    // 设置连续自动变焦模式
+
+  setAutoContinuousFocus() {
+    if (!this.photoSession) {
+      return
+    }
+    // 判断是否支持连续自动变焦模式
+    let focusModeStatus: boolean = false;
     try {
-      photoSession.setFocusMode(camera.FocusMode.FOCUS_MODE_CONTINUOUS_AUTO);
+      let status: boolean = this.photoSession.isFocusModeSupported(camera.FocusMode.FOCUS_MODE_CONTINUOUS_AUTO);
+      focusModeStatus = status;
     } catch (error) {
       let err = error as BusinessError;
-      hilog.error(0x01, TAG, `Failed to set the focus mode. error: ${JSON.stringify(err)}`);
+      console.error('Failed to check whether the focus mode is supported. errorCode = ' + err.code);
+    }
+
+    if (focusModeStatus) {
+      // 设置连续自动变焦模式
+      try {
+        this.photoSession.setFocusMode(camera.FocusMode.FOCUS_MODE_CONTINUOUS_AUTO);
+      } catch (error) {
+        let err = error as BusinessError;
+        console.error('Failed to set the focus mode. errorCode = ' + err.code);
+      }
+    }
+
+  }
+
+  getZoomRatioRange() {
+    if (!this.photoSession) {
+      return
+    }
+    // 获取相机支持的可变焦距比范围
+    let zoomRatioRange: Array<number> = [];
+    try {
+      zoomRatioRange = this.photoSession.getZoomRatioRange();
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to get the zoom ratio range. errorCode = ' + err.code);
+    }
+    if (zoomRatioRange.length <= 0) {
+      return;
+    }
+    this.zoomRatioRangeStart = zoomRatioRange[0]
+    this.zoomRatioRangeEnd = zoomRatioRange[1]
+
+  }
+
+  setZoomRatio(zoom?: number) {
+    if (!this.photoSession) {
+      return
+    }
+    if (!zoom) {
+      zoom = 1
+    }
+    if (zoom > this.zoomRatioRangeEnd || zoom < this.zoomRatioRangeStart) {
+      zoom = 1
+    }
+
+    // 设置可变焦距比
+    try {
+      this.photoSession.setZoomRatio(zoom);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to set the zoom ratio value. errorCode = ' + err.code);
     }
   }
-  // 获取相机支持的可变焦距比范围
-  let zoomRatioRange: Array<number> = [];
-  try {
-    zoomRatioRange = photoSession.getZoomRatioRange();
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to get the zoom ratio range. error: ${JSON.stringify(err)}`);
+
+  takePhoto() {
+    if (!this.photoOutput) {
+      return
+    }
+    let photoCaptureSetting: camera.PhotoCaptureSetting = {
+      quality: camera.QualityLevel.QUALITY_LEVEL_HIGH, // 设置图片质量高
+      rotation: camera.ImageRotation.ROTATION_0 // 设置图片旋转角度0
+    }
+    // 使用当前拍照设置进行拍照
+    this.photoOutput.capture(photoCaptureSetting, (err: BusinessError) => {
+      if (err) {
+        console.error(`Failed to capture the photo ${err.message}`);
+        return;
+      }
+      console.info('Callback invoked to indicate the photo capture request success.');
+    });
   }
-  if (zoomRatioRange.length <= 0) {
-    return;
-  }
-  // 设置可变焦距比
-  try {
-    photoSession.setZoomRatio(zoomRatioRange[0]);
-  } catch (error) {
-    let err = error as BusinessError;
-    hilog.error(0x01, TAG, `Failed to set the zoom ratio value. error: ${JSON.stringify(err)}`);
-  }
-}
+
+  async startPreviewOutput(): Promise<void> {
+    if (!this.cameraManager) {
+      return
+    }
+
+    // 创建相机输入流
+    let cameraInput: camera.CameraInput | undefined = undefined;
+    try {
+      cameraInput = this.createInput()
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to createCameraInput errorCode = ' + err.code);
+    }
+    if (cameraInput === undefined) {
+      return;
+    }
+
+
+    // 打开相机
+    await cameraInput.open();
+
+    // 获取支持的模式类型
+    let sceneModes: Array<camera.SceneMode> = this.cameraManager.getSupportedSceneModes(this.currentCamera);
+    let isSupportPhotoMode: boolean = sceneModes.indexOf(camera.SceneMode.NORMAL_PHOTO) >= 0;
+    if (!isSupportPhotoMode) {
+      console.error('photo mode not support');
+      return;
+    }
+    // 获取相机设备支持的输出流能力
+    let cameraOutputCap = this.getSupportedOutputCapability()
+    if (!cameraOutputCap) {
+      console.error("cameraManager.getSupportedOutputCapability error");
+      return;
+    }
+    console.info("outputCapability: " + JSON.stringify(cameraOutputCap));
+
+    this.supportPreviewProfileArray = cameraOutputCap.previewProfiles;
+
+
+    if (!this.supportPreviewProfileArray) {
+      console.error("createOutput previewProfilesArray == null || undefined");
+    }
+
+    this.supportPhotoProfileArray = cameraOutputCap.photoProfiles;
+    if (!this.supportPhotoProfileArray) {
+      console.error("createOutput photoProfilesArray == null || undefined");
+    }
+
+
+    if (!this.currentPhotoProfile) {
+      this.currentPhotoProfile = this.getPhotoProfileBySize()
+    }
+    if (!this.currentPhotoProfile) {
+      console.error("getPhotoProfileBySize == null || undefined");
+      return
+    }
+    // 创建拍照输出流
+    try {
+      this.photoOutput = this.cameraManager.createPhotoOutput(this.currentPhotoProfile);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error('Failed to createPhotoOutput errorCode = ' + err.code);
+    }
+    if (this.photoOutput === undefined) {
+      return;
+    }
+
+    // 创建预览输出流,其中参数 surfaceId 参考上文 XComponent 组件，预览流为XComponent组件提供的surface
+    let previewProfile = this.getPreviewProfileBySize()
+    if (!previewProfile) {
+      console.error("getPreviewProfileBySize == null || undefined");
+      return
+    }
+
+
+    let previewOutput: camera.PreviewOutput | undefined = undefined;
+    try {
+      previewOutput = this.cameraManager.createPreviewOutput(previewProfile, this.surfaceId);
+    } catch (error) {
+      let err = error as BusinessError;
+      console.error(`Failed to create the PreviewOutput instance. error code: ${err.code}`);
+    }
+    if (previewOutput === undefined) {
+      return;
+    }
 
 
 
-@CustomDialog
-@Component
-export struct CustomDialogExample {
-  textValue='textValue'
-  inputValue='inputValue'
-  imagePath=''
-  controller?: CustomDialogController
-  cancel: () => void = () => {
-  }
-  confirm: () => void = () => {
+
+    // 监听预览输出错误信息
+    previewOutput.on('error', (error: BusinessError) => {
+      console.error(`Preview output error code: ${error.code}`);
+    });
+
+
+    //调用上面的回调函数来保存图片
+    this.setPhotoOutputCb();
+
+
+    //创建会话
+    this.createSession()
+    //配置会话
+    this.configSession(cameraInput, previewOutput)
+
+
+    //设置预览旋转角度
+    let initDisplayRotation = display.getDefaultDisplaySync().rotation;
+    let imageRotation = initDisplayRotation * camera.ImageRotation.ROTATION_90;
+    let previewRotation: camera.ImageRotation = camera.ImageRotation.ROTATION_0;
+
+    try {
+      previewRotation = previewOutput.getPreviewRotation(imageRotation);
+      console.log(`Preview rotation is: ${previewRotation}`);
+    } catch (error) {
+      // 失败返回错误码error.code并处理
+      let err = error as BusinessError;
+      console.error(`The previewOutput.getPreviewRotation call failed. error code: ${err.code}`);
+    }
+    previewOutput.setPreviewRotation(previewRotation, false);
+
+
+    // 启动会话
+    if (this.photoSession) {
+      await this.photoSession.start().then(() => {
+        console.info('Promise returned to indicate the session start success.');
+      });
+    } else {
+      return
+    }
+
+    //获取支持的闪光灯模式
+    this.getSupportFlashMode()
+    //设置连续自动对焦
+    this.setAutoContinuousFocus()
+    //获取并设置变焦范围
+    this.getZoomRatioRange()
+    this.setZoomRatio()
+
+
+
+    //
+    // // 需要在拍照结束之后调用以下关闭摄像头和释放会话流程，避免拍照未结束就将会话释放。
+    // // 停止当前会话
+    // await photoSession.stop();
+    //
+    // // 释放相机输入流
+    // await cameraInput.close();
+    //
+    // // 释放预览输出流
+    // await previewOutput.release();
+    //
+    // // 释放拍照输出流
+    // await photoOutput.release();
+    //
+    // // 释放会话
+    // await photoSession.release();
+    //
+    // // 会话置空
+    // photoSession = undefined;
+
   }
 
-  build() {
-    Column() {
-        Image(this.imagePath)
-        Button('confirm')
-          .onClick(() => {
-            if (this.controller != undefined) {
-              this.inputValue = this.textValue
-              this.controller.close()
-              this.confirm()
+  setPhotoOutputCb(): void {
+    if (!this.photoOutput) {
+      return
+    }
+    //设置回调之后，调用photoOutput的capture方法，就会将拍照的buffer回传到回调中
+    this.photoOutput.on('photoAvailable', (errCode: BusinessError, photo: camera.Photo): void => {
+      console.info('getPhoto start');
+      console.info(`err: ${JSON.stringify(errCode)}`);
+      if (errCode || photo === undefined) {
+        console.error('getPhoto failed');
+        return;
+      }
+      let imageObj = photo.main;
+      imageObj.getComponent(image.ComponentType.JPEG, (errCode: BusinessError, component: image.Component): void => {
+        console.info('getComponent start');
+        if (errCode || component === undefined) {
+          console.error('getComponent failed');
+          return;
+        }
+        let buffer: ArrayBuffer;
+        if (component.byteBuffer) {
+          buffer = component.byteBuffer;
+          let filePath = getContext().cacheDir + '/' + systemDateTime.getTime() + '.jpg'
+          let file = fileIo.openSync(filePath, fileIo.OpenMode.READ_WRITE | fileIo.OpenMode.CREATE)
+          fileIo.writeSync(file.fd, buffer)
+          fileIo.closeSync(file)
+
+          let fileUrl = fileUri.getUriFromPath(filePath)
+          promptAction.showToast({message:fileUrl})
+
+
+          let id: number = 0
+          promptAction.openCustomDialog({
+            builder: () => {
+              this.saveImageToAlbumDialog(fileUrl, () => {
+                promptAction.closeCustomDialog(id)
+              })
             }
-          }).backgroundColor(0xffffff).fontColor(Color.Red)
-      }.margin({ bottom: 10 })
+          }).then((dialogID) => {
+            id = dialogID
+          })
+
+        } else {
+          console.error('byteBuffer is null');
+          return;
+        }
+        imageObj.release();
+      });
+    });
+  }
+
+  @Builder
+  saveImageToAlbumDialog(fileUrl: string, dismiss: () => void) {
+
+    Column() {
+      Image(fileUrl).objectFit(ImageFit.Contain)
+      Row() {
+        Button().onClick((_) => {
+          dismiss()
+        })
+        SaveButton({ text: SaveDescription.SAVE_IMAGE }).onClick((_) => {
+          dismiss()
+        })
+      }
+    }
   }
 }

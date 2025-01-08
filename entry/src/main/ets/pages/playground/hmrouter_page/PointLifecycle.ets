@@ -1,4 +1,4 @@
-import { HMLifecycle, HMLifecycleContext, IHMLifecycle } from '@hadss/hmrouter';
+import { HMLifecycle, HMLifecycleContext, HMRouterMgr, IHMLifecycle } from '@hadss/hmrouter';
 import hilog from '@ohos.hilog';
 
 @HMLifecycle({lifecycleName : 'pointLifecycle',global:true})
@@ -16,6 +16,7 @@ export class PointLifecycle implements IHMLifecycle {
   // onWillHide?(ctx: HMLifecycleContext): void;
   // onReady?(ctx: HMLifecycleContext): void;
   // onBackPressed?(ctx: HMLifecycleContext): boolean;
+ public  intercept:boolean = false
 
   onPrepare(ctx: HMLifecycleContext): void {
 
@@ -31,5 +32,7 @@ export class PointLifecycle implements IHMLifecycle {
 
 
   }
+
+
 
 }

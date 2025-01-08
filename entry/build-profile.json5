@@ -1,7 +1,11 @@
 {
   "apiType": 'stageMode',
   "buildOption": {
-
+    "sourceOption": {
+      "workers": [
+        './src/main/ets/workers/CameraWorker.ets'
+      ]
+    }
   },
   "targets": [
     {

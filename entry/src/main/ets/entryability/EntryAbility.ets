@@ -5,13 +5,16 @@ import { UIContext, window, uiObserver as observer, uiObserver } from '@kit.ArkU
 import { BusinessError } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';
 import { HMRouterMgr } from '@hadss/hmrouter';
+import { DialogHelper } from '@pura/harmony-dialog';
 
 export default class EntryAbility extends UIAbility {
 
   private uiContext: UIContext | null = null;
 
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-
+    DialogHelper.setDefaultConfig((config) => {
+      config.uiAbilityContext = this.context;
+    })
     HMRouterMgr.init({
       context: this.context
     })
