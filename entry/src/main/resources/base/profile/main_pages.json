@@ -57,6 +57,7 @@
     "pages/playground/video_recorder/PlayLocalVideoPage",
     "pages/playground/take_photo/TakePhotoPage",
     "pages/playground/video_recorder/VideoRecorderPage",
-    "pages/playground/slide_verification/SlideVerificationPage"
+    "pages/playground/slide_verification/SlideVerificationPage",
+    "pages/playground/state_manager_v2/StateManagerV2Page"
   ]
 }

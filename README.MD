@@ -44,4 +44,4 @@
     </div>
 * 图片滑块验证码  
   <img src ="image/slide_code.gif" width=20% height=20%/>  
-* 自定义录像
+* 自定义拍照

@@ -1,4 +1,3 @@
-
 import { BaseListItem } from '../../comm/BaseListItem'
 import { router, UIContext } from '@kit.ArkUI'
 import { common } from '@kit.AbilityKit'
@@ -7,8 +6,7 @@ import { HMPopInfo, HMRouterMgr } from '@hadss/hmrouter'
 import hilog from '@ohos.hilog'
 
 @Component
-export struct  PlayGroundIndex {
-
+export struct PlayGroundIndex {
   build() {
     Scroll() {
 
@@ -43,38 +41,41 @@ export struct  PlayGroundIndex {
         BaseListItem({ label: 'Observe', path: "pages/playground/observed_and_objectLink/ObservedLinkPage" })
         BaseListItem({ label: 'JSON解析', path: "pages/playground/JSONParsePage" })
         BaseListItem({ label: '滑块验证码', path: "pages/playground/slide_verification/SlideVerificationPage" })
-        Button('自定义拍照').onClick((_)=>{
+        Button('自定义拍照').onClick((_) => {
 
           const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
           const uiContent = this.getUIContext()
           reqPermissionsFromUser(['ohos.permission.CAMERA'], context, uiContent, {
             onGrant: () => {
-              router.pushUrl({url:'pages/playground/take_photo/TakePhotoPage'})
+              router.pushUrl({ url: 'pages/playground/take_photo/TakePhotoPage' })
             }
           } as RequestPermissionCallBack)
 
         })
-        Button('自定义录像').onClick((_)=>{
+        Button('自定义录像').onClick((_) => {
 
           const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
           const uiContent = this.getUIContext()
           reqPermissionsFromUser(['ohos.permission.MICROPHONE', 'ohos.permission.CAMERA'], context, uiContent, {
             onGrant: () => {
-              router.pushUrl({url:'pages/playground/video_recorder/VideoRecorderPage'})
+              router.pushUrl({ url: 'pages/playground/video_recorder/VideoRecorderPage' })
             }
           } as RequestPermissionCallBack)
 
         })
-        Button('HMRouter').onClick((_)=>{
-          HMRouterMgr.push({pageUrl: 'pages/playground/hmrouter_page/HMRouterAPage'},{
+        Button('状态管理 V2').onClick((_) => {
+          router.pushUrl({ url: 'pages/playground/state_manager_v2/StateManagerV2Page' })
+        })
+        Button('HMRouter').onClick((_) => {
+          HMRouterMgr.push({ pageUrl: 'pages/playground/hmrouter_page/HMRouterAPage' }, {
             onResult: (popInfo: HMPopInfo) => {
-              hilog.error(0x01,'hmrouter','HMRouterAPageNav 页面返回值-->' + JSON.stringify(popInfo))
+              hilog.error(0x01, 'hmrouter', 'HMRouterAPageNav 页面返回值-->' + JSON.stringify(popInfo))
             },
-            onArrival:(()=>{
-              hilog.error(0x01,'hmrouter','HMRouterAPageNav onArrival')
+            onArrival: (() => {
+              hilog.error(0x01, 'hmrouter', 'HMRouterAPageNav onArrival')
             }),
-            onLost:(()=>{
-              hilog.error(0x01,'hmrouter','HMRouterAPageNav onLost')
+            onLost: (() => {
+              hilog.error(0x01, 'hmrouter', 'HMRouterAPageNav onLost')
             })
           })
         })
@@ -83,6 +84,5 @@ export struct  PlayGroundIndex {
       }
     }
   }
-
- }
+}
 
