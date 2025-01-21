@@ -1,18 +1,15 @@
+import { LengthMetrics, router } from '@kit.ArkUI';
+
 @Entry
 @Component
 struct StateManagerV2Page {
   @State message: string = 'Hello World';
 
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('StateManagerV2PageHelloWorld')
-        .fontSize(50)
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
+    Flex({wrap:FlexWrap.Wrap,space:{main:LengthMetrics.vp(5),cross:LengthMetrics.vp(5)}}) {
+      Button('ObservedV2 & Trace').onClick((_)=>{
+        router.pushUrl({url:"pages/playground/state_manager_v2/ObservedV2TracePage"})
+      })
     }
     .height('100%')
     .width('100%')
