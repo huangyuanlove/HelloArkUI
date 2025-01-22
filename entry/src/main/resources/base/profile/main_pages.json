@@ -59,6 +59,7 @@
     "pages/playground/video_recorder/VideoRecorderPage",
     "pages/playground/slide_verification/SlideVerificationPage",
     "pages/playground/state_manager_v2/StateManagerV2Page",
-    "pages/playground/state_manager_v2/ObservedV2TracePage"
+    "pages/playground/state_manager_v2/ObservedV2TracePage",
+    "pages/playground/state_manager_v2/ProviderConsumerPage"
   ]
 }
