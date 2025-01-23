@@ -14,6 +14,10 @@ struct StateManagerV2Page {
       Button('Provider & Consumer').onClick((_)=>{
         router.pushUrl({url:"pages/playground/state_manager_v2/ProviderConsumerPage"})
       })
+
+      Button('Monitor').onClick((_)=>{
+        router.pushUrl({url:"pages/playground/state_manager_v2/MonitorPage"})
+      })
     }
     .height('100%')
     .width('100%')
