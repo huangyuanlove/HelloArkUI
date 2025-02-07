@@ -5,66 +5,117 @@ import Want from '@ohos.app.ability.Want'
 @Entry
 @Component
 struct AboutStateAnnoPage {
-
-  url= 'https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/arkts-state-0000001474017162-V3?catalogVersion=V3'
+  url =
+    'https://developer.harmonyos.com/cn/docs/documentation/doc-guides-V3/arkts-state-0000001474017162-V3?catalogVersion=V3'
+  @State person1: Person = new Person()
+  @State person2: Person = new Person()
+  @State person3: Person = new Person()
+  @State person4: Person = new Person()
+  @State person5: Person = new Person()
 
   build() {
-    Column(){
-
+    Column() {
       ActionBar({ title: '@State' })
-
-      Button('@State装饰器：组件内状态').onClick(()=>{
-
-        let want:Want = {
-          // uncomment line below if wish to implicitly query only in the specific bundle.
-          // bundleName: "com.example.myapplication",
-          "action": "ohos.want.action.viewData",
-          // entities can be omitted.
-          "entities": [ "entity.system.browsable" ],
-          "uri": this.url,
-        }
-        let context = getContext(this) as common.UIAbilityContext;
-         context.startAbility(want)
-        console.info(`explicit start ability succeed`)
-      })    .backgroundColor(Color.Gray)
-        .margin(10)
-        .borderRadius(10)
-        .height(30)
-
-    // 此处指定的参数都将在初始渲染时覆盖本地定义的默认值，并不是所有的参数都需要从父组件初始化
-    AboutStateAnno({ count: 1, increaseBy: 2 }).backgroundColor(Color.Brown)
-    AboutStateAnno({ titleModel: new Model('Hello, World 2'), count: 7 })
-    }  .height('100%')
+      AboutStateAnno()
+      Column() {
+        Text(`person1.add: ${this.person1.age}`)
+          .onClick((_) => {
+            let tmp = this.person1
+            AddAge.addAge(tmp)
+          }).padding(10).margin(10)
+        Text(`person2.add:${this.person2.age}`).onClick((_) => {
+          let tmp = this.person2
+          new AddAge1().addAge(tmp)
+        }).padding(10).margin(10)
+        Text(`person3.add:${this.person3.age}`).onClick((_) => {
+          let tmp = this.person3
+          this.addAge1(tmp)
+        }).padding(10).margin(10)
+        Text(`person4.add:${this.person4.age}`).onClick((_) => {
+          this.addAge()
+        }).padding(10).margin(10)
+        Text(`person5.add:${this.person5.age}`).onClick((_) => {
+          this.person5.age += 2;
+        }).padding(10).margin(10)
+      }.margin(10)
+    }.height('100%')
     .width('100%')
+  }
+
+  addAge() {
+    this.person4.age += 2
+  }
+
+  addAge1(person: Person) {
+    person.age += 2
   }
 }
 
 
-class Model {
-  public value: string;
+class Person {
+  age: number = 0
+}
 
-  constructor(value: string) {
-    this.value = value;
+class AddAge {
+  static addAge(person: Person) {
+    person.age += 2
   }
+}
+
+class AddAge1 {
+  addAge(person: Person) {
+    person.age += 2
+  }
+}
+
+
+class OutClass {
+  constructor(outClassName: string) {
+    this.outClassName = outClassName
+    this.innerClass = new InnerClass(`${outClassName}_innerClass`)
+  }
+
+  outClassName: string
+  innerClass: InnerClass
+}
+
+class InnerClass {
+  constructor(innerClassName: string) {
+    this.innerClassName = innerClassName
+  }
+
+  innerClassName: string
 }
 
 @Component
 struct AboutStateAnno {
-  @State titleModel: Model = new Model("Hello world");
-  @State count: number = 0;
-  private increaseBy: number = 1;
+  @State count: number = 0
+  @State grade: string = 'a'
+  @State success: boolean = false
+  @State outClass: OutClass = new OutClass("out_class")
 
   build() {
     Column() {
-      Text(`${this.titleModel.value}`).fontColor(Color.White)
-      Button('click to change message').onClick(() => {
-        // @State变量的更新将触发上面的Text组件内容更新
-        this.titleModel.value = this.titleModel.value === 'Hello ArkUI' ? 'Hello World' : 'Hello ArkUI';
-      }).margin(10)
-      Button(`Click to increase count=${this.count}`).onClick(() => {
-        // @State变量的更新将触发该Button组件的内容更新
-        this.count += this.increaseBy;
-      }).margin(10)
+      Text(`count: ${this.count}`)
+      Text(`grade: ${this.grade}`)
+      Text(`success: ${this.success}`)
+      Text(`out_class_name: ${this.outClass.outClassName}`)
+      Text(`inner_class_name: ${this.outClass.innerClass.innerClassName}`)
+      Button('改变简单数据,UI刷新').onClick((_) => {
+        this.count++
+        this.grade += this.grade
+        this.success = !this.success
+      })
+      Button('改变outClassName,UI刷新').onClick((_) => {
+        this.outClass.outClassName = 'out_afterChange'
+      })
+      Button('改变innerClassName,UI不刷新').onClick((_) => {
+        this.outClass.innerClass.innerClassName = 'inner_afterChange'
+      })
+      Button('改变innerClass,UI刷新').onClick((_) => {
+        this.outClass.innerClass = new InnerClass('new inner_class')
+      })
+
     }.margin(10).borderRadius(10).backgroundColor(Color.Gray).padding(10)
   }
 }

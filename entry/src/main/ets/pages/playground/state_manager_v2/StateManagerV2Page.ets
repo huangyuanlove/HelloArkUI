@@ -1,24 +1,38 @@
 import { LengthMetrics, router } from '@kit.ArkUI';
+import { systemDateTime } from '@kit.BasicServicesKit';
 
 @Entry
 @Component
 struct StateManagerV2Page {
   @State message: string = 'Hello World';
 
+  @State numberList:number[] =[1,2,3,4,5,6]
+
+
   build() {
-    Flex({wrap:FlexWrap.Wrap,space:{main:LengthMetrics.vp(5),cross:LengthMetrics.vp(5)}}) {
-      Button('ObservedV2 & Trace & Param & Local & Event').onClick((_)=>{
-        router.pushUrl({url:"pages/playground/state_manager_v2/ObservedV2TracePage"})
-      })
+    Column(){
+      Flex({wrap:FlexWrap.Wrap,space:{main:LengthMetrics.vp(5),cross:LengthMetrics.vp(5)}}) {
+        Button('ObservedV2 & Trace & Param & Local & Event').onClick((_)=>{
+          router.pushUrl({url:"pages/playground/state_manager_v2/ObservedV2TracePage"})
+        })
 
-      Button('Provider & Consumer').onClick((_)=>{
-        router.pushUrl({url:"pages/playground/state_manager_v2/ProviderConsumerPage"})
-      })
+        Button('Provider & Consumer').onClick((_)=>{
+          router.pushUrl({url:"pages/playground/state_manager_v2/ProviderConsumerPage"})
+        })
 
-      Button('Monitor').onClick((_)=>{
-        router.pushUrl({url:"pages/playground/state_manager_v2/MonitorPage"})
-      })
+        Button('Monitor').onClick((_)=>{
+          router.pushUrl({url:"pages/playground/state_manager_v2/MonitorPage"})
+        })
+        Button('Computed').onClick((_)=>{
+          router.pushUrl({url:"pages/playground/state_manager_v2/ComputedPge"})
+        })
+        Button('makeObserved').onClick((_)=>{
+          router.pushUrl({url:"pages/playground/state_manager_v2/MakeObservedPage"})
+        })
+      }
+
     }
+
     .height('100%')
     .width('100%')
   }
