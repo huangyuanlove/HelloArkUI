@@ -1,6 +1,5 @@
-import common from '@ohos.app.ability.common'
 import ActionBar from '../../../comm/ActionBar'
-import Want from '@ohos.app.ability.Want'
+import { hilog } from '@kit.PerformanceAnalysisKit'
 
 @Entry
 @Component
@@ -12,33 +11,66 @@ struct AboutStateAnnoPage {
   @State person3: Person = new Person()
   @State person4: Person = new Person()
   @State person5: Person = new Person()
+  @State logTrack: LogTrack = new LogTrack();
+  @State logNotTrack: LogNotTrack = new LogNotTrack();
+
+  isRender(index: number) {
+    hilog.error(0x01,'isRender',`Text ${index} is rendered`)
+    return 50;
+  }
 
   build() {
-    Column() {
-      ActionBar({ title: '@State' })
-      AboutStateAnno()
+    Scroll() {
       Column() {
-        Text(`person1.add: ${this.person1.age}`)
-          .onClick((_) => {
-            let tmp = this.person1
-            AddAge.addAge(tmp)
+        ActionBar({ title: '@State' })
+        AboutStateAnno()
+        Column() {
+          Text(`person1.add: ${this.person1.age}`)
+            .onClick((_) => {
+              let tmp = this.person1
+              AddAge.addAge(tmp)
+            }).padding(10).margin(10)
+          Text(`person2.add:${this.person2.age}`).onClick((_) => {
+            let tmp = this.person2
+            new AddAge1().addAge(tmp)
           }).padding(10).margin(10)
-        Text(`person2.add:${this.person2.age}`).onClick((_) => {
-          let tmp = this.person2
-          new AddAge1().addAge(tmp)
-        }).padding(10).margin(10)
-        Text(`person3.add:${this.person3.age}`).onClick((_) => {
-          let tmp = this.person3
-          this.addAge1(tmp)
-        }).padding(10).margin(10)
-        Text(`person4.add:${this.person4.age}`).onClick((_) => {
-          this.addAge()
-        }).padding(10).margin(10)
-        Text(`person5.add:${this.person5.age}`).onClick((_) => {
-          this.person5.age += 2;
-        }).padding(10).margin(10)
-      }.margin(10)
-    }.height('100%')
+          Text(`person3.add:${this.person3.age}`).onClick((_) => {
+            let tmp = this.person3
+            this.addAge1(tmp)
+          }).padding(10).margin(10)
+          Text(`person4.add:${this.person4.age}`).onClick((_) => {
+            this.addAge()
+          }).padding(10).margin(10)
+          Text(`person5.add:${this.person5.age}`).onClick((_) => {
+            this.person5.age += 2;
+            _
+          }).padding(10).margin(10)
+        }.margin(10)
+
+        Column() {
+          Text(this.logTrack.str1)// Text1
+            .fontSize(this.isRender(1))
+            .fontWeight(FontWeight.Bold)
+          Text(this.logTrack.str2)// Text2
+            .fontSize(this.isRender(2))
+            .fontWeight(FontWeight.Bold)
+          Button('change logTrack.str1')
+            .onClick(() => {
+              this.logTrack.str1 = 'Bye';
+            })
+          Text(this.logNotTrack.str1)// Text3
+            .fontSize(this.isRender(3))
+            .fontWeight(FontWeight.Bold)
+          Text(this.logNotTrack.str2)// Text4
+            .fontSize(this.isRender(4))
+            .fontWeight(FontWeight.Bold)
+          Button('change logNotTrack.str1')
+            .onClick(() => {
+              this.logNotTrack.str1 = '再见';
+            })
+        }.margin(10).borderRadius(6).backgroundColor("#ff78ac")
+      }
+    }
     .width('100%')
   }
 
@@ -117,5 +149,26 @@ struct AboutStateAnno {
       })
 
     }.margin(10).borderRadius(10).backgroundColor(Color.Gray).padding(10)
+  }
+}
+
+
+class LogTrack {
+  @Track str1: string;
+  @Track str2: string;
+
+  constructor() {
+    this.str1 = 'with track prop one';
+    this.str2 = 'with track prop two';
+  }
+}
+
+class LogNotTrack {
+  str1: string;
+  str2: string;
+
+  constructor() {
+    this.str1 = 'not track prop one';
+    this.str2 = 'not track prop two';
   }
 }
