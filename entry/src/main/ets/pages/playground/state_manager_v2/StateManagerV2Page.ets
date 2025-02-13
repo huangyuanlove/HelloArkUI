@@ -1,20 +1,21 @@
 import { LengthMetrics, router } from '@kit.ArkUI';
 
 
-
 @Entry
 @ComponentV2
 struct StateManagerV2Page {
   @Local message: string = 'Hello World';
   @Local numberList: number[] = [1, 2, 3, 4, 5, 6]
-
-  @Local  person:Person = new Person()
-  @Local count:number = 4
+  @Local person: Person = new Person()
+  @Local count: number = 4
+  @Local fontColor: string = '#ff6134'
+  @Local fontSize: number = 14
 
   aboutToAppear(): void {
-    this.person.name ='xuan'
+    this.person.name = 'xuan'
     this.person.age = 18
   }
+
   build() {
     Column() {
       Flex({ wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(5), cross: LengthMetrics.vp(5) } }) {
@@ -37,16 +38,49 @@ struct StateManagerV2Page {
         })
       }
 
-      PersonView({person:this.person,count:this.count})
-      Row(){
-        Button('修改Person').onClick((_)=>{
-          this.person.age +=3
-          this.person.name +='c'
-        })
-        Button('修改Count').onClick((_)=>{
-          this.count +=7
-        })
-      }
+      Column() {
+        Text('父组件内容')
+        Text(`${this.person.name}  ${this.person.age}`)
+        Text(`${this.count}`)
+        Text(`${this.person.address.zipCode}  ${this.person.address.city}`)
+
+        PersonView({ person: this.person, count: this.count }).margin(10).backgroundColor("#66ace4")
+        PersonView2({ person: this.person, count: this.count }).margin(10).backgroundColor("#66ace4")
+        Flex({ wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(5), cross: LengthMetrics.vp(5) } }) {
+          Button('修改Person属性').onClick((_) => {
+            this.person.age += 3
+            this.person.name += 'c'
+          })
+          Button('修改Count').onClick((_) => {
+            this.count += 7
+          })
+          Button('修改 address属性').onClick((_) => {
+            this.person.address.zipCode += '9'
+            this.person.address.city += 'w'
+          })
+          Button('对Person重新赋值').onClick((_) => {
+            this.person = new Person()
+            this.person.name = 'new person'
+            this.person.age = 22
+          })
+        }
+      }.margin(10).backgroundColor("#55ff6134")
+
+      ShowEventAnno({
+        fontColor: this.fontColor,
+        fontSize: this.fontSize,
+        changeFontColor: () => {
+          if (this.fontColor == '#ff6134') {
+            this.fontColor = '#39d167'
+          } else {
+            this.fontColor = '#ff6134'
+          }
+        },
+        changeFontSize: (size: number) => {
+          this.fontSize = size
+        }
+      })
+
 
     }
 
@@ -57,21 +91,77 @@ struct StateManagerV2Page {
 
 @ComponentV2
 struct PersonView {
- @Require @Param person: Person = new Person()
-  @Param count:number = 0
-  build() {
-   Column(){
-     Text(`${this.person.name}  ${this.person.age}`)
-     Text(`${this.count}`) .onClick((_)=>{
-       this.person.name +='a'
-       this.person.age ++
-     })
-   }
+  @Require @Param person: Person = new Person()
+  @Param count: number = 0
 
+  build() {
+    Column() {
+      Text('子组件内容，未被@Once 修饰')
+      Text(`${this.person.name}  ${this.person.age}`)
+      Text(`${this.count}`).onClick((_) => {
+        this.person.name += 'a'
+        this.person.age++
+      })
+      Text(`${this.person.address.zipCode}  ${this.person.address.city}`)
+    }
   }
 }
 
+@ComponentV2
+struct PersonView2 {
+  @Require @Param @Once person: Person = new Person()
+  @Once @Param count: number = 0
+
+  build() {
+    Column() {
+      Text('子组件内容，被@Once 修饰')
+      Text(`${this.person.name}  ${this.person.age}`)
+      Text(`${this.count}`).onClick((_) => {
+        this.person.name += 'a'
+        this.person.age++
+      })
+      Text(`${this.person.address.zipCode}  ${this.person.address.city}`)
+    }
+  }
+}
+
+
+@ComponentV2
+struct ShowEventAnno {
+  @Event changeFontColor: () => void
+  @Event changeFontSize: (size: number) => void
+  @Require @Param fontColor: string
+  @Require @Param fontSize: number
+
+  build() {
+    Column() {
+      Text('ShowEventAnno View').fontColor(this.fontColor).fontSize(this.fontSize)
+      Row() {
+        Button('修改文字大小').onClick((_) => {
+          if (this.changeFontSize) {
+            this.changeFontSize(this.fontSize + 2)
+          }
+        })
+        Button('修改文字颜色').onClick((_) => {
+          if (this.changeFontColor) {
+            this.changeFontColor()
+          }
+        })
+      }
+    }
+  }
+}
+
+
+@ObservedV2
 class Person {
-  name: string = ''
-  age: number = 0
+  @Trace name: string = ''
+  @Trace age: number = 0
+  @Trace address: Address = new Address()
+}
+
+@ObservedV2
+class Address {
+  @Trace zipCode: string = '000000'
+  @Trace city: string = '北京'
 }

@@ -4,9 +4,10 @@ import { promptAction } from '@kit.ArkUI';
 @Entry
 @ComponentV2
 struct MonitorPage {
-  @Local message: string = "Hello World";
-  @Local name: string = "Tom";
-  @Local age: number = 24;
+  @Local name: string = "xuan";
+  @Local age: number = 12;
+  @Local monitorTest: Person = new Person()
+
 
   @Monitor("message", "name")
   onStrChange(monitor: IMonitor) {
@@ -16,7 +17,6 @@ struct MonitorPage {
     })
   }
 
-  monitorTest: MonitorTest = new MonitorTest()
 
   @Monitor("monitorTest.name")
   onChangeName(monitor: IMonitor) {
@@ -26,44 +26,51 @@ struct MonitorPage {
 
   build() {
     Column() {
-      Button("change string")
+
+      Text(`name:${this.name}  message:${this.age}`)
+      Button("修改简单类型变量：")
         .onClick(() => {
-          this.message += "!";
-          this.name = "Jack";
+          this.name += "a";
+          this.age += 3
         })
-      Text(`name:${this.name}  message:${this.message}`)
       Divider().color("#e7e7e7").height(1)
 
+
+
+
       Column() {
-        Button("change name")
-          .onClick(() => {
-            this.monitorTest.name = "Jack"; // 能够触发onNameChange方法
-          })
-        Button("change age")
-          .onClick(() => {
-            promptAction.showToast({ message: "age未被@Trace装饰，不能监听变化,不能够触发onAgeChange方法", duration: 5 })
-            this.monitorTest.age = 26; // 不能够触发onAgeChange方法
-          })
-        Button("change region")
-          .onClick(() => {
-            this.monitorTest.region = "South"; // 能够触发onChange方法
-          })
-        Button("change job")
-          .onClick(() => {
-            this.monitorTest.job = "Driver"; // 能够触发onChange方法
-          })
         Text(`name: ${this.monitorTest.name} ,age:${this.monitorTest.age} ,region: ${this.monitorTest.region}, job:${this.monitorTest.job}`)
           .padding(4)
           .borderWidth(1)
           .borderColor("#887612")
-      }
+
+
+        Button("change name")
+          .onClick(() => {
+            this.monitorTest.name += 'b'; // 能够触发onNameChange方法
+          })
+        Button("change age")
+          .onClick(() => {
+
+            this.monitorTest.age += 1; // 不能够触发onAgeChange方法
+          })
+        Button("change region")
+          .onClick(() => {
+            this.monitorTest.region +='region '; // 能够触发onChange方法
+          })
+        Button("change job")
+          .onClick(() => {
+            this.monitorTest.job +='job '; // 能够触发onChange方法
+          })
+
+      }.margin(10)
 
     }.width('100%').height('100%')
   }
 }
 
 @ObservedV2
-class MonitorTest {
+class Person {
   @Trace name: string = "Tom";
   @Trace region: string = "North";
   @Trace job: string = "Teacher";
@@ -72,7 +79,6 @@ class MonitorTest {
   // name被@Trace装饰，能够监听变化
   @Monitor("name")
   onNameChange(monitor: IMonitor) {
-
     hilog.error(0x01, 'MonitorTest', `name change from ${monitor.value()?.before} to ${monitor.value()?.now}`);
   }
 
