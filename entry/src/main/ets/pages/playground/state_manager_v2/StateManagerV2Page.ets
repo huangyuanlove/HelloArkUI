@@ -137,6 +137,10 @@ struct StateManagerV2Page {
         }
       }
 
+      Divider().vertical(false).strokeWidth(5).color("#f7f7f7")
+      Star({count:this.count!!})
+      Divider().vertical(false).strokeWidth(5).color("#f7f7f7")
+      Star({count:this.count})
 
     }
 
@@ -144,6 +148,25 @@ struct StateManagerV2Page {
     .width('100%')
   }
 }
+
+
+@ComponentV2
+struct Star{
+
+  @Param @Require count:number
+  @Event $count:(val:number) => void
+
+  build() {
+    Column(){
+      Text(`value ${this.count}`)
+      Button('改变value').onClick((_)=>{
+
+        this.$count(this.count + 1)
+      })
+    }
+  }
+}
+
 
 @ComponentV2
 struct PersonView {

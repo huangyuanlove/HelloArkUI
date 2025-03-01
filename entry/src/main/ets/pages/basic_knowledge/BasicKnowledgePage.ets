@@ -3,12 +3,14 @@ import router from '@ohos.router';
 import { BaseListItem } from '../../comm/BaseListItem';
 import Want from '@ohos.app.ability.Want';
 import { BusinessError } from '@kit.BasicServicesKit';
+import BuildProfile from 'BuildProfile';
+import hilog from '@ohos.hilog';
 
 @Preview
 @Component
-export default struct  BasicKnowledgePage{
-  build(){
-    Column(){
+export default struct BasicKnowledgePage {
+  build() {
+    Column() {
       Flex({ wrap: FlexWrap.Wrap, }) {
         BaseListItem({ label: '基础', path: 'pages/basic_knowledge/Base' })
         BaseListItem({ label: '生命周期', path: 'pages/basic_knowledge/LifeCirclePage' })
@@ -30,12 +32,13 @@ export default struct  BasicKnowledgePage{
         .backgroundColor($r('app.color.green_39d169'))
         .onClick(() => {
           let context = getContext(this) as common.UIAbilityContext;
-          let want:Want = {
+          let want: Want = {
             deviceId: '', // deviceId为空表示本设备
             bundleName: 'com.huangyuanlove.arkui_demo',
             abilityName: 'SecondAbility',
             moduleName: 'entry', // moduleName非必选
-            parameters: { // 自定义信息
+            parameters: {
+              // 自定义信息
               info: '来自EntryAbility Index页面',
             },
           }
@@ -52,18 +55,30 @@ export default struct  BasicKnowledgePage{
               // 解析被调用方UIAbility返回的信息
               let info = data.want?.parameters?.info
             }
-          }).catch((err:BusinessError) => {
+          }).catch((err: BusinessError) => {
             console.error(`startAbilityForResult failed, code is ${err.code}, message is ${err.message}`);
           })
 
         })
-        Button("webview").onClick(()=>{
-          router.pushUrl({url:"WebViewPage",params:{path:"https://www.chunyuyisheng.com"}})
-        })
-      }
-    }.width('100%').height('100%').padding({top:48})
 
+        Button("webview").onClick(() => {
+          router.pushUrl({ url: "WebViewPage", params: { path: "https://www.chunyuyisheng.com" } })
+        })
+
+        Button('打开 feature hap').onClick((_)=>{
+            let context = getContext(this) as common.UIAbilityContext
+          context.startAbility({
+            bundleName:BuildProfile.BUNDLE_NAME,
+            abilityName:'FeatureHapAbility'
+          }).then(()=>{
+            hilog.error(0x01,'BasicKnowledgePage','BasicKnowledgePage 打开 feature hap')
+          })
+        })
+
+
+
+      }.width('100%').height('100%').padding({ top: 48 })
+
+    }
   }
 }
-
-
