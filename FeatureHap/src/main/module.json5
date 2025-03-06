@@ -1,0 +1,27 @@
+{
+  "module": {
+    "name": "FeatureHap",
+    "type": "feature",
+    "description": "$string:module_desc",
+    "mainElement": "FeatureHapAbility",
+    "deviceTypes": [
+      "phone",
+      "tablet"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "abilities": [
+      {
+        "name": "FeatureHapAbility",
+        "srcEntry": "./ets/featurehapability/FeatureHapAbility.ets",
+        "description": "$string:FeatureHapAbility_desc",
+        "icon": "$media:layered_image",
+        "label": "$string:FeatureHapAbility_label",
+        "startWindowIcon": "$media:startIcon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true
+      }
+    ]
+  }
+}

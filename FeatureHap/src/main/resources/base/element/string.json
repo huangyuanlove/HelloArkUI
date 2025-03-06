@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "this is a feature hap ability"
+    },
+    {
+      "name": "FeatureHapAbility_desc",
+      "value": "FeatureHapAbility"
+    },
+    {
+      "name": "FeatureHapAbility_label",
+      "value": "FeatureHapAbility"
+    }
+  ]
+}
