@@ -5,6 +5,7 @@ import BuildProfile from 'BuildProfile'
 import { HMDefaultGlobalAnimator, HMNavigation } from '@hadss/hmrouter'
 
 
+
 @Entry
 @Component
 export struct Index {

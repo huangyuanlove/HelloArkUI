@@ -23,6 +23,10 @@
     {
       "name": "row_padding",
       "value": "12vp"
+    },
+    {
+      "name": "page_text_font_size",
+      "value": "50fp"
     }
   ]
 }
