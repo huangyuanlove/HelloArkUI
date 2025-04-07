@@ -42,6 +42,7 @@ export struct PlayGroundIndex {
         BaseListItem({ label: 'JSON解析', path: "pages/playground/JSONParsePage" })
         BaseListItem({ label: '滑块验证码', path: "pages/playground/slide_verification/SlideVerificationPage" })
         BaseListItem({ label: '手势图片', path:     "pages/playground/GestureImagePage" })
+        BaseListItem({ label: '属性字符串', path:     "pages/playground/StyledStringValuePage" })
         Button('自定义拍照').onClick((_) => {
 
           const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;

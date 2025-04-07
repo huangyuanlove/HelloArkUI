@@ -64,6 +64,7 @@
     "pages/playground/state_manager_v2/MonitorPage",
     "pages/playground/state_manager_v2/ComputedPge",
     "pages/playground/state_manager_v2/MakeObservedPage",
-    "pages/playground/GestureImagePage"
+    "pages/playground/GestureImagePage",
+    "pages/playground/StyledStringValuePage"
   ]
 }
