@@ -6,7 +6,7 @@ import deviceInfo from '@ohos.deviceInfo'
 export default struct  ActionBar{
   @Prop title:string
 
-  private topPadding:number = 0
+  private topPadding:number = 16
 
 
   aboutToAppear(){
