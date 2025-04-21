@@ -1,121 +1,69 @@
-import ActionBar from '../../../../comm/ActionBar';
-import { router } from '@kit.ArkUI';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import {Type, plainToClass } from 'class-transformer';
 import { systemDateTime } from '@kit.BasicServicesKit';
-
-
-interface UserInterface {
-  name: string;
-}
-
-class UserWithOutMethod {
-  name: string = ''
-}
-
-class UserWithMethod {
-  name: string = ''
-
-  getInfo() {
-    hilog.error(0x01, 'UserWithMethod', 'getInfo')
-  }
-}
 
 
 @Entry
 @Component
 struct UseASPage {
-  @State message: string = 'Hello World';
-  @State user?: User = undefined
-
-  @State firstLevel?:FirstLevel = undefined
-
+  @State firstLevelWithPlain?: FirstLevel = undefined
   aboutToAppear(): void {
-    this.user = router.getParams() as User
-    hilog.error(0x01, 'UseASPage', '获取到的参数-->' + JSON.stringify(this.user))
-
-    let userInterface: UserInterface = {
-      name: "123"
-    }
-    let userWithOutMethod: UserWithOutMethod = {
-      name: "123",
-    }
-    let userWithMethod = new UserWithMethod()
-    userWithMethod.getInfo()
-
-
-    let userStr = `{"name":"123"}`
-    let userWithMethodJSON = JSON.parse(userStr) as UserWithMethod
-    let tmp = plainToClass(UserWithMethod, userWithMethodJSON)
-    tmp.getInfo()
-
-  }
-
-  initWithNew() {
-    this.firstLevel = new FirstLevel()
-    this.firstLevel.time = systemDateTime.getTime()
-    let secondLevel:SecondLevel = new SecondLevel()
-    secondLevel.name = 'new SecondLevel'
-    secondLevel.age = Math.floor(Math.random() * 100)
-    this.firstLevel.secondLevel = secondLevel
-  }
-
-  initWithAs() {
-
-    let secondLevel:SecondLevel = {
-      name: 'as SecondLevel',
-      age: Math.floor(Math.random() * 100)
-    }
-    this.firstLevel = {
-      time:systemDateTime.getTime(),
-      secondLevel:secondLevel
+    this.firstLevelWithPlain = {
+      time: systemDateTime.getTime()
+    } as FirstLevel
+    this.firstLevelWithPlain.secondLevel = {
+      name: "HarmonyOS",
+      age: 18
     }
   }
-  initWithPlainToText(){
-    let str = `{"time":${systemDateTime.getTime()},"secondLevel":{"name":"PlainToText${Math.floor(Math.random() * 100)}","age":${Math.floor(Math.random() * 100)}}}`
-    let tmp:FirstLevel = JSON.parse(str) as FirstLevel
-    this.firstLevel = plainToClass(FirstLevel,tmp)
-  }
+
+  // this
+  // .firstLevelWithClass = new FirstLevel()
+  // let
+  // secondLevel: SecondLevel = new SecondLevel()
+  // secondLevel
+  // .name = "new second level"
+  // secondLevel
+  // .age = 20
+  // this
+  // .firstLevelWithClass
+  // .secondLevel = secondLevel
+  // @State firstLevelWithClass?: FirstLevel = undefined
 
   build() {
     Column() {
-      ActionBar({ title: "UseAs" })
-      Text(JSON.stringify(this.user))
-      Button('调用对象方法').onClick((_) => {
-        if (this.user) {
-          hilog.error(0x01, 'UseASPage', '调用对象方法-->' + this.user.getInfo)
-        }
-      })
-      Divider().color(Color.Red)
-      Row() {
-        Button('使用New').margin(10).onClick((_) => {
-          this.initWithNew()
-        })
-        Button('使用PlainToClass').margin(10).onClick((_) => {
-         this.initWithPlainToText()
-        })
+      Column() {
+        Text("直接观测")
+        Text(`time:${this.firstLevelWithPlain?.time}`)
+          .fontColor(Color.White)
+        Text(`name:${this.firstLevelWithPlain?.secondLevel?.name}`)
+          .fontColor(Color.White)
+        Text(`age:${this.firstLevelWithPlain?.secondLevel?.age}`)
+          .fontColor(Color.White)
+      }.alignItems(HorizontalAlign.Start).backgroundColor("#a557c1").padding(10)
 
-        Button('使用As').margin(10).onClick((_) => {
-          this.initWithAs()
-        })
+      Divider().vertical(false).margin(10)
+
+      if (this.firstLevelWithPlain) {
+        Column() {
+          Text("自定义组件观测")
+          ShowFistLevel({ firstLevel: this.firstLevelWithPlain })
+        }.backgroundColor("#368800").padding(10)
       }
+
 
       Row() {
         Button('修改time属性').margin(10).onClick((_) => {
-          if(this.firstLevel){
-            this.firstLevel.time = systemDateTime.getTime()
+          if (this.firstLevelWithPlain) {
+            this.firstLevelWithPlain.time = systemDateTime.getTime()
           }
         })
 
         Button('修改 name、age 属性').margin(10).onClick((_) => {
-          if(this.firstLevel) {
-            this.firstLevel.secondLevel.name = '新名字 ' + Math.floor(Math.random() * 10)
-            this.firstLevel.secondLevel.age = Math.floor(Math.random() * 100)
+          if (this.firstLevelWithPlain) {
+            this.firstLevelWithPlain.secondLevel.name = '新名字 ' + Math.floor(Math.random() * 10)
+            this.firstLevelWithPlain.secondLevel.age = Math.floor(Math.random() * 100)
           }
         })
-      }
-      if(this.firstLevel){
-        ShowFistLevel({firstLevel:this.firstLevel})
       }
 
     }
@@ -126,41 +74,38 @@ struct UseASPage {
 
 
 @Component
-struct  ShowFistLevel{
-  @Watch('onFirstLevelChange') @ObjectLink firstLevel:FirstLevel
-  onFirstLevelChange(){
-    hilog.error(0x01, 'UseASPage', 'onFirstLevelChange')
-  }
+struct ShowFistLevel {
+  @ObjectLink firstLevel: FirstLevel
   build() {
-    Column(){
-      Text(this.firstLevel.time.toString())
-      ShowSecondLevel({secondLevel:this.firstLevel.secondLevel})
+    Column() {
+      Text(`time:${this.firstLevel?.time}`)
+        .fontColor(Color.White)
+      Text(`跨层级观测name:${this.firstLevel?.secondLevel?.name}`)
+        .fontColor(Color.White)
+      ShowSecondLevel({ secondLevel: this.firstLevel.secondLevel })
     }.margin(15)
-    .backgroundColor("#e7e7e7e7")
+
   }
 }
 
 @Component
-struct  ShowSecondLevel{
-  @Watch('onSecondLevelChange') @ObjectLink secondLevel:SecondLevel
-  onSecondLevelChange(){
-    hilog.error(0x01, 'UseASPage', 'onSecondLevelChange')
-  }
+struct ShowSecondLevel {
+  @ObjectLink secondLevel: SecondLevel
+
   build() {
-    Column(){
-      Text(this.secondLevel.name)
-      Text(this.secondLevel.age.toString())
+    Column() {
+      Text(`name:${this.secondLevel?.name}`)
+        .fontColor(Color.White)
+      Text(`age:${this.secondLevel?.age}`)
+        .fontColor(Color.White)
     }.margin(15)
-    .backgroundColor("#e7e7e7e7")
   }
 }
-
 
 
 @Observed
 class FirstLevel {
   time: number = 0
-  @Type(()=>SecondLevel)
   secondLevel: SecondLevel = new SecondLevel()
 }
 
@@ -168,13 +113,4 @@ class FirstLevel {
 class SecondLevel {
   name: string = ''
   age: number = 0
-}
-
-
-export class User {
-  name: string = ''
-
-  getInfo(): string {
-    return "123"
-  }
 }
