@@ -5,63 +5,92 @@ import { systemDateTime } from '@kit.BasicServicesKit';
 @Entry
 @Component
 struct UseASPage {
-  @State firstLevelWithPlain?: FirstLevel = undefined
-  aboutToAppear(): void {
-    this.firstLevelWithPlain = {
-      time: systemDateTime.getTime()
-    } as FirstLevel
-    this.firstLevelWithPlain.secondLevel = {
-      name: "HarmonyOS",
-      age: 18
-    }
+  @State firstLevelWithClass?: FirstLevel = undefined
+
+
+  @State logTrack: LogTrack = new LogTrack('Hello');
+  @State logNotTrack: LogNotTrack = new LogNotTrack('HarmonyOS');
+
+  isRender(index: number) {
+    console.log(`Text ${index} is rendered`);
+    return 20;
   }
 
-  // this
-  // .firstLevelWithClass = new FirstLevel()
-  // let
-  // secondLevel: SecondLevel = new SecondLevel()
-  // secondLevel
-  // .name = "new second level"
-  // secondLevel
-  // .age = 20
-  // this
-  // .firstLevelWithClass
-  // .secondLevel = secondLevel
-  // @State firstLevelWithClass?: FirstLevel = undefined
+  aboutToAppear(): void {
+    this.firstLevelWithClass = new FirstLevel()
+    this.firstLevelWithClass.time = systemDateTime.getTime()
+    let secondLevel = new SecondLevel()
+    secondLevel.name = "HarmonyOS"
+    secondLevel.age = 18
+    this.firstLevelWithClass.secondLevel = secondLevel;
+  }
 
   build() {
     Column() {
+
+      Row(){
+        Column(){
+          Text(this.logTrack.str1) // Text1
+            .fontSize(this.isRender(1))
+            .fontWeight(FontWeight.Bold)
+          Text(this.logTrack.str2) // Text2
+            .fontSize(this.isRender(2))
+            .fontWeight(FontWeight.Bold)
+          Button('修改logTrack.str1')
+            .onClick(() => {
+              this.logTrack.str1 = 'Bye';
+            })
+        }.layoutWeight(1)
+        Column() {
+          Text(this.logNotTrack.str1) // Text3
+            .fontSize(this.isRender(3))
+            .fontWeight(FontWeight.Bold)
+          Text(this.logNotTrack.str2) // Text4
+            .fontSize(this.isRender(4))
+            .fontWeight(FontWeight.Bold)
+          Button('修改logNotTrack.str1')
+            .onClick(() => {
+              this.logNotTrack.str1 = '再见';
+            })
+        }.layoutWeight(1)
+      }.height("100%")
+    .margin({bottom:20})
+
+
+
+
+
       Column() {
         Text("直接观测")
-        Text(`time:${this.firstLevelWithPlain?.time}`)
+        Text(`time:${this.firstLevelWithClass?.time}`)
           .fontColor(Color.White)
-        Text(`name:${this.firstLevelWithPlain?.secondLevel?.name}`)
+        Text(`name:${this.firstLevelWithClass?.secondLevel?.name}`)
           .fontColor(Color.White)
-        Text(`age:${this.firstLevelWithPlain?.secondLevel?.age}`)
+        Text(`age:${this.firstLevelWithClass?.secondLevel?.age}`)
           .fontColor(Color.White)
       }.alignItems(HorizontalAlign.Start).backgroundColor("#a557c1").padding(10)
 
       Divider().vertical(false).margin(10)
 
-      if (this.firstLevelWithPlain) {
+      if (this.firstLevelWithClass) {
         Column() {
           Text("自定义组件观测")
-          ShowFistLevel({ firstLevel: this.firstLevelWithPlain })
+          ShowFistLevel({ firstLevel: this.firstLevelWithClass })
         }.backgroundColor("#368800").padding(10)
       }
 
 
       Row() {
         Button('修改time属性').margin(10).onClick((_) => {
-          if (this.firstLevelWithPlain) {
-            this.firstLevelWithPlain.time = systemDateTime.getTime()
+          if (this.firstLevelWithClass) {
+            this.firstLevelWithClass.time = systemDateTime.getTime()
           }
         })
 
         Button('修改 name、age 属性').margin(10).onClick((_) => {
-          if (this.firstLevelWithPlain) {
-            this.firstLevelWithPlain.secondLevel.name = '新名字 ' + Math.floor(Math.random() * 10)
-            this.firstLevelWithPlain.secondLevel.age = Math.floor(Math.random() * 100)
+          if (this.firstLevelWithClass) {
+            this.firstLevelWithClass.secondLevel.name = '新名字 ' + Math.floor(Math.random() * 10)
+            this.firstLevelWithClass.secondLevel.age = Math.floor(Math.random() * 100)
           }
         })
       }
@@ -113,4 +142,24 @@ class FirstLevel {
 class SecondLevel {
   name: string = ''
   age: number = 0
+}
+
+class LogTrack {
+  @Track str1: string;
+  @Track str2: string;
+
+  constructor(str1: string) {
+    this.str1 = str1;
+    this.str2 = 'LogTrack';
+  }
+}
+
+class LogNotTrack {
+  str1: string;
+  str2: string;
+
+  constructor(str1: string) {
+    this.str1 = str1;
+    this.str2 = 'LogNotTrack';
+  }
 }

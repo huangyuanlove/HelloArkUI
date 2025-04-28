@@ -9,6 +9,8 @@ import { rcp } from "@kit.RemoteCommunicationKit";
 import {  http } from '@kit.NetworkKit';
 import fs from '@ohos.file.fs';
 import json from '@ohos.util.json';
+import { notificationManager } from '@kit.NotificationKit';
+import { promptAction } from '@kit.ArkUI';
 
 @Preview
 @Component
@@ -25,6 +27,10 @@ export default struct BasicKnowledgePage {
         BaseListItem({ label: '@stateStyles', path: 'pages/basic_knowledge/AboutStateStyles' })
         BaseListItem({ label: '状态管理', path: 'pages/basic_knowledge/AboutStateManagement' })
         BaseListItem({ label: '通知', path: 'pages/basic_knowledge/NotificationPage' })
+        BaseListItem({ label: '设置角标', path:  "pages/basic_knowledge/IconBadgePage" })
+        BaseListItem({ label: '懒加载', path:  "pages/basic_knowledge/lazy_for_each/LazyForEachPage" })
+
+
 
         Button() {
           Text('打开 UIAbility').fontSize(18)

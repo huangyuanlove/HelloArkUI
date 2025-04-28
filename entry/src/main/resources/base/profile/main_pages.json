@@ -64,6 +64,8 @@
     "pages/playground/state_manager_v2/ComputedPge",
     "pages/playground/state_manager_v2/MakeObservedPage",
     "pages/playground/GestureImagePage",
-    "pages/playground/StyledStringValuePage"
+    "pages/playground/StyledStringValuePage",
+    "pages/basic_knowledge/lazy_for_each/LazyForEachPage",
+    "pages/basic_knowledge/IconBadgePage"
   ]
 }

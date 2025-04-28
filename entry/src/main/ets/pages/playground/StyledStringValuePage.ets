@@ -10,6 +10,7 @@ struct StyledStringValuePage {
   mutableStyledString: MutableStyledString | undefined
   protocolTextController: TextController = new TextController();
   customSpanTextController: TextController = new TextController();
+  demoTextController: TextController = new TextController();
 
   aboutToAppear(): void {
 
@@ -191,6 +192,36 @@ struct StyledStringValuePage {
           ])
         this.protocolTextController.setStyledString(protocolStyledString)
       })
+
+      Text(undefined, { controller: this.demoTextController }).onAppear(() => {
+
+        let protocolStyledString: MutableStyledString =
+          new MutableStyledString("魔力赏ALOID 虚拟歌手会需要电子染发剂吗魔力赏力赏SSR景品魔", [
+            {
+              start: 0,
+              length: 3,
+              styledKey: StyledStringKey.FONT,
+              styledValue: new TextStyle({
+                fontColor: Color.Pink,
+                fontSize: LengthMetrics.fp(16),
+              })
+            },
+
+            {
+              start: 0,
+              length: 3,
+              styledKey: StyledStringKey.BACKGROUND_COLOR,
+                styledValue: new BackgroundColorStyle({
+                  color: "#ff6134",
+                  radius: 2
+                })
+            }
+          ])
+        this.demoTextController.setStyledString(protocolStyledString)
+      }).margin(10)
+
+
+
 
 
     }
