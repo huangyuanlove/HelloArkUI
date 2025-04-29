@@ -6,12 +6,27 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';
 import { HMRouterMgr } from '@hadss/hmrouter';
 import { DialogHelper } from '@pura/harmony-dialog';
+import { ExclusiveAppComponent, FlutterManager } from '@ohos/flutter_ohos';
 
-export default class EntryAbility extends UIAbility {
+export default class EntryAbility extends UIAbility implements ExclusiveAppComponent<UIAbility>{
+  detachFromFlutterEngine(): void {
+
+  }
+
+  getAppComponent(): UIAbility {
+   return this
+
+  }
+  private static app?: EntryAbility;
 
   private uiContext: UIContext | null = null;
 
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+
+    FlutterManager.getInstance().pushUIAbility(this);
+    EntryAbility.app = this;
+
+
     DialogHelper.setDefaultConfig((config) => {
       config.uiAbilityContext = this.context;
     })
@@ -31,11 +46,16 @@ export default class EntryAbility extends UIAbility {
 
 
   onDestroy(): void {
+
+    FlutterManager.getInstance().popUIAbility(this);
+    EntryAbility.app = undefined;
+
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
     observer.off('routerPageUpdate', this.context)
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
+    FlutterManager.getInstance().pushWindowStage(this, windowStage);
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
     windowStage.loadContent('pages/Index', (err) => {
@@ -57,6 +77,7 @@ export default class EntryAbility extends UIAbility {
   }
 
   onWindowStageDestroy(): void {
+    FlutterManager.getInstance().popWindowStage(this);
     // Main window is destroyed, release UI related resources
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');
     if (this.uiContext) {

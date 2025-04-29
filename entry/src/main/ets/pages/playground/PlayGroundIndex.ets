@@ -81,6 +81,13 @@ export struct PlayGroundIndex {
             })
           })
         })
+        Button("跳转 flutter main").onClick((_)=>{
+          HMRouterMgr.push({pageUrl:"pages/flutter/MyFlutterPage",param:{"path":"main"}})
+        })
+
+        Button("跳转 flutter login").onClick((_)=>{
+          HMRouterMgr.push({pageUrl:"pages/flutter/MyFlutterPage",param:{"path":"login"}})
+        })
 
 
       }
