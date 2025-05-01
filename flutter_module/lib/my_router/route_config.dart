@@ -1,8 +1,4 @@
-
-
-
-
-
+import '../login/login_page.dart';
 import 'router_manager.dart';
 
 void setupRoutes() {
@@ -14,7 +10,7 @@ void setupRoutes() {
     //           args: args,
     //         )),
     // RouteO('academic_search', ((ctx, path, args) => AcademicSearch(args))),
-    // RouteO('login', ((ctx, path, args) => LoginPage())),
+    RouteO('login', ((ctx, path, args) => const LoginPage())),
     // RouteO(
     //     FlutterPathConfig.EDIT_GOOD_AT.name,
     //     (ctx, path, args) => GoodAtManagerPage(

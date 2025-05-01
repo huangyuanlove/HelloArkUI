@@ -4,6 +4,7 @@ import { common } from '@kit.AbilityKit'
 import { reqPermissionsFromUser, RequestPermissionCallBack } from '../../util/PermissionUtils'
 import { HMPopInfo, HMRouterMgr } from '@hadss/hmrouter'
 import hilog from '@ohos.hilog'
+import { FlutterPath, MyFlutterRouter } from '../flutter/MyFlutterRouter'
 
 @Component
 export struct PlayGroundIndex {
@@ -81,12 +82,9 @@ export struct PlayGroundIndex {
             })
           })
         })
-        Button("跳转 flutter main").onClick((_)=>{
-          HMRouterMgr.push({pageUrl:"pages/flutter/MyFlutterPage",param:{"path":"main"}})
-        })
 
         Button("跳转 flutter login").onClick((_)=>{
-          HMRouterMgr.push({pageUrl:"pages/flutter/MyFlutterPage",param:{"path":"login"}})
+          MyFlutterRouter.push(FlutterPath.LOGIN)
         })
 
 

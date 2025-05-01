@@ -34,7 +34,7 @@ class MyRouteChannel extends MyChannel {
       args['arguments'] = arguments;
     }
 
-    // await callNative
+
     await callNative(routeChannelName, args);
   }
 }

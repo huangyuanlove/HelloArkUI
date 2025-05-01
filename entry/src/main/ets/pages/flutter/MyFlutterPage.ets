@@ -1,13 +1,11 @@
 import { FlutterManager, FlutterPage, FlutterView } from '@ohos/flutter_ohos'
-import common from '@ohos.app.ability.common'
 import { HMLifecycleState, HMRouter, HMRouterMgr } from '@hadss/hmrouter'
 import { MyFlutterEntry } from './MyFlutterEntry'
+import { promptAction } from '@kit.ArkUI';
 
 @HMRouter({ pageUrl: 'pages/flutter/MyFlutterPage' })
 @Component
 export struct MyFlutterPage {
-  @State viewId: string = ''
-  private context = getContext(this) as common.UIAbilityContext
   private flutterEntry: MyFlutterEntry | null = null;
   private flutterView?: FlutterView
 
@@ -17,7 +15,6 @@ export struct MyFlutterPage {
     this.flutterEntry = new MyFlutterEntry(getContext(this), {
       'route': path,
     })
-    this.flutterEntry.getInitialRoute()
     this.flutterEntry.aboutToAppear()
     this.flutterView = this.flutterEntry.getFlutterView()
     HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, () => {
@@ -39,11 +36,8 @@ export struct MyFlutterPage {
   }
 
   build() {
-    Stack() {
-      FlutterPage({
-        viewId: this.flutterView?.getId(),
-        // checkFullScreen: false,
-      })
-    }.expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
+
+      FlutterPage({ viewId: this.flutterView?.getId() }).expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.BOTTOM])
+
   }
 }

@@ -9,23 +9,23 @@ import { DialogHelper } from '@pura/harmony-dialog';
 import { ExclusiveAppComponent, FlutterManager } from '@ohos/flutter_ohos';
 
 export default class EntryAbility extends UIAbility implements ExclusiveAppComponent<UIAbility>{
-  detachFromFlutterEngine(): void {
 
+
+  detachFromFlutterEngine(): void {
+    // throw new Error('Method not implemented.');
   }
 
   getAppComponent(): UIAbility {
-   return this
-
+    return this;
   }
-  private static app?: EntryAbility;
+
+
 
   private uiContext: UIContext | null = null;
 
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
 
     FlutterManager.getInstance().pushUIAbility(this);
-    EntryAbility.app = this;
-
 
     DialogHelper.setDefaultConfig((config) => {
       config.uiAbilityContext = this.context;
@@ -48,8 +48,6 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
   onDestroy(): void {
 
     FlutterManager.getInstance().popUIAbility(this);
-    EntryAbility.app = undefined;
-
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
     observer.off('routerPageUpdate', this.context)
   }

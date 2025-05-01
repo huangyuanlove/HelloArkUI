@@ -2,25 +2,28 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:lifecycle/lifecycle.dart';
 
+import 'my_router/my_route_listen_widget.dart';
 import 'my_router/my_router.dart';
 import 'my_router/route_config.dart';
 import 'my_router/router_manager.dart';
+import 'oh_channel/OHChannel.dart';
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  new OHChannel().init();
+  print("Future<void> main()");
   setupRoutes();
   WidgetsBinding.instance.addObserver(MyWidgetsBindingObserver());
   final initialRoute = window.defaultRouteName;
   runApp(widgetForRoute(initialRoute));
-  // Future.delayed(const Duration(milliseconds: 200), () {
-  //   runApp(widgetForRoute(initialRoute));
-  // });
+
 }
 
 Widget widgetForRoute(String route) {
-  Widget w = RouteManager.instance.widgetForRoute(route, null) ?? Container();
+  Widget w = RouteManager.instance.widgetForRoute(route, null) ?? Container(child: Text("没有找到对应路由"),);
 
   return MainAppWidget(w: w);
 }
@@ -41,7 +44,7 @@ class _MainAppWidgetState extends State<MainAppWidget>
     return MaterialApp(
       navigatorObservers: [
         defaultLifecycleObserver,
-        CYRouteListenWidget.routeObserver,
+        MyRouteListenWidget.routeObserver,
       ],
       home: widget.w,
       navigatorKey: Global.navigatorKey,

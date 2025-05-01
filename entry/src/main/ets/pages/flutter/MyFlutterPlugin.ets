@@ -1,19 +1,19 @@
-import { FlutterPage, FlutterPluginBinding, MethodCall, MethodChannel, MethodResult } from "@ohos/flutter_ohos";
+import { FlutterPlugin, FlutterPluginBinding, MethodCall, MethodChannel, MethodResult } from "@ohos/flutter_ohos";
 import { AppInfoPlugin } from "./plugins/AppInfoPlugin";
 
-export class MyFlutterPlugin extends FlutterPage{
+export class MyFlutterPlugin implements FlutterPlugin{
   private channel?: MethodChannel;
 
   getUniqueClassName(): string {
-    return 'CYFlutterPlugin'
+    return 'MyFlutterPlugin'
   }
 
   onAttachedToEngine(binding: FlutterPluginBinding): void {
-    this.channel = new MethodChannel(binding.getBinaryMessenger(), 'com.chunyu.clinic/method');
-    let that = this;
+    console.error("MyFlutterPlugin onAttachedToEngine")
+    this.channel = new MethodChannel(binding.getBinaryMessenger(), 'com.huangyuanlove.demo/method');
     this.channel.setMethodCallHandler({
       onMethodCall(call: MethodCall, result: MethodResult) {
-        console.warn('接到flutter请求:' + call.method + call.args)
+        console.warn('接到flutter请求:' + call.method + JSON.stringify(call.args))
         switch (call.method) {
           case 'getVersion':
             AppInfoPlugin.handleCall(call, result)

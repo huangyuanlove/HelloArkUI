@@ -99,6 +99,14 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "0.6.5"
+  lifecycle:
+    dependency: "direct main"
+    description:
+      name: lifecycle
+      sha256: "37886e89553e635ae770191d2457a044dcc20161d7b0ebd3276b4d37a694c09b"
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "0.6.0"
   lints:
     dependency: transitive
     description:
@@ -202,4 +210,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=2.19.6 <4.0.0"
-  flutter: ">=2.0.0"
+  flutter: ">=3.0.0"
