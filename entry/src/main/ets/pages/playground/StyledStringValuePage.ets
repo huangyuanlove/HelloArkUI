@@ -108,29 +108,31 @@ struct StyledStringValuePage {
       Text(undefined, { controller: this.textController }).onAppear(() => {
         this.textController.setStyledString(this.mutableStyledString)
       })
-      Row(){
-        Text("动态修改宽度").width(this.dynamicWidth).onClick((_)=>{
-          this.dynamicWidth = Math.random()*200
-        }).textAlign(TextAlign.Center).backgroundColor(Color.Pink)
-
+      // Row(){
+      //   Text("动态修改宽度").width(this.dynamicWidth).onClick((_)=>{
+      //     this.dynamicWidth = Math.random()*200
+      //   }).textAlign(TextAlign.Center).backgroundColor(Color.Pink)
+      //
+      //   Text(undefined, { controller: this.customSpanTextController }).margin({ left: 20 }).fontSize(16).onAppear(()=>{
+      //
+      //     // let customSpan: MyCustomSpan = new MyCustomSpan("自定义属性字符串", this.getUIContext());
+      //     // let customSpan: MyCustomSpan = new MyCustomSpan("ABCDEFGHIJKLMNOPQRSTUVWXYZ,abcdefghijklmnopqrstuvwxyz", this.getUIContext());
+      //
+      //   }).backgroundColor(Color.Blue)
+      //     .onAreaChange((oldValue:Area,newValue:Area)=>{
+      //       hilog.error(0x01,"StyledStringValuePage",`自定义属性字符串 onAreaChange ${newValue.width},${newValue.height}`)
+      //       let customSpan: MyCustomSpan = new MyCustomSpan("豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。", this.getUIContext(),newValue.width as number);
+      //       let style: MutableStyledString = new MutableStyledString(customSpan);
+      //       this.customSpanTextController.setStyledString(style)
+      //     }).layoutWeight(1)
+      // }
         Text(undefined, { controller: this.customSpanTextController }).margin({ left: 20 }).fontSize(16).onAppear(()=>{
 
-          // let customSpan: MyCustomSpan = new MyCustomSpan("自定义属性字符串", this.getUIContext());
-          // let customSpan: MyCustomSpan = new MyCustomSpan("ABCDEFGHIJKLMNOPQRSTUVWXYZ,abcdefghijklmnopqrstuvwxyz", this.getUIContext());
+          let customSpan: MyCustomSpan = new MyCustomSpan("自定义属性字符串", this.getUIContext());
+                let style: MutableStyledString = new MutableStyledString(customSpan);
+                this.customSpanTextController.setStyledString(style)
+        })
 
-        }).backgroundColor(Color.Blue)
-          .onAreaChange((oldValue:Area,newValue:Area)=>{
-            hilog.error(0x01,"StyledStringValuePage",`自定义属性字符串 onAreaChange ${newValue.width},${newValue.height}`)
-            let customSpan: MyCustomSpan = new MyCustomSpan("豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。", this.getUIContext(),newValue.width as number);
-            let style: MutableStyledString = new MutableStyledString(customSpan);
-            this.customSpanTextController.setStyledString(style)
-          }).layoutWeight(1)
-      }
-
-
-      // Button("设置").onClick((_) => {
-      //   this.textController.setStyledString(this.mutableStyledString)
-      // })
 
       Text() {
         Span("我已仔细阅读并同意").fontColor("#333333").fontSize(16)
@@ -200,11 +202,11 @@ struct StyledStringValuePage {
 }
 
 class MyCustomSpan extends CustomSpan {
-  constructor(text: string, uiContext: UIContext,maxWidth:number) {
+  constructor(text: string, uiContext: UIContext,maxWidth?:number) {
     super();
     this.text = text;
     this.uiContext = uiContext
-    this.maxWidth = maxWidth
+    this.maxWidth = maxWidth??0
   }
 
   text: string
@@ -224,7 +226,7 @@ class MyCustomSpan extends CustomSpan {
 
     let measureTextWidth:number = size.width as number
 
-    if( measureTextWidth > this.maxWidth){
+    if(this.maxWidth>0 && measureTextWidth > this.maxWidth){
       size.width = this.maxWidth
       size.height = Math.ceil(measureTextWidth / this.maxWidth) * (size.height as number)
 
@@ -241,40 +243,21 @@ class MyCustomSpan extends CustomSpan {
     console.error(`onDraw drawInfo x:${drawInfo.x}  lineTop:${drawInfo.lineTop}  lineBottom:${drawInfo.lineBottom}  baseline:${drawInfo.baseline}`)
     console.error(`onDraw context ${vp2px(context.size.width)}   ${vp2px(context.size.height)}`)
 
-
     let canvas = context.canvas;
     const font = new drawing.Font();
     font.setSize(vp2px(this.fontSizeFp));
     const brush = new drawing.Brush();
-    // brush.setColor({
-    //   alpha: 255,
-    //   red: 0,
-    //   green: 74,
-    //   blue: 175
-    // });
     brush.setColor({
       alpha: 255,
-      red: 255,
-      green: 255,
-      blue: 255
+      red: 0,
+      green: 74,
+      blue: 175
     });
+
     canvas.attachBrush(brush)
     const textBlob = drawing.TextBlob.makeFromString(this.text, font, drawing.TextEncoding.TEXT_ENCODING_UTF8);
 
     canvas.drawTextBlob(textBlob, drawInfo.x, drawInfo.baseline);
-
-    const pen = new drawing.Pen();
-    pen.setStrokeWidth(2);
-    pen.setColor({alpha: 255, red: 255, green: 0, blue: 0});
-    canvas.attachPen(pen);
-
-
-
-    canvas.drawLine(drawInfo.x,drawInfo.baseline,drawInfo.x + vp2px(context.size.width),drawInfo.baseline)
-    canvas.detachPen();
-    // canvas.drawRect(drawInfo.x, drawInfo.lineTop, drawInfo.x + vp2px(context.size.width),
-    //   drawInfo.lineBottom)
-
 
     canvas.detachBrush()
   }
