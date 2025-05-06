@@ -58,6 +58,18 @@
           ]
         }
       ]
+    },
+    {
+      "name": "flutter_module",
+      "srcPath": "./flutter_module/.ohos/flutter_module",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -51,7 +51,6 @@
     "pages/playground/FAQ/IndexPage",
     "pages/playground/FAQ/for_each/ForeachPage",
     "pages/playground/FAQ/as_bug/UseASPage",
-    "pages/playground/FAQ/as_bug/FirstASTestPage",
     "pages/playground/FAQ/dialog_controller/DialogControllerPage",
     "pages/playground/JSONParsePage",
     "pages/playground/video_recorder/PlayLocalVideoPage",
@@ -65,8 +64,10 @@
     "pages/playground/state_manager_v2/ComputedPge",
     "pages/playground/state_manager_v2/MakeObservedPage",
     "pages/playground/GestureImagePage",
-    "pages/playground/StyledStringValuePage",
     "pages/basic_knowledge/vision_kit/VisionKitPage",
     "pages/basic_knowledge/vision_kit/IDCardRecognitionPage"
+    "pages/playground/StyledStringValuePage",
+    "pages/basic_knowledge/lazy_for_each/LazyForEachPage",
+    "pages/basic_knowledge/IconBadgePage"
   ]
 }

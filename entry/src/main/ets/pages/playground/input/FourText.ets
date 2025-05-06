@@ -114,7 +114,8 @@ struct FourText{
    * 输入法设置
    */
   async inputAttach() {
-    await this.inputController.attach(true, this.textConfig);
+    focusControl.requestFocus("input_verification_code_0")
+    await this.inputController.attach(false, this.textConfig);
   }
   build() {
     Row(){
@@ -135,6 +136,7 @@ struct FourText{
             .fontColor('#323232')
             .enabled(false)
             .textAlign(TextAlign.Center)
+            .id(`input_verification_code_${item}`)
             .border({
               style: BorderStyle.Solid,
               width: { bottom: this.inputFocus[item] ? 2 : 1 },

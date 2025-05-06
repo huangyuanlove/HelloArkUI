@@ -1,121 +1,98 @@
-import ActionBar from '../../../../comm/ActionBar';
-import { router } from '@kit.ArkUI';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import {Type, plainToClass } from 'class-transformer';
 import { systemDateTime } from '@kit.BasicServicesKit';
-
-
-interface UserInterface {
-  name: string;
-}
-
-class UserWithOutMethod {
-  name: string = ''
-}
-
-class UserWithMethod {
-  name: string = ''
-
-  getInfo() {
-    hilog.error(0x01, 'UserWithMethod', 'getInfo')
-  }
-}
 
 
 @Entry
 @Component
 struct UseASPage {
-  @State message: string = 'Hello World';
-  @State user?: User = undefined
+  @State firstLevelWithClass?: FirstLevel = undefined
 
-  @State firstLevel?:FirstLevel = undefined
+
+  @State logTrack: LogTrack = new LogTrack('Hello');
+  @State logNotTrack: LogNotTrack = new LogNotTrack('HarmonyOS');
+
+  isRender(index: number) {
+    console.log(`Text ${index} is rendered`);
+    return 20;
+  }
 
   aboutToAppear(): void {
-    this.user = router.getParams() as User
-    hilog.error(0x01, 'UseASPage', '获取到的参数-->' + JSON.stringify(this.user))
-
-    let userInterface: UserInterface = {
-      name: "123"
-    }
-    let userWithOutMethod: UserWithOutMethod = {
-      name: "123",
-    }
-    let userWithMethod = new UserWithMethod()
-    userWithMethod.getInfo()
-
-
-    let userStr = `{"name":"123"}`
-    let userWithMethodJSON = JSON.parse(userStr) as UserWithMethod
-    let tmp = plainToClass(UserWithMethod, userWithMethodJSON)
-    tmp.getInfo()
-
-  }
-
-  initWithNew() {
-    this.firstLevel = new FirstLevel()
-    this.firstLevel.time = systemDateTime.getTime()
-    let secondLevel:SecondLevel = new SecondLevel()
-    secondLevel.name = 'new SecondLevel'
-    secondLevel.age = Math.floor(Math.random() * 100)
-    this.firstLevel.secondLevel = secondLevel
-  }
-
-  initWithAs() {
-
-    let secondLevel:SecondLevel = {
-      name: 'as SecondLevel',
-      age: Math.floor(Math.random() * 100)
-    }
-    this.firstLevel = {
-      time:systemDateTime.getTime(),
-      secondLevel:secondLevel
-    }
-  }
-  initWithPlainToText(){
-    let str = `{"time":${systemDateTime.getTime()},"secondLevel":{"name":"PlainToText${Math.floor(Math.random() * 100)}","age":${Math.floor(Math.random() * 100)}}}`
-    let tmp:FirstLevel = JSON.parse(str) as FirstLevel
-    this.firstLevel = plainToClass(FirstLevel,tmp)
+    this.firstLevelWithClass = new FirstLevel()
+    this.firstLevelWithClass.time = systemDateTime.getTime()
+    let secondLevel = new SecondLevel()
+    secondLevel.name = "HarmonyOS"
+    secondLevel.age = 18
+    this.firstLevelWithClass.secondLevel = secondLevel;
   }
 
   build() {
     Column() {
-      ActionBar({ title: "UseAs" })
-      Text(JSON.stringify(this.user))
-      Button('调用对象方法').onClick((_) => {
-        if (this.user) {
-          hilog.error(0x01, 'UseASPage', '调用对象方法-->' + this.user.getInfo)
-        }
-      })
-      Divider().color(Color.Red)
-      Row() {
-        Button('使用New').margin(10).onClick((_) => {
-          this.initWithNew()
-        })
-        Button('使用PlainToClass').margin(10).onClick((_) => {
-         this.initWithPlainToText()
-        })
 
-        Button('使用As').margin(10).onClick((_) => {
-          this.initWithAs()
-        })
+      Row(){
+        Column(){
+          Text(this.logTrack.str1) // Text1
+            .fontSize(this.isRender(1))
+            .fontWeight(FontWeight.Bold)
+          Text(this.logTrack.str2) // Text2
+            .fontSize(this.isRender(2))
+            .fontWeight(FontWeight.Bold)
+          Button('修改logTrack.str1')
+            .onClick(() => {
+              this.logTrack.str1 = 'Bye';
+            })
+        }.layoutWeight(1)
+        Column() {
+          Text(this.logNotTrack.str1) // Text3
+            .fontSize(this.isRender(3))
+            .fontWeight(FontWeight.Bold)
+          Text(this.logNotTrack.str2) // Text4
+            .fontSize(this.isRender(4))
+            .fontWeight(FontWeight.Bold)
+          Button('修改logNotTrack.str1')
+            .onClick(() => {
+              this.logNotTrack.str1 = '再见';
+            })
+        }.layoutWeight(1)
+      }.height("100%")
+    .margin({bottom:20})
+
+
+
+
+
+      Column() {
+        Text("直接观测")
+        Text(`time:${this.firstLevelWithClass?.time}`)
+          .fontColor(Color.White)
+        Text(`name:${this.firstLevelWithClass?.secondLevel?.name}`)
+          .fontColor(Color.White)
+        Text(`age:${this.firstLevelWithClass?.secondLevel?.age}`)
+          .fontColor(Color.White)
+      }.alignItems(HorizontalAlign.Start).backgroundColor("#a557c1").padding(10)
+
+      Divider().vertical(false).margin(10)
+
+      if (this.firstLevelWithClass) {
+        Column() {
+          Text("自定义组件观测")
+          ShowFistLevel({ firstLevel: this.firstLevelWithClass })
+        }.backgroundColor("#368800").padding(10)
       }
+
 
       Row() {
         Button('修改time属性').margin(10).onClick((_) => {
-          if(this.firstLevel){
-            this.firstLevel.time = systemDateTime.getTime()
+          if (this.firstLevelWithClass) {
+            this.firstLevelWithClass.time = systemDateTime.getTime()
           }
         })
 
         Button('修改 name、age 属性').margin(10).onClick((_) => {
-          if(this.firstLevel) {
-            this.firstLevel.secondLevel.name = '新名字 ' + Math.floor(Math.random() * 10)
-            this.firstLevel.secondLevel.age = Math.floor(Math.random() * 100)
+          if (this.firstLevelWithClass) {
+            this.firstLevelWithClass.secondLevel.name = '新名字 ' + Math.floor(Math.random() * 10)
+            this.firstLevelWithClass.secondLevel.age = Math.floor(Math.random() * 100)
           }
         })
-      }
-      if(this.firstLevel){
-        ShowFistLevel({firstLevel:this.firstLevel})
       }
 
     }
@@ -126,41 +103,38 @@ struct UseASPage {
 
 
 @Component
-struct  ShowFistLevel{
-  @Watch('onFirstLevelChange') @ObjectLink firstLevel:FirstLevel
-  onFirstLevelChange(){
-    hilog.error(0x01, 'UseASPage', 'onFirstLevelChange')
-  }
+struct ShowFistLevel {
+  @ObjectLink firstLevel: FirstLevel
   build() {
-    Column(){
-      Text(this.firstLevel.time.toString())
-      ShowSecondLevel({secondLevel:this.firstLevel.secondLevel})
+    Column() {
+      Text(`time:${this.firstLevel?.time}`)
+        .fontColor(Color.White)
+      Text(`跨层级观测name:${this.firstLevel?.secondLevel?.name}`)
+        .fontColor(Color.White)
+      ShowSecondLevel({ secondLevel: this.firstLevel.secondLevel })
     }.margin(15)
-    .backgroundColor("#e7e7e7e7")
+
   }
 }
 
 @Component
-struct  ShowSecondLevel{
-  @Watch('onSecondLevelChange') @ObjectLink secondLevel:SecondLevel
-  onSecondLevelChange(){
-    hilog.error(0x01, 'UseASPage', 'onSecondLevelChange')
-  }
+struct ShowSecondLevel {
+  @ObjectLink secondLevel: SecondLevel
+
   build() {
-    Column(){
-      Text(this.secondLevel.name)
-      Text(this.secondLevel.age.toString())
+    Column() {
+      Text(`name:${this.secondLevel?.name}`)
+        .fontColor(Color.White)
+      Text(`age:${this.secondLevel?.age}`)
+        .fontColor(Color.White)
     }.margin(15)
-    .backgroundColor("#e7e7e7e7")
   }
 }
-
 
 
 @Observed
 class FirstLevel {
   time: number = 0
-  @Type(()=>SecondLevel)
   secondLevel: SecondLevel = new SecondLevel()
 }
 
@@ -170,11 +144,22 @@ class SecondLevel {
   age: number = 0
 }
 
+class LogTrack {
+  @Track str1: string;
+  @Track str2: string;
 
-export class User {
-  name: string = ''
+  constructor(str1: string) {
+    this.str1 = str1;
+    this.str2 = 'LogTrack';
+  }
+}
 
-  getInfo(): string {
-    return "123"
+class LogNotTrack {
+  str1: string;
+  str2: string;
+
+  constructor(str1: string) {
+    this.str1 = str1;
+    this.str2 = 'LogNotTrack';
   }
 }

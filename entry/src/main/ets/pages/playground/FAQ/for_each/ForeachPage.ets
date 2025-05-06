@@ -1,91 +1,75 @@
-import ActionBar from '../../../../comm/ActionBar';
-import { hilog } from '@kit.PerformanceAnalysisKit';
-import { systemDateTime } from '@kit.BasicServicesKit';
-import { intl } from '@kit.LocalizationKit';
+import { hilog } from '@kit.PerformanceAnalysisKit'
+import { promptAction } from '@kit.ArkUI'
 
 @Entry
-@Component
+@ComponentV2 //修改为V2
 struct ForeachPage {
-  @State foreachModelList: ForeachModel[] = []
+  @Local couponDataList: CouponData[] = [] //修改为V2
+
   aboutToAppear(): void {
-    // this.initData()
+    this.initData()
   }
 
   initData() {
-    this.foreachModelList = []
+
+    this.couponDataList = []
     for (let i = 0; i < 5; i++) {
-      let model: ForeachModel = new ForeachModel()
-      model.name = `第 ${i} 项`
+      let model: CouponData = new CouponData()
+      model.id = i.toString()
+      model.name = `优惠券 ${i + 1} 项`
+
+
       if (i == 1) {
         model.defaultSelect = true
       } else {
         model.defaultSelect = false
       }
-      this.foreachModelList.push(model)
+
+      this.couponDataList.push(model)
     }
+
   }
 
   build() {
     Column() {
-      ActionBar({ title: '循环渲染' })
-
-
-      Row() {
-        Button('重新赋值').onClick((_) => {
-          hilog.error(0x01, 'ForeachPage', '重新赋值开始')
-          this.initData()
-          hilog.error(0x01, 'ForeachPage', '重新赋值结束')
-        })
-        Button('改变最后一项的值').onClick((_) => {
-          hilog.error(0x01, 'ForeachPage', '改变最后一项的值开始')
-          let length = this.foreachModelList.length
-          this.foreachModelList[length-1].name = '改变后的值'
-          hilog.error(0x01, 'ForeachPage', '改变最后一项值结束')
-        })
-
-
-      }
-
-      Row() {
-        Button('添加一项').onClick((_) => {
-          hilog.error(0x01, 'ForeachPage', '添加一项开始')
-          let model: ForeachModel = new ForeachModel()
-          model.name = `第 ${this.foreachModelList.length} 项`
-          this.foreachModelList.push(model)
-          hilog.error(0x01, 'ForeachPage', '添加一项结束')
-        })
-        Button('删除一项').onClick((_) => {
-          hilog.error(0x01, 'ForeachPage', '删除一项开始')
-          if (this.foreachModelList.length > 1) {
-            this.foreachModelList.pop()
-            hilog.error(0x01, 'ForeachPage', '删除一项结束')
-          }
-        })
-      }
-
-      Row() {
-        Button('插入一个').onClick((_) => {
-          let model: ForeachModel = new ForeachModel()
-          let dateFormat1 = new intl.DateTimeFormat('zh-CN', { timeStyle: 'full' });
-          let formattedDate1 = dateFormat1.format(new Date()); // formattedDate1: 2021年9月17日星期五 中国标准时间 13:04:00
-
-          model.name = formattedDate1
-          this.foreachModelList.splice(1, 0, model);
-        })
-      }
-
+      Button("刷新").onClick((_) => {
+        this.initData()
+      })
       List() {
-        ForEach(this.foreachModelList, (model: ForeachModel) => {
+        ForEach(this.couponDataList, (model: CouponData) => {
           ListItem() {
-            SimpleView({ model: model })
+            CouponView({
+              model: model, onChangeSelect: (id: string, select: boolean) => {
+                hilog.error(0x01, 'ForeachPage', `onChangeSelect ${id} ${select}`)
+                this.couponDataList.forEach((data: CouponData) => {
+                  if (data.id == id) {
+                    data.defaultSelect = select
+                  } else {
+                    if (select) {
+                      data.defaultSelect = false;
+                    }
+                  }
+                })
+              }
+            })
           }
 
-        }, (item: ForeachModel) => {
-          let key = item.name + '__' + item.defaultSelect;
+        }, (item: CouponData, index: number) => {
+          let key = item.id + "__" + item.defaultSelect
           hilog.error(0x01, 'ForeachPage', key)
           return key
         })
       }.layoutWeight(1)
+
+      Button("确定").onClick((_) => {
+        let selectCouponID: string = '未选中';
+        this.couponDataList.forEach((couponData: CouponData) => {
+          if (couponData.defaultSelect) {
+            selectCouponID = couponData.id
+          }
+        })
+        promptAction.showToast({ message: `选中的优惠券是 ${selectCouponID}` })
+      })
 
     }
     .height('100%')
@@ -93,13 +77,15 @@ struct ForeachPage {
   }
 }
 
-@Reusable
-@Component
-struct SimpleView {
-  @Watch('onForeachModelChange') @ObjectLink model: ForeachModel
 
-  onForeachModelChange() {
-    hilog.error(0x01, 'ForeachPage', `onForeachModelChange`)
+@ComponentV2   //修改为V2
+struct CouponView {
+  @Require @Param model: CouponData   //修改为V2
+  @Event //修改为V2
+  onChangeSelect: (id: string, select: boolean) => void = (id: string, select: boolean) => {
+  }
+  aboutToAppear(): void {
+    hilog.error(0x01, 'ForeachPage', `aboutToAppear ${this.model.id}`)
   }
 
   build() {
@@ -110,15 +96,18 @@ struct SimpleView {
         .height(20)
         .fill(this.model.defaultSelect ? Color.Red : Color.Gray)
         .stroke(this.model.defaultSelect ? Color.Red : Color.Grey)
-      Checkbox().select($$this.model.defaultSelect).onChange((checked: boolean) => {
-        hilog.error(0x01, 'ForeachPage', `checked ${JSON.stringify(this.model.name)}`)
-      })
-    }.padding({ top: 10, bottom: 10 })
+
+    }.padding({ top: 10, bottom: 10 }).onClick((_) => {
+      this.onChangeSelect(this.model.id, !this.model.defaultSelect)
+
+    })
   }
 }
 
-@Observed
-class ForeachModel {
-  name: string = ''
-  defaultSelect: boolean = false
+@ObservedV2 //修改为V2
+class CouponData {
+  id: string = ''
+  @Trace name: string = '' //修改为V2
+  @Trace defaultSelect: boolean = false //修改为V2
 }
+

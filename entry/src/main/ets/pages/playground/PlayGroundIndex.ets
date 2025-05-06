@@ -4,6 +4,7 @@ import { common } from '@kit.AbilityKit'
 import { reqPermissionsFromUser, RequestPermissionCallBack } from '../../util/PermissionUtils'
 import { HMPopInfo, HMRouterMgr } from '@hadss/hmrouter'
 import hilog from '@ohos.hilog'
+import { FlutterPath, MyFlutterRouter } from '../flutter/MyFlutterRouter'
 
 @Component
 export struct PlayGroundIndex {
@@ -80,6 +81,10 @@ export struct PlayGroundIndex {
               hilog.error(0x01, 'hmrouter', 'HMRouterAPageNav onLost')
             })
           })
+        })
+
+        Button("跳转 flutter login").onClick((_)=>{
+          MyFlutterRouter.push(FlutterPath.LOGIN)
         })
 
 
