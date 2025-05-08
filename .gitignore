@@ -16,3 +16,4 @@ entry/src/main/.DS_Store
 entry/src/main/ets/.DS_Store
 material/
 User/
+*.log

@@ -38,11 +38,12 @@ struct IDCardRecognitionPage {
       if(canIUse("SystemCapability.AI.Component.CardRecognition")){
         CardRecognition({
           supportType:CardType.CARD_ID,
+          cardSide:this.cardSide,
           cardRecognitionConfig:{
             isPhotoSelectionSupported:true,
             defaultShootingMode:ShootingMode.AUTO
           },
-          callback:async(params:CallbackParam)=>{
+          callback:(params:CallbackParam)=>{
             if(params.code == 200 && params.cardInfo){
               console.error("识别成功")
               console.error(`${ JSON.stringify(params.cardInfo)}`)
