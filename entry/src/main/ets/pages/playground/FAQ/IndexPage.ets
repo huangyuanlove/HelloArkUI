@@ -1,7 +1,4 @@
 import { BaseListItem } from '../../../comm/BaseListItem';
-import { User } from './as_bug/UseASPage';
-import { router } from '@kit.ArkUI';
-import router from '@ohos.router';
 
 @Entry
 @Component

@@ -1,43 +1,69 @@
+import { router } from '@kit.ArkUI';
 
-import router from '@ohos.router'
-import deviceInfo from '@ohos.deviceInfo'
-@Preview
+
 @Component
-export default struct  ActionBar{
-  @Prop title:string
+@Preview
+export default struct ActionBar {
+  @Prop title: string = ''
+  @Prop rightImage?: Resource = undefined
+  @Prop rightText: string = ''
+  @Prop showBack: boolean = true;
+  @Prop showDivider: boolean = true
+  onClickBack: ((event: ClickEvent) => void) | undefined
+  onClickRight: ((event: ClickEvent) => void) | undefined
 
-  private topPadding:number = 16
+  build() {
+    Column() {
+      Stack() {
+        Text(this.title)
+          .fontSize(18)
+          .layoutWeight(1)
+          .textAlign(TextAlign.Center)
+          .maxLines(1)
+          .wordBreak(WordBreak.BREAK_WORD)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+          .layoutWeight(1)
+          .fontColor(Color.Black)
+        Row() {
+          Row() {
+            if (this.showBack) {
+              Image($r('app.media.action_bar_go_back'))
+                .objectFit(ImageFit.Cover)
+                .margin({ left: 15 })
+                .width(12)
+                .height(20)
+                .onClick((event) => {
+                  if (this.onClickBack) {
+                    this.onClickBack(event)
+                  } else {
+                    router.back()
+                  }
+                })
+            }
+          }.width(44)
 
+          Row() {
+            if (this.rightImage != null) {
+              Image(this.rightImage)
+            }
+            if (this.rightText.length > 0) {
+              Text(this.rightText).fontColor(Color.White).fontSize(16)
+            }
+          }
+          .margin({ right: 15 })
+          .onClick((event) => {
+            if (this.onClickRight) {
+              this.onClickRight(event)
+            }
+          })
+        }.width('100%').height(44).justifyContent(FlexAlign.SpaceBetween)
+      }.width('100%').height('44')
 
-  aboutToAppear(){
-    if(deviceInfo.deviceType == "tablet"){
-      this.topPadding = 48
-    }
-
-    if(!this.title){
-      this.title = router.getState().path
-    }
+      if (this.showDivider) {
+        Divider().vertical(false).color("#f7f7f7").strokeWidth(1).width('100%')
+      }
+    }.backgroundColor(Color.White).expandSafeArea([SafeAreaType.KEYBOARD], [SafeAreaEdge.TOP])
   }
-
-  build(){
-    Row(){
-      Image($r("app.media.action_bar_go_back"))
-        .margin({left:10})
-        .width(32)
-        .height(32)
-        .onClick(()=>{
-        router.back()
-      })
-
-        Text(this.title ).layoutWeight(1).margin({right:32}).textAlign(TextAlign.Center).fontSize(24).fontColor(Color.Black)
-      Image($r("app.media.source_code"))
-        .margin({right:10})
-        .width(32)
-        .height(32)
-        .onClick(()=>{
-          router.pushUrl({url:"WebViewPage",params:{path:"", }})
-        })
-    }.alignItems(VerticalAlign.Center).padding({top:this.topPadding,bottom:16}).shadow({radius:1}).width('100%')
-  }
-
 }
+
+export { ActionBar }
