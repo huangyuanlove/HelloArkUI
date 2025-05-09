@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import ActionBar from '../../comm/ActionBar'
+import { ActionBar } from '../../comm/ActionBar';
 import { HelloComponent } from '../../component/HelloComponent'
 import { getMainRouterInfo, MainRouterParams } from './RouterParams'
 import { hilog } from '@kit.PerformanceAnalysisKit'

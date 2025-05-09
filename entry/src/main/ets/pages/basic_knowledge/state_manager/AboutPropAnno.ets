@@ -1,5 +1,5 @@
 import common from '@ohos.app.ability.common'
-import ActionBar from '../../../comm/ActionBar';
+import { ActionBar } from  '../../../comm/ActionBar';
 import { ContentDialog } from '../../../component/ContentDialog';
 @Entry
 @Component

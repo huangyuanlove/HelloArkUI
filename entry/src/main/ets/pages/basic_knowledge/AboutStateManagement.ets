@@ -1,5 +1,5 @@
 
-import ActionBar from '../../comm/ActionBar'
+import { ActionBar } from '../../comm/ActionBar';
 import { BaseListItem } from '../../comm/BaseListItem'
 @Entry
 @Component

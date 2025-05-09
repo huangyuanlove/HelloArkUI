@@ -1,11 +1,12 @@
 // 特别粗糙，可以参考这个：https://developer.huawei.com/consumer/cn/forum/topic/0201104583144305349?fid=0101587866109860105
-import ActionBar from '../../comm/ActionBar';
+
 
 import { saveImageDataUrl } from '../../util/FileUtils';
 import promptAction from '@ohos.promptAction';
 import abilityAccessCtrl, { Permissions } from '@ohos.abilityAccessCtrl';
 import common from '@ohos.app.ability.common';
 import { BusinessError } from '@kit.BasicServicesKit';
+import { ActionBar } from '../../comm/ActionBar';
 
 @Entry
 @Component

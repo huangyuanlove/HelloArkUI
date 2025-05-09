@@ -3,7 +3,7 @@ import { router } from '@kit.ArkUI';
 
 @Component
 @Preview
-export default struct ActionBar {
+struct ActionBar {
   @Prop title: string = ''
   @Prop rightImage?: Resource = undefined
   @Prop rightText: string = ''

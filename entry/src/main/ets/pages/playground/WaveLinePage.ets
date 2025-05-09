@@ -1,4 +1,4 @@
-import ActionBar from '../../comm/ActionBar'
+import { ActionBar } from '../../comm/ActionBar';
 import { WaveView } from './WaveView'
 @Entry
 @Component

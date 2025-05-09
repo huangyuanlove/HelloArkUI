@@ -28,7 +28,7 @@ export default struct BasicKnowledgePage {
         BaseListItem({ label: '状态管理', path: 'pages/basic_knowledge/AboutStateManagement' })
         BaseListItem({ label: '通知', path: 'pages/basic_knowledge/NotificationPage' })
         BaseListItem({ label: '设置角标', path:  "pages/basic_knowledge/IconBadgePage" })
-        BaseListItem({ label: '懒加载', path:  "pages/basic_knowledge/lazy_for_each/LazyForEachPage" })
+        BaseListItem({ label: '懒加载', path:  "pages/basic_knowledge/lazy_for_each/LazyForEachIndexPage" })
 
 
         BaseListItem({ label: '场景视觉化', path: "pages/basic_knowledge/vision_kit/VisionKitPage" })

@@ -1,4 +1,4 @@
-import ActionBar from '../../comm/ActionBar';
+import {ActionBar} from '../../comm/ActionBar';
 import { DrawContext, LengthMetrics, LengthUnit, promptAction } from '@kit.ArkUI';
 import { drawing } from '@kit.ArkGraphics2D';
 import hilog from '@ohos.hilog';

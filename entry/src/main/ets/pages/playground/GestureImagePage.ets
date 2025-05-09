@@ -1,6 +1,7 @@
-import ActionBar from '../../comm/ActionBar';
+
 import hilog from '@ohos.hilog';
 import json from '@ohos.util.json';
+import { ActionBar } from '../../comm/ActionBar';
 
 @Entry
 @ComponentV2

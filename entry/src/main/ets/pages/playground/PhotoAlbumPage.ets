@@ -1,8 +1,9 @@
 import picker from '@ohos.file.picker'
-import ActionBar from '../../comm/ActionBar'
+// import { ActionBar } from '../../comm/ActionBar';
 import abilityAccessCtrl, { Permissions } from '@ohos.abilityAccessCtrl';
 import common from '@ohos.app.ability.common';
 import { BusinessError } from '@kit.BasicServicesKit';
+import { ActionBar } from '../../comm/ActionBar';
 
 @Entry
 @Component

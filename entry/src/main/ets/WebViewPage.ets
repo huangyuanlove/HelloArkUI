@@ -1,6 +1,6 @@
 import web_webview from '@ohos.web.webview';
 import router from '@ohos.router';
-import ActionBar from './comm/ActionBar';
+import { ActionBar } from  './comm/ActionBar';
 
 
 @Entry

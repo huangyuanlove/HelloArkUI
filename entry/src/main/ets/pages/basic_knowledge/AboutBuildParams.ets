@@ -1,4 +1,4 @@
-import ActionBar from '../../comm/ActionBar'
+import { ActionBar } from '../../comm/ActionBar';
 
 interface GeneratedTypeLiteralInterface_1 {
   label: string;

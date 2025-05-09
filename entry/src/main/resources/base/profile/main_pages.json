@@ -68,6 +68,8 @@
     "pages/basic_knowledge/vision_kit/IDCardRecognitionPage",
     "pages/playground/StyledStringValuePage",
     "pages/basic_knowledge/lazy_for_each/LazyForEachPage",
-    "pages/basic_knowledge/IconBadgePage"
+    "pages/basic_knowledge/IconBadgePage",
+    "pages/basic_knowledge/lazy_for_each/LazyForEachDemoPage",
+    "pages/basic_knowledge/lazy_for_each/LazyForEachIndexPage"
   ]
 }

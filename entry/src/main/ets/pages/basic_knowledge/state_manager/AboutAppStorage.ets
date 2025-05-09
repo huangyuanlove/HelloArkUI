@@ -1,4 +1,4 @@
-import ActionBar from '../../../comm/ActionBar';
+import { ActionBar } from  '../../../comm/ActionBar';
 AppStorage.SetOrCreate('PropA', 47);
 let para:Record<string,number> = { 'PropA': 48 }
 let storage =new LocalStorage(para);

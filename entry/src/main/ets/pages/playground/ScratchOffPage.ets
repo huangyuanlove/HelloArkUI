@@ -1,5 +1,5 @@
 
-import ActionBar from '../../comm/ActionBar'
+import { ActionBar } from '../../comm/ActionBar';
 import { ScratchOffView } from './ScratchOffView'
 /**
  * 刮奖效果

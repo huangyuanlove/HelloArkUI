@@ -1,5 +1,5 @@
 import matrix4 from '@ohos.matrix4'
-import ActionBar from '../../comm/ActionBar'
+import { ActionBar } from '../../comm/ActionBar';
 
 @Preview
 @Entry

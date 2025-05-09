@@ -1,9 +1,10 @@
 /**
  * 上一个页面键盘未关闭，下个页面使用 InputMethod.getController.show  后没有回调，具体见诊所端验证码登录
  */
-import ActionBar from '../../../../comm/ActionBar'
+
 import { router } from '@kit.ArkUI'
 import { inputMethod } from '@kit.IMEKit'
+import { ActionBar } from '../../../../comm/ActionBar'
 
 @Entry
 @Component

@@ -1,5 +1,6 @@
 import router from '@ohos.router';
-import ActionBar from '../../comm/ActionBar';
+import { ActionBar } from '../../comm/ActionBar';
+
 @Entry
 @Component
 struct AboutExtendAnno{

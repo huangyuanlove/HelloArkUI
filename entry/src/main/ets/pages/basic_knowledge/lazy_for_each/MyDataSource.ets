@@ -103,6 +103,11 @@ export class BasicDataSource<T> implements IDataSource {
 export class CouponListDataSource extends BasicDataSource<Coupon> {
 }
 
+export class DemoDataSource extends BasicDataSource<string>{
+
+}
+
+
 @ObservedV2
 export class Coupon {
  @Trace id: string = ""

@@ -1,5 +1,5 @@
 
-import ActionBar from '../../../comm/ActionBar';
+import { ActionBar } from  '../../../comm/ActionBar';
 let localStorage = LocalStorage.GetShared() //在 EntryAbility中声明并 load，可以在多个视图中共享
 @Entry(localStorage)
 @Component

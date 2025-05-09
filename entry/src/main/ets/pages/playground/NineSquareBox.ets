@@ -1,5 +1,5 @@
 import promptAction from '@ohos.promptAction'
-import ActionBar from '../../comm/ActionBar'
+import { ActionBar } from '../../comm/ActionBar';
 
 @Component
 @Entry

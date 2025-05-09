@@ -1,6 +1,7 @@
 import router from '@ohos.router';
+import { ActionBar } from '../../comm/ActionBar';
 import { MyComponent, MyComponentController } from '../../component/CustomMethodAndMemeber';
-import ActionBar from '../../comm/ActionBar';
+
 import { MainRouterParams } from './RouterParams';
 
 @Entry

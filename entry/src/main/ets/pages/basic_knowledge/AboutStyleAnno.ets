@@ -1,4 +1,5 @@
-import ActionBar from '../../comm/ActionBar';
+import { ActionBar } from '../../comm/ActionBar';
+
 @Entry
 @Component
 struct AboutStyleAnno{

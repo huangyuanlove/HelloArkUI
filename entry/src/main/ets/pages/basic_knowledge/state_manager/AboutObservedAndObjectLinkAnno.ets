@@ -1,4 +1,4 @@
-import ActionBar from '../../../comm/ActionBar';
+import { ActionBar } from  '../../../comm/ActionBar';
 import { LengthMetrics, LengthMetricsUnit } from '@kit.ArkUI';
 
 @Entry

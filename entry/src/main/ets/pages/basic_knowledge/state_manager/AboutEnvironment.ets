@@ -1,5 +1,5 @@
 // 将设备languageCode存入AppStorage中
-import ActionBar from '../../../comm/ActionBar';
+import { ActionBar } from  '../../../comm/ActionBar';
 
 Environment.EnvProp('languageCode', 'en');
 let enable:number | undefined = AppStorage.Get('languageCode');

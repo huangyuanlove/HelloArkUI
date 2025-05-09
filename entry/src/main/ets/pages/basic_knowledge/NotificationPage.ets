@@ -1,6 +1,6 @@
 import Notification from '@ohos.notificationManager'
 import NotificationRequest from '@ohos.notificationManager'
-import ActionBar from '../../comm/ActionBar'
+import { ActionBar } from '../../comm/ActionBar';
 import { notificationManager } from '@kit.NotificationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';

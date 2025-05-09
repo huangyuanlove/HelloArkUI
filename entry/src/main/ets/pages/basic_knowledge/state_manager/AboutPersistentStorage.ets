@@ -1,4 +1,4 @@
-import ActionBar from '../../../comm/ActionBar';
+import { ActionBar } from  '../../../comm/ActionBar';
 import { ContentDialog } from '../../../component/ContentDialog';
 
 PersistentStorage.PersistProp('aProp', 47);

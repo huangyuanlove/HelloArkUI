@@ -1,7 +1,7 @@
 import { router } from '@kit.ArkUI';
 import { RouterParams } from './RouterParams';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import ActionBar from '../../../comm/ActionBar';
+import {ActionBar} from '../../../comm/ActionBar';
 
 @Entry
 @Component

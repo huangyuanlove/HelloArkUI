@@ -1,4 +1,4 @@
-import ActionBar from '../../comm/ActionBar';
+import {ActionBar} from '../../comm/ActionBar';
 import { notificationManager } from '@kit.NotificationKit';
 import { promptAction } from '@kit.ArkUI';
 import { BusinessError } from '@kit.BasicServicesKit';
