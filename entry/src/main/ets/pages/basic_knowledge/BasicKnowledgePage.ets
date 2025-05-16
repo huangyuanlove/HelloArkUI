@@ -29,9 +29,9 @@ export default struct BasicKnowledgePage {
         BaseListItem({ label: '通知', path: 'pages/basic_knowledge/NotificationPage' })
         BaseListItem({ label: '设置角标', path:  "pages/basic_knowledge/IconBadgePage" })
         BaseListItem({ label: '懒加载', path:  "pages/basic_knowledge/lazy_for_each/LazyForEachIndexPage" })
-
-
+        BaseListItem({ label: '无障碍', path:  "pages/basic_knowledge/accessibility/AccessibilityPage" })
         BaseListItem({ label: '场景视觉化', path: "pages/basic_knowledge/vision_kit/VisionKitPage" })
+        BaseListItem({ label: 'webview', path: "pages/basic_knowledge/WebIndexPage" })
 
         Button() {
           Text('打开 UIAbility').fontSize(18)
@@ -72,9 +72,7 @@ export default struct BasicKnowledgePage {
 
         })
 
-        Button("webview").onClick(() => {
-          router.pushUrl({ url: "WebViewPage", params: { path: "https://www.chunyuyisheng.com" } })
-        })
+
 
         Button('打开 feature hap').onClick((_)=>{
             let context = getContext(this) as common.UIAbilityContext

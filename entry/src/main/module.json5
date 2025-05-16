@@ -35,17 +35,17 @@
         }
 
       },
-//,      {
-//        "name": 'ohos.permission.CAMERA',
-//        "reason": "$string:user_grant_recorder_video_reason",
-//        "usedScene": {
-//          "abilities": [
-//            "EntryAbility"
-//          ],
-//          "when": "inuse"
-//        }
-//
-//      },
+      {
+        "name": 'ohos.permission.CAMERA',
+        "reason": "$string:user_grant_recorder_video_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+
+      },
       {
         "name": 'ohos.permission.MICROPHONE',
         "reason": "$string:user_grant_microphone_reason",
@@ -56,9 +56,44 @@
           "when": "inuse"
         }
 
+      },
+      {
+        "name" : "ohos.permission.APPROXIMATELY_LOCATION",
+        "reason": "$string:user_grant_approximately_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name" : "ohos.permission.LOCATION",
+        "reason": "$string:user_grant_approximately_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+      {
+        "name" : "ohos.permission.LOCATION_IN_BACKGROUND",
+        "reason": "$string:user_grant_approximately_location_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
+      },
+
+      {
+        "name" : "ohos.permission.ACCELEROMETER" // 加速度权限
+      },
+      {
+        "name" : "ohos.permission.GYROSCOPE"     // 陀螺仪权限
       }
-
-
     ],
     "deliveryWithInstall": true,
     "installationFree": false,

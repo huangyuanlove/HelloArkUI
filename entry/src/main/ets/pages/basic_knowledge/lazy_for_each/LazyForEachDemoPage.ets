@@ -27,15 +27,15 @@ struct LazyForEachDemoPage {
               DemoItem({item:item})
             }.padding(10)
           })
-        }.layoutWeight(1)
+        }.layoutWeight(1).cachedCount(2)
 
-        List({space:4}){
-          ForEach(this.dataString,(item:string)=>{
-            ListItem(){
-              DemoItem({item:item})
-            }.padding(10)
-          })
-        }.layoutWeight(1)
+        // List({space:4}){
+        //   ForEach(this.dataString,(item:string)=>{
+        //     ListItem(){
+        //       DemoItem({item:item})
+        //     }.padding(10)
+        //   })
+        // }.layoutWeight(1)
       }
 
     }
