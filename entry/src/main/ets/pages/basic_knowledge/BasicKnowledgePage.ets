@@ -15,6 +15,9 @@ import { promptAction } from '@kit.ArkUI';
 @Preview
 @Component
 export default struct BasicKnowledgePage {
+
+  @Prop value:number = 0
+
   build() {
     Column() {
       Flex({ wrap: FlexWrap.Wrap, }) {
@@ -32,6 +35,12 @@ export default struct BasicKnowledgePage {
 
 
         BaseListItem({ label: '场景视觉化', path: "pages/basic_knowledge/vision_kit/VisionKitPage" })
+
+        Button('Change')
+          .onClick(() => {
+            this.value++
+          })
+
 
         Button() {
           Text('打开 UIAbility').fontSize(18)
@@ -149,5 +158,15 @@ export default struct BasicKnowledgePage {
       }.width('100%').height('100%').padding({ top: 48 })
 
     }
+  }
+}
+
+@Component
+struct Demo{
+  @Prop value:number
+  build() {
+    Text(this.value.toString()).onClick((_)=>{
+      this.value ++
+    })
   }
 }
