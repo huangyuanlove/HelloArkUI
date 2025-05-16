@@ -46,6 +46,10 @@
     {
       "name": "user_grant_microphone_reason",
       "value": "录音"
+    },
+    {
+      "name": "user_grant_approximately_location_reason",
+      "value": "定位"
     }
   ]
 }

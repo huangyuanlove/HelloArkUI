@@ -12,6 +12,8 @@ struct VisionKitPage {
   @State originalImageUri:string = ''
   @State idCardImageUri:string = ''
 
+
+
   build() {
       Column() {
         ActionBar({title:"场景视觉化"})
