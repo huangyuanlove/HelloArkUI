@@ -1,0 +1,24 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<body>
+<button type="button" onclick="callArkTS()">Click Me!</button>
+<h1 id="text">测试一下原生调用前端方法和直接执行js代码</h1>
+<script>
+
+    var param = "param: JavaScript Hello World!";
+    function toGreen(param) {
+        document.getElementById('text').style.color = 'green';
+        console.log(param);
+    }
+
+    function toBlue() {
+        document.getElementById('text').style.color = 'blue';
+    }
+    // 点击“Click Me！”按钮，触发前端页面callArkTS()函数执行JavaScript传递的代码。
+    function callArkTS() {
+        changeColor();
+    }
+</script>
+</body>
+</html>

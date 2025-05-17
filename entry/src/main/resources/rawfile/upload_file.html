@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebCamera</title>
+</head>
+<body>
+<input type="file" name="photo" accept="image/*" id="photo"><br>
+<img style="display: none;width:200px;" id="img">
+<script>
+    let photo = document.getElementById("photo");
+    photo.addEventListener("change", preViewImg)
+    function preViewImg(event) {
+        let fileReader = new FileReader();
+        let img = document.getElementById("img");
+        fileReader.addEventListener(
+            "load",
+            () => {
+                // 将图像文件转换为 Base64 字符串
+                img.src = fileReader.result;
+            },
+            false,
+        );
+        fileReader.readAsDataURL(event.target.files[0]);
+        img.style.display = "block";
+    }
+</script>
+</body>
+</html>
