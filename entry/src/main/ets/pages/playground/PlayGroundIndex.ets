@@ -83,8 +83,11 @@ export struct PlayGroundIndex {
           })
         })
 
-        Button("跳转 flutter login").onClick((_)=>{
-          MyFlutterRouter.push(FlutterPath.LOGIN)
+        // Button("跳转 flutter login").onClick((_)=>{
+        //   MyFlutterRouter.push(FlutterPath.LOGIN)
+        // })
+        Button("router and flutter entry").onClick((_)=>{
+          router.pushUrl({url:"pages/flutter/FlutterEntryWithRouterPage"})
         })
 
 

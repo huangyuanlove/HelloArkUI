@@ -7,11 +7,11 @@
         "material": {
           "certpath": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A783435E5DE4A612AE061A00F7E84FA4AEF43FA63FDEFDD692EA0A7FF8C0C422FDDAD1D069A78",
+          "keyPassword": "0000001B1146004F7FC013AB793A1809E3A10F1D66E52F5526EDC7CD1165236EB798756831369E9B11013B",
           "profile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p12",
-          "storePassword": "0000001A9B13234B2005B584349ABF83F5B7ED8E1A1ED8F5BCF334F71652FDCCF31EEE4FDE42DA088FBB"
+          "storePassword": "0000001B2B0313EE66B15F8C1EAA99AE43FD53C366A6F4CB3245CCA6A301077979D2D02722FAF383264475"
         }
       }
     ],
@@ -19,7 +19,7 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "5.0.0(12)",
+        "compatibleSdkVersion": "5.0.4(16)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
@@ -59,9 +59,10 @@
         }
       ]
     },
+    // 以下为新增内容
     {
       "name": "flutter_module",
-      "srcPath": "./flutter_module/.ohos/flutter_module",
+      "srcPath": "./my_flutter_module/.ohos/flutter_module",
       "targets": [
         {
           "name": "default",
@@ -71,5 +72,6 @@
         }
       ]
     }
+
   ]
 }
