@@ -10,8 +10,12 @@ import {
 /** FlutterRouterPlugin **/
 export default class FlutterRouterPlugin implements FlutterPlugin, MethodCallHandler {
   private channel: MethodChannel | null = null;
-
+ static  routerHandler: (path:string,args:Record<string,Object>|undefined)=>boolean = (path,args)=>{return false};
   constructor() {
+  }
+
+ static setRouterHandler( handler: (path:string,args:Record<string,Object>|undefined)=>boolean   ){
+   FlutterRouterPlugin.routerHandler = handler
   }
 
   getUniqueClassName(): string {
@@ -32,6 +36,14 @@ export default class FlutterRouterPlugin implements FlutterPlugin, MethodCallHan
   onMethodCall(call: MethodCall, result: MethodResult): void {
     if (call.method == "getPlatformVersion") {
       result.success("OpenHarmony ^ ^ ")
+    } else if (call.method == 'open') {
+      let path: string = call.argument('path')
+     let args:Record<string,Object> | undefined= call.argument('arguments')
+      if(FlutterRouterPlugin.routerHandler(path,args)){
+        result.success({"error_code":0})
+      }else{
+        result.success({"error_code":1,"error_msg":"打开页面失败"})
+      }
     } else {
       result.notImplemented()
     }

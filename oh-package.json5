@@ -15,7 +15,8 @@
     "@hadss/hmrouter": "1.0.0-rc.10",
     "@pura/harmony-dialog": "^1.1.0",
     "@ohos/flutter_ohos": "file:./har/flutter.har",
-    "@ohos/flutter_module": ".//har/flutter_module.har"
+    "@ohos/flutter_module": ".//har/flutter_module.har",
+    "flutter_router": "file:./har/flutter_router.har"
   },
   "dynamicDependencies": {},
   "overrides": {

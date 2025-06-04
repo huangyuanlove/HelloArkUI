@@ -1,5 +1,6 @@
-
+import 'package:flutter/material.dart';
 import 'flutter_router_platform_interface.dart';
+import 'router_manager.dart';
 
 class FlutterRouter {
   Future<String?> getPlatformVersion() {
@@ -7,23 +8,14 @@ class FlutterRouter {
   }
 
   Future<T?> open<T extends Object?>(context, path,
-      {Object? arguments, CyContainerConf? containerConf}) async {
-    final route = RouteManager.instance.getRoute(path);
-    if (route != null) {
-      if (containerConf != null) {
-        // 需要用新的container打开flutter页面
-        return CyRoutePlatform.instance
-            .open<T>(path,
-            arguments: arguments, containerConf: containerConf.toJson())
-            .then((value) {
-          return value;
-        });
-      }
+      {Object? arguments}) async {
+    final bool useFlutterPage = RouterManager.instance.hasRouterWidget(path);
+      if(useFlutterPage){
       return Navigator.of(context).pushNamed(path, arguments: arguments);
     } else {
       // 打开native页面: path已在native端注册
-      return CyRoutePlatform.instance
-          .open<T>(path, arguments: arguments, containerConf: null)
+      return FlutterRouterPlatform.instance
+          .open<T>(path, arguments: arguments)
           .then((value) {
         return value;
       });
@@ -34,8 +26,7 @@ class FlutterRouter {
     if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop(args);
     } else {
-      // SystemNavigator.pop(animated: true);
-      CyRoutePlatform.instance.pop(args);
+      FlutterRouterPlatform.instance.pop(args);
     }
   }
 }

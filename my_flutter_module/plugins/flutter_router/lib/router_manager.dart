@@ -15,6 +15,10 @@ class RouterManager {
     _routerMap[path] = routerBuilder;
     return true;
   }
+  bool hasRouterWidget(String path){
+    final String routerName = _getRouterName(path);
+    return _routerMap.containsKey(routerName);
+  }
 
   Widget getRouterWidget(String path) {
     final String routerName = _getRouterName(path);
@@ -62,10 +66,3 @@ class RouterManager {
     }
   }
 }
-
-// class RouterBuilder{
-//
-//   RouteWidgetBuilder routeWidgetBuilder;
-//
-//   RouterBuilder(this.routeWidgetBuilder);
-// }

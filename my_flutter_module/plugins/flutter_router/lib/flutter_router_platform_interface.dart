@@ -28,7 +28,7 @@ abstract class FlutterRouterPlatform extends PlatformInterface {
   }
 
   Future<T> open<T extends Object?>(url,
-      {dynamic arguments, Map? containerConf}) {
+      {dynamic arguments}) {
     throw UnimplementedError('open() has not been implemented.');
   }
 

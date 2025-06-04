@@ -7,6 +7,7 @@ import { JSON } from '@kit.ArkTS';
 import { HMRouterMgr } from '@hadss/hmrouter';
 import { DialogHelper } from '@pura/harmony-dialog';
 import { ExclusiveAppComponent, FlutterManager } from '@ohos/flutter_ohos';
+import FlutterRouterPlugin from 'flutter_router';
 
 export default class EntryAbility extends UIAbility implements ExclusiveAppComponent<UIAbility>{
 
@@ -26,6 +27,15 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
 
     FlutterManager.getInstance().pushUIAbility(this);
+    FlutterRouterPlugin.setRouterHandler((path:string,args:Record<string,Object>|undefined)=>{
+      console.error(`rouerHandler:path=> ${path} ,args=>${args}`)
+      if(path=='HMRouterAPage'){
+
+        HMRouterMgr.push({pageUrl:"pages/playground/hmrouter_page/HMRouterAPage",param:args})
+        return true;
+      }
+      return false;
+    });
 
     DialogHelper.setDefaultConfig((config) => {
       config.uiAbilityContext = this.context;

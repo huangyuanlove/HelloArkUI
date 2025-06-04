@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_router/flutter_router.dart';
 
 class LoginPage extends StatefulWidget {
   final Map<String, dynamic> args;
@@ -24,25 +25,33 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           '登录页面',
           style: TextStyle(fontSize: 20, color: Color(0xff333333)),
         ),
       ),
       body: Column(
         children: [
-          Text("登录页面获取到的参数", style: TextStyle(fontSize: 16, color: Color(0xff333333))),
-          Text("${jsonEncode(widget.args)}"),
+          const Text("登录页面获取到的参数", style: TextStyle(fontSize: 16, color: Color(0xff333333))),
+          Text(jsonEncode(widget.args)),
           Text("name:${widget.args['name']}"),
           Text("age:${widget.args['age']}"),
           ElevatedButton(
             onPressed: () {},
-            child: Text("登录成功返回",
+            child: const Text("登录成功返回",
                 style: TextStyle(fontSize: 16, color: Color(0xff333333))),
           ),
           ElevatedButton(
             onPressed: () {},
-            child: Text("登录失败返回",
+            child: const Text("登录失败返回",
+                style: TextStyle(fontSize: 16, color: Color(0xff333333))),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              //HMRouterAPage
+              FlutterRouter().open(context, 'HMRouterAPage',arguments: {'name':'flutter_harmony','age':3});
+            },
+            child: const Text("native",
                 style: TextStyle(fontSize: 16, color: Color(0xff333333))),
           )
         ],

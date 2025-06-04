@@ -17,18 +17,13 @@ class MethodChannelFlutterRouter extends FlutterRouterPlatform {
 
   @override
   Future<T> open<T extends Object?>(url,
-      {dynamic arguments, Map? containerConf}) async {
+      {dynamic arguments}) async {
     var args = {};
     args['path'] = url;
 
     if (arguments != null) {
       args['arguments'] = arguments;
     }
-
-    if (containerConf != null) {
-      args['container_conf'] = containerConf;
-    }
-
     final result = await methodChannel.invokeMethod('open', args);
     return result;
   }

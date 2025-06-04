@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.cer",
+          "certpath": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B78F7C95869ECE575F6C065C63A03AA45FE5A237742FAC98ECD9474417E3BD9DCC4C616071124D7",
-          "profile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p7b",
+          "keyPassword": "0000001B68864370D9C0C2D40FB99FAA01BA7E3CFB60ED0E34EA0AAE7618619A09CF34D197C0F04ACD7CBB",
+          "profile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p12",
-          "storePassword": "0000001BA94E81040AB3C4E65AB81413A9AC45D85C2BDE3DE5D808A7A13ECC524E5D7BB85B212E4F230702"
+          "storeFile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p12",
+          "storePassword": "0000001BE3DDB606B6923BE2848639A784C7E5F337FD1CE577CC9326CFBB18A7C46A38BDB08FBBED0D1661"
         }
       }
     ],
@@ -59,19 +59,19 @@
         }
       ]
     }
-//  ,
+    //  ,
     // 以下为新增内容
-//    {
-//      "name": "flutter_module",
-//      "srcPath": "./my_flutter_module/.ohos/flutter_module",
-//      "targets": [
-//        {
-//          "name": "default",
-//          "applyToProducts": [
-//            "default"
-//          ]
-//        }
-//      ]
-//    }
+    //    {
+    //      "name": "flutter_module",
+    //      "srcPath": "./my_flutter_module/.ohos/flutter_module",
+    //      "targets": [
+    //        {
+    //          "name": "default",
+    //          "applyToProducts": [
+    //            "default"
+    //          ]
+    //        }
+    //      ]
+    //    }
   ]
 }
