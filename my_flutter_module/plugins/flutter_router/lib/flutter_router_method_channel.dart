@@ -14,4 +14,28 @@ class MethodChannelFlutterRouter extends FlutterRouterPlatform {
     final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
   }
+
+  @override
+  Future<T> open<T extends Object?>(url,
+      {dynamic arguments, Map? containerConf}) async {
+    var args = {};
+    args['path'] = url;
+
+    if (arguments != null) {
+      args['arguments'] = arguments;
+    }
+
+    if (containerConf != null) {
+      args['container_conf'] = containerConf;
+    }
+
+    final result = await methodChannel.invokeMethod('open', args);
+    return result;
+  }
+
+  @override
+  void pop([args]) async {
+    await methodChannel.invokeMethod('pop', args);
+  }
+
 }
