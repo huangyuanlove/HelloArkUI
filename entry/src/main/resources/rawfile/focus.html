@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>test</title>
+</head>
+<body>
+<form id="form">
+    <input type="text" placeholder="text input" />
+    <input type="password" placeholder="password" />
+</form>
+</body>
+<script>
+    const form = document.getElementById("form");
+
+    form.addEventListener(
+      "focus",
+      (event) => {
+        event.target.style.background = "pink";
+      },
+      true,
+    );
+
+    form.addEventListener(
+      "blur",
+      (event) => {
+        event.target.style.background = "";
+      },
+      true,
+    );
+</script>
+</html>

@@ -35,6 +35,9 @@ struct WebIndexPage {
           Button("自定义页面请求响应").onClick(() => {
             router.pushUrl({ url: "WebViewPage", params: { 'rawFile': "onInterceptRequest.html" } })
           })
+          Button("焦点管理").onClick(() => {
+            router.pushUrl({ url: "WebViewPage", params: { 'rawFile': "focus.html" } })
+          })
 
         }
       }
