@@ -7,11 +7,11 @@
         "material": {
           "certpath": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B3AD5FAB7638BCDD58FF7CD9749B5E3DD07A53C2326C4A5F2581E8D4EAFB309DE0C2813115973E5",
+          "keyPassword": "0000001B78F7C95869ECE575F6C065C63A03AA45FE5A237742FAC98ECD9474417E3BD9DCC4C616071124D7",
           "profile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p12",
-          "storePassword": "0000001BC3F1087BEA98FC91DA9113FCDD8085B0CD0DF2BFE7C88CBBE0EAB05E192A238D851098582040A9"
+          "storePassword": "0000001BA94E81040AB3C4E65AB81413A9AC45D85C2BDE3DE5D808A7A13ECC524E5D7BB85B212E4F230702"
         }
       }
     ],
@@ -19,7 +19,7 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "compatibleSdkVersion": "5.0.0(12)",
+        "compatibleSdkVersion": "5.0.4(16)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
@@ -58,18 +58,20 @@
           ]
         }
       ]
-    },
-    {
-      "name": "flutter_module",
-      "srcPath": "./flutter_module/.ohos/flutter_module",
-      "targets": [
-        {
-          "name": "default",
-          "applyToProducts": [
-            "default"
-          ]
-        }
-      ]
     }
+//  ,
+    // 以下为新增内容
+//    {
+//      "name": "flutter_module",
+//      "srcPath": "./my_flutter_module/.ohos/flutter_module",
+//      "targets": [
+//        {
+//          "name": "default",
+//          "applyToProducts": [
+//            "default"
+//          ]
+//        }
+//      ]
+//    }
   ]
 }

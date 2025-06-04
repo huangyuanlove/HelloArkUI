@@ -2,7 +2,7 @@
   "app": {
     "bundleName": "com.huangyuanlove.arkui_demo",
     "vendor": "xuan",
-    "versionCode": 1000000,
+    "versionCode": 1,
     "versionName": "1.0.0",
     "icon": "$media:nav_arkui",
     "label": "$string:app_name"

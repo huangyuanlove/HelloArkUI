@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "flutter_router",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

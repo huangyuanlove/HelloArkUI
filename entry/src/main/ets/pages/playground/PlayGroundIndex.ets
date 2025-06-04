@@ -83,8 +83,11 @@ export struct PlayGroundIndex {
           })
         })
 
-        Button("跳转 flutter login").onClick((_)=>{
-          MyFlutterRouter.push(FlutterPath.LOGIN)
+        Button("HMRouter flutter").onClick((_)=>{
+          MyFlutterRouter.push(FlutterPath.LOGIN,{"name":"harmonyos","age":3})
+        })
+        Button("router and flutter entry").onClick((_)=>{
+          router.pushUrl({url:"pages/flutter/FlutterEntryWithRouterPage"})
         })
 
 

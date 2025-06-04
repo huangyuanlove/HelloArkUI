@@ -1,7 +1,6 @@
 import { FlutterManager, FlutterPage, FlutterView } from '@ohos/flutter_ohos'
 import { HMLifecycleState, HMRouter, HMRouterMgr } from '@hadss/hmrouter'
 import { MyFlutterEntry } from './MyFlutterEntry'
-import { promptAction } from '@kit.ArkUI';
 
 @HMRouter({ pageUrl: 'pages/flutter/MyFlutterPage' })
 @Component
@@ -11,10 +10,8 @@ export struct MyFlutterPage {
 
   aboutToAppear() {
     let param: Record<string, string> = HMRouterMgr.getCurrentParam() as Record<string, string>
-    let path: string = param['path']
-    this.flutterEntry = new MyFlutterEntry(getContext(this), {
-      'route': path,
-    })
+    console.error(`MyFlutterPage params ${JSON.stringify(param)}`)
+    this.flutterEntry = new MyFlutterEntry(getContext(this), param)
     this.flutterEntry.aboutToAppear()
     this.flutterView = this.flutterEntry.getFlutterView()
     HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onShown, () => {
@@ -26,7 +23,9 @@ export struct MyFlutterPage {
       FlutterManager.getInstance().setUseFullScreen(false)
     })
     HMRouterMgr.getCurrentLifecycleOwner()?.addObserver(HMLifecycleState.onBackPressed, (): boolean => {
-      this.flutterEntry?.onBackPress()
+      // this.flutterEntry?.onBackPress()
+      // (getContext(this) as common.UIAbilityContext).eventHub.emit('EVENT_BACK_PRESS')
+      HMRouterMgr.pop()
       return true
     })
   }

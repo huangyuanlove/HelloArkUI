@@ -10,16 +10,16 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "@jg/push": "1.1.0",
     "class-transformer": "0.5.1",
     "simplehtmlrender": "1.0.0",
     "@hadss/hmrouter": "1.0.0-rc.10",
     "@pura/harmony-dialog": "^1.1.0",
-    "@ohos/flutter_ohos": "file:./flutter_module/.ohos/har/flutter.har",
-    "@ohos/flutter_module": "flutter_module/.ohos/flutter_module"
+    "@ohos/flutter_ohos": "file:./har/flutter.har",
+    "@ohos/flutter_module": ".//har/flutter_module.har"
   },
   "dynamicDependencies": {},
   "overrides": {
-
+    "@ohos/flutter_ohos": "file:./har/flutter.har",
+    "flutter_router": "file:./har/flutter_router.har"
   }
 }
