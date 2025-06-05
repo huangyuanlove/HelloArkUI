@@ -10,12 +10,18 @@ import {
 /** FlutterRouterPlugin **/
 export default class FlutterRouterPlugin implements FlutterPlugin, MethodCallHandler {
   private channel: MethodChannel | null = null;
- static  routerHandler: (path:string,args:Record<string,Object>|undefined)=>boolean = (path,args)=>{return false};
+  static routerPushHandler: (path: string, args: Record<string, Object> | undefined) => boolean = (path, args) => {
+    return false
+  };
+  static routerPopHandler:(args:Record<string,Object>|undefined)=>boolean =(args)=>{
+    return false
+  }
+
   constructor() {
   }
 
- static setRouterHandler( handler: (path:string,args:Record<string,Object>|undefined)=>boolean   ){
-   FlutterRouterPlugin.routerHandler = handler
+  static setRouterPushHandler(handler: (path: string, args: Record<string, Object> | undefined) => boolean) {
+    FlutterRouterPlugin.routerPushHandler = handler
   }
 
   getUniqueClassName(): string {
@@ -38,13 +44,21 @@ export default class FlutterRouterPlugin implements FlutterPlugin, MethodCallHan
       result.success("OpenHarmony ^ ^ ")
     } else if (call.method == 'open') {
       let path: string = call.argument('path')
-     let args:Record<string,Object> | undefined= call.argument('arguments')
-      if(FlutterRouterPlugin.routerHandler(path,args)){
-        result.success({"error_code":0})
-      }else{
-        result.success({"error_code":1,"error_msg":"打开页面失败"})
+      let args: Record<string, Object> | undefined = call.argument('arguments')
+      if (FlutterRouterPlugin.routerPushHandler(path, args)) {
+        result.success({ "error_code": 0 })
+      } else {
+        result.success({ "error_code": 1, "error_msg": "打开页面失败" })
       }
-    } else {
+    }else if(call.method =='pop'){
+      if(FlutterRouterPlugin.routerPopHandler(call.args)){
+        result.success({ "error_code": 0 })
+      }else{
+        result.success({ "error_code": 1, "error_msg": "返回上级页面失败" })
+      }
+
+    }
+    else {
       result.notImplemented()
     }
   }

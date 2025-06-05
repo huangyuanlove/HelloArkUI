@@ -37,6 +37,7 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
       return false;
     });
 
+
     DialogHelper.setDefaultConfig((config) => {
       config.uiAbilityContext = this.context;
     })

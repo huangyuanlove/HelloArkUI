@@ -7,11 +7,11 @@
         "material": {
           "certpath": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001B68864370D9C0C2D40FB99FAA01BA7E3CFB60ED0E34EA0AAE7618619A09CF34D197C0F04ACD7CBB",
+          "keyPassword": "0000001BB5A36AE004668BD5793DB6C4F75DF639620D6B157752B192A46EDD789900ED38D5BA63CCC665CD",
           "profile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "C:\\Users\\huangyuan\\.ohos\\config\\default_HelloArkUI_VEtMxsU42IFRFnlz5ZjAiGasx8pHJVH_TFKL5Tx8ffQ=.p12",
-          "storePassword": "0000001BE3DDB606B6923BE2848639A784C7E5F337FD1CE577CC9326CFBB18A7C46A38BDB08FBBED0D1661"
+          "storePassword": "0000001B7DEB86A15D349914B1A52131DE5A65CA5B7C5A6404CA57C914433DD847A17929D4D3F601AB4E48"
         }
       }
     ],
