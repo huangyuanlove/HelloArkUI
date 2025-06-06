@@ -6,7 +6,7 @@ import { BusinessError } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';
 import { HMRouterMgr } from '@hadss/hmrouter';
 import { DialogHelper } from '@pura/harmony-dialog';
-import { ExclusiveAppComponent, FlutterManager } from '@ohos/flutter_ohos';
+import { ExclusiveAppComponent, FlutterManager, MethodCall, MethodResult } from '@ohos/flutter_ohos';
 import FlutterRouterPlugin from 'flutter_router';
 
 export default class EntryAbility extends UIAbility implements ExclusiveAppComponent<UIAbility>{
@@ -26,16 +26,7 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
 
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
 
-    FlutterManager.getInstance().pushUIAbility(this);
-    FlutterRouterPlugin.setRouterHandler((path:string,args:Record<string,Object>|undefined)=>{
-      console.error(`rouerHandler:path=> ${path} ,args=>${args}`)
-      if(path=='HMRouterAPage'){
 
-        HMRouterMgr.push({pageUrl:"pages/playground/hmrouter_page/HMRouterAPage",param:args})
-        return true;
-      }
-      return false;
-    });
 
 
     DialogHelper.setDefaultConfig((config) => {
@@ -44,6 +35,43 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
     HMRouterMgr.init({
       context: this.context
     })
+
+    FlutterManager.getInstance().pushUIAbility(this);
+    FlutterRouterPlugin.setRouterPushHandler((path:string,args:Record<string,Object>|undefined,result: MethodResult)=>{
+      console.error(`rouerHandler:path=> ${path} ,args=>${args}`)
+      if(path=='HMRouterAPage'){
+        HMRouterMgr.push({pageUrl:"pages/playground/hmrouter_page/HMRouterAPage",param:args,},{
+          onResult:(popInfo:PopInfo)=>{
+            if(popInfo){
+              result.success(popInfo.result)
+            }
+          }
+        })
+        return true;
+      }
+      if(path =='pages/flutter/FromFlutterPage'){
+        HMRouterMgr.push({pageUrl:'pages/flutter/FromFlutterPage',param:args},{
+          onResult:(popInfo:PopInfo)=>{
+            if(popInfo){
+              result.success(popInfo.result)
+            }else{
+              result.success("")
+            }
+          }
+        })
+        return true
+      }
+
+
+      return false;
+    });
+
+    FlutterRouterPlugin.setRouterPopHandler((call:MethodCall,result: MethodResult)=>{
+      console.error(`flutter 调用 pop  setRouterPopHandler:  ${call.method}  ${call.args}`)
+      HMRouterMgr.pop({param:call.args})
+      return true;
+    })
+
 
     // 注册监听，范围是abilityContext内的page
     observer.on('routerPageUpdate', this.context, (info: observer.RouterPageInfo) => {

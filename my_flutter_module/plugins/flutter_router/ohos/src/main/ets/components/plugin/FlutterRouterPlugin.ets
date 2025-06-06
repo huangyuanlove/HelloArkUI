@@ -10,18 +10,21 @@ import {
 /** FlutterRouterPlugin **/
 export default class FlutterRouterPlugin implements FlutterPlugin, MethodCallHandler {
   private channel: MethodChannel | null = null;
-  static routerPushHandler: (path: string, args: Record<string, Object> | undefined) => boolean = (path, args) => {
+  static routerPushHandler: (path: string, args: Record<string, Object> | undefined,result:MethodResult) => boolean = (path, args,result) => {
     return false
   };
-  static routerPopHandler:(args:Record<string,Object>|undefined)=>boolean =(args)=>{
+  static routerPopHandler:(call:MethodCall,result: MethodResult)=>boolean =(call,result)=>{
     return false
   }
 
   constructor() {
   }
 
-  static setRouterPushHandler(handler: (path: string, args: Record<string, Object> | undefined) => boolean) {
+  static setRouterPushHandler(handler: (path: string, args: Record<string, Object> | undefined,result:MethodResult) => boolean) {
     FlutterRouterPlugin.routerPushHandler = handler
+  }
+  static setRouterPopHandler(handler:(call:MethodCall,result: MethodResult)=>boolean){
+    FlutterRouterPlugin.routerPopHandler = handler
   }
 
   getUniqueClassName(): string {
@@ -45,18 +48,14 @@ export default class FlutterRouterPlugin implements FlutterPlugin, MethodCallHan
     } else if (call.method == 'open') {
       let path: string = call.argument('path')
       let args: Record<string, Object> | undefined = call.argument('arguments')
-      if (FlutterRouterPlugin.routerPushHandler(path, args)) {
-        result.success({ "error_code": 0 })
-      } else {
-        result.success({ "error_code": 1, "error_msg": "打开页面失败" })
-      }
-    }else if(call.method =='pop'){
-      if(FlutterRouterPlugin.routerPopHandler(call.args)){
-        result.success({ "error_code": 0 })
-      }else{
-        result.success({ "error_code": 1, "error_msg": "返回上级页面失败" })
-      }
+      console.error("-------onMethodCall----open---start--------")
+      console.error(`path ${path}`)
+      console.error(`arguments ${args}`)
+      console.error("------onMethodCall-----open----end-------")
+      FlutterRouterPlugin.routerPushHandler(path, args,result)
 
+    }else if(call.method =='pop'){
+      FlutterRouterPlugin.routerPopHandler(call,result)
     }
     else {
       result.notImplemented()

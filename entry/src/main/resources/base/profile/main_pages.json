@@ -73,7 +73,6 @@
     "pages/basic_knowledge/lazy_for_each/LazyForEachIndexPage",
     "pages/basic_knowledge/accessibility/AccessibilityPage",
     "pages/basic_knowledge/WebIndexPage",
-
     "pages/flutter/FlutterEntryWithRouterPage"
   ]
 }

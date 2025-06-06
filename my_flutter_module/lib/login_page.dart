@@ -37,7 +37,9 @@ class _LoginPageState extends State<LoginPage> {
           Text("name:${widget.args['name']}"),
           Text("age:${widget.args['age']}"),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              FlutterRouter().pop(context,{"user_id":"xuan"});
+            },
             child: const Text("登录成功返回",
                 style: TextStyle(fontSize: 16, color: Color(0xff333333))),
           ),
@@ -51,9 +53,21 @@ class _LoginPageState extends State<LoginPage> {
               //HMRouterAPage
               FlutterRouter().open(context, 'HMRouterAPage',arguments: {'name':'flutter_harmony','age':3});
             },
-            child: const Text("native",
+            child: const Text("HMRouterAPage",
+                style: TextStyle(fontSize: 16, color: Color(0xff333333))),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              //HMRouterAPage
+              FlutterRouter().open(context, 'pages/flutter/FromFlutterPage',arguments: {'name':'flutter_harmony','age':3}).then((value){
+                debugPrint("native页面返回 flutter 传递的参数 ${jsonEncode(value)}");
+
+              }) ;
+            },
+            child: const Text("FromFlutterPage",
                 style: TextStyle(fontSize: 16, color: Color(0xff333333))),
           )
+
         ],
       ),
     );

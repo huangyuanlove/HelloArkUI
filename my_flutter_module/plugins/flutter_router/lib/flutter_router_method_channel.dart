@@ -24,6 +24,11 @@ class MethodChannelFlutterRouter extends FlutterRouterPlatform {
     if (arguments != null) {
       args['arguments'] = arguments;
     }
+    debugPrint("-----------open---start--------");
+    debugPrint("path $url");
+    debugPrint("arguments $arguments");
+    debugPrint("-----------open----end-------");
+
     final result = await methodChannel.invokeMethod('open', args);
     return result;
   }

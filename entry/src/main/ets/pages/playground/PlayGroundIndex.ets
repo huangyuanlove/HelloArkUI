@@ -44,6 +44,7 @@ export struct PlayGroundIndex {
         BaseListItem({ label: '滑块验证码', path: "pages/playground/slide_verification/SlideVerificationPage" })
         BaseListItem({ label: '手势图片', path:     "pages/playground/GestureImagePage" })
         BaseListItem({ label: '属性字符串', path:     "pages/playground/StyledStringValuePage" })
+
         Button('自定义拍照').onClick((_) => {
 
           const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
@@ -83,14 +84,19 @@ export struct PlayGroundIndex {
           })
         })
 
-        Button("HMRouter flutter").onClick((_)=>{
-          MyFlutterRouter.push(FlutterPath.LOGIN,{"name":"harmonyos","age":3})
+        Button('Flutter测试').onClick((_) => {
+          HMRouterMgr.push({ pageUrl: 'pages/flutter/FlutterMainPage' }, {
+            onResult: (popInfo: HMPopInfo) => {
+              hilog.error(0x01, 'hmrouter', 'FlutterMainPage 页面返回值-->' + JSON.stringify(popInfo))
+            },
+            onArrival: (() => {
+              hilog.error(0x01, 'hmrouter', 'FlutterMainPage onArrival')
+            }),
+            onLost: (() => {
+              hilog.error(0x01, 'hmrouter', 'FlutterMainPage onLost')
+            })
+          })
         })
-        Button("router and flutter entry").onClick((_)=>{
-          router.pushUrl({url:"pages/flutter/FlutterEntryWithRouterPage"})
-        })
-
-
       }
     }
   }
