@@ -15,19 +15,20 @@ class RouterManager {
     _routerMap[path] = routerBuilder;
     return true;
   }
-  bool hasRouterWidget(String path){
+
+  bool hasRouterWidget(String path) {
     final String routerName = _getRouterName(path);
     return _routerMap.containsKey(routerName);
   }
 
-  Widget getRouterWidget(String path) {
+  Widget getRouterWidget(String path, {Object? params}) {
     final String routerName = _getRouterName(path);
-    final Object? params = _getRouteArgs(path);
+    Object? pathParam = _getRouteArgs(path);
     debugPrint(
-        "getRouterWidget path:${path}, routerName:$routerName,params:$params");
+        "getRouterWidget path:$path, routerName:$routerName,pathParam:$pathParam ,params:$params");
     RouteWidgetBuilder? routerBuilder = _routerMap[routerName];
     if (routerBuilder != null) {
-      return routerBuilder(params);
+      return routerBuilder(pathParam ?? params);
     }
     return Container();
   }

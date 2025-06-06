@@ -11,9 +11,15 @@ class FlutterRouter {
       {Object? arguments}) async {
     final bool useFlutterPage = RouterManager.instance.hasRouterWidget(path);
       if(useFlutterPage){
-      return Navigator.of(context).pushNamed(path, arguments: arguments);
+        debugPrint("FlutterRouter#open 打开 flutter");
+        Widget target =  RouterManager.instance.getRouterWidget(path,params: arguments);
+       return Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => target,
+        ),);
+      // return Navigator.of(context).pushNamed(path, arguments: arguments);
     } else {
       // 打开native页面: path已在native端注册
+        debugPrint("FlutterRouter#open 打开 native");
       return FlutterRouterPlatform.instance
           .open<T>(path, arguments: arguments)
           .then((value) {

@@ -44,8 +44,12 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontSize: 16, color: Color(0xff333333))),
           ),
           ElevatedButton(
-            onPressed: () {},
-            child: const Text("登录失败返回",
+            onPressed: () {
+              FlutterRouter().open(context, "from_flutter",arguments:{"from":"LoginPage","business_id":"123"}).then((value){
+              debugPrint("flutter页面返回 flutter 传递的参数 ${jsonEncode(value)}");
+              });
+            },
+            child: const Text("跳转到 flutter",
                 style: TextStyle(fontSize: 16, color: Color(0xff333333))),
           ),
           ElevatedButton(
