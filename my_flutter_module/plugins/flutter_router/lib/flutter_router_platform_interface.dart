@@ -27,8 +27,7 @@ abstract class FlutterRouterPlatform extends PlatformInterface {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  Future<T> open<T extends Object?>(url,
-      {dynamic arguments}) {
+  Future<T> open<T extends Object?>(url, {dynamic arguments}) {
     throw UnimplementedError('open() has not been implemented.');
   }
 

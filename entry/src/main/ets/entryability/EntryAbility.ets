@@ -1,7 +1,7 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
-import { AbilityConstant, common, Want } from '@kit.AbilityKit';
-import { UIContext, window, uiObserver as observer, uiObserver } from '@kit.ArkUI';
+import { AbilityConstant, Want } from '@kit.AbilityKit';
+import { UIContext, window, uiObserver as observer } from '@kit.ArkUI';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';
 import { HMRouterMgr } from '@hadss/hmrouter';
