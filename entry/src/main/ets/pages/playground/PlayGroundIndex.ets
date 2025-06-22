@@ -42,8 +42,9 @@ export struct PlayGroundIndex {
         BaseListItem({ label: 'Observe', path: "pages/playground/observed_and_objectLink/ObservedLinkPage" })
         BaseListItem({ label: 'JSON解析', path: "pages/playground/JSONParsePage" })
         BaseListItem({ label: '滑块验证码', path: "pages/playground/slide_verification/SlideVerificationPage" })
-        BaseListItem({ label: '手势图片', path:     "pages/playground/GestureImagePage" })
-        BaseListItem({ label: '属性字符串', path:     "pages/playground/StyledStringValuePage" })
+        BaseListItem({ label: '手势图片', path: "pages/playground/GestureImagePage" })
+        BaseListItem({ label: '属性字符串', path: "pages/playground/StyledStringValuePage" })
+        BaseListItem({ label: '深拷贝', path: "pages/playground/DeepCopyPage" })
 
         Button('自定义拍照').onClick((_) => {
 

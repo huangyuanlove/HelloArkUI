@@ -72,7 +72,6 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
       return true;
     })
 
-
     // 注册监听，范围是abilityContext内的page
     observer.on('routerPageUpdate', this.context, (info: observer.RouterPageInfo) => {
       if(info.state === observer.RouterPageState.ABOUT_TO_APPEAR){
