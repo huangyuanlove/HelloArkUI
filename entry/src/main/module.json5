@@ -13,6 +13,9 @@
 
       },
       {
+        "name": 'ohos.permission.ACCESS_BIOMETRIC'
+      },
+      {
         "name": 'ohos.permission.READ_MEDIA',
         "reason": "$string:user_grant_READ_MEDIA_reason",
         "usedScene": {

@@ -36,6 +36,7 @@ export default struct BasicKnowledgePage {
         BaseListItem({ label: '场景视觉化', path: "pages/basic_knowledge/vision_kit/VisionKitPage" })
         BaseListItem({ label: 'webview', path: "pages/basic_knowledge/WebIndexPage" })
         BaseListItem({ label: 'mtp', path: "mtp" })
+        BaseListItem({ label: 'webview加载沙箱文件', path: "WebViewLoadContextFilePage" })
 
         Button('Change')
           .onClick(() => {

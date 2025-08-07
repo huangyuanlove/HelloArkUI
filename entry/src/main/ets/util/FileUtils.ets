@@ -19,6 +19,10 @@ import buffer from '@ohos.buffer';
 //   await this.fileAsset.close(this.fd)
 // }
 
+function  test(){
+
+}
+
 
 export function saveImageDataUrl(data: string) {
   let uri = '';

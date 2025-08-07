@@ -1,6 +1,6 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
-import { AbilityConstant, Want } from '@kit.AbilityKit';
+import { AbilityConstant, bundleManager, Want } from '@kit.AbilityKit';
 import { UIContext, window, uiObserver as observer } from '@kit.ArkUI';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';

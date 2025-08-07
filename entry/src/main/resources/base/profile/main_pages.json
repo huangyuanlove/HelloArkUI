@@ -74,6 +74,12 @@
     "pages/basic_knowledge/accessibility/AccessibilityPage",
     "pages/basic_knowledge/WebIndexPage",
     "pages/flutter/FlutterEntryWithRouterPage",
-    "pages/playground/DeepCopyPage"
+    "pages/playground/DeepCopyPage",
+    "pages/playground/OrderProgressPage",
+    "pages/playground/user_auth/UserAuthPage",
+    "pages/playground/event/EventMainPage",
+    "pages/playground/event/EventOnePage",
+    "pages/playground/event/EventTwoPage",
+    "WebViewLoadContextFilePage"
   ]
 }
