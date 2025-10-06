@@ -48,6 +48,7 @@ export struct PlayGroundIndex {
         BaseListItem({ label: '订单进度条', path: "pages/playground/OrderProgressPage" })
         BaseListItem({ label: '用户认证', path: "pages/playground/user_auth/UserAuthPage" })
         BaseListItem({ label: '事件', path: "pages/playground/event/EventMainPage" })
+        BaseListItem({ label: '组件堆叠', path: "pages/playground/ComponentStackPage" })
 
         Button('自定义拍照').onClick((_) => {
 
