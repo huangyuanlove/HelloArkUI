@@ -16,7 +16,8 @@
     "@pura/harmony-dialog": "1.1.0",
     "@ohos/flutter_ohos": "file:./har/flutter.har",
     "@ohos/flutter_module": ".//har/flutter_module.har",
-    "flutter_router": "file:./har/flutter_router.har"
+    "flutter_router": "file:./har/flutter_router.har",
+    "@pie/log4a": "^1.5.16"
   },
   "dynamicDependencies": {},
   "overrides": {

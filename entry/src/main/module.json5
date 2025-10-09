@@ -105,9 +105,9 @@
         "name": "EntryAbility",
         "srcEntry": "./ets/entryability/EntryAbility.ets",
         "description": "$string:EntryAbility_desc",
-        "icon": "$media:nav_arkui",
+        "icon": "$media:layered_app_icon",
         "label": "$string:EntryAbility_label",
-        "startWindowIcon": "$media:nav_arkui",
+        "startWindowIcon": "$media:layered_app_icon",
         "startWindowBackground": "$color:start_window_background",
         "exported": true,
         "skills": [
@@ -125,9 +125,9 @@
         "name": "SecondAbility",
         "srcEntry": "./ets/entryability/SecondeAbility.ets",
         "description": "第二个 Ability",
-        "icon": "$media:nav_arkui",
+        "icon": "$media:layered_app_icon",
         "label": "$string:SecondAbility_label",
-        "startWindowIcon": "$media:nav_arkui",
+        "startWindowIcon": "$media:layered_app_icon",
         "startWindowBackground": "$color:start_window_background",
         "exported": true,
         "skills": [

@@ -8,6 +8,8 @@ import { HMRouterMgr } from '@hadss/hmrouter';
 import { DialogHelper } from '@pura/harmony-dialog';
 import { ExclusiveAppComponent, FlutterManager, MethodCall, MethodResult } from '@ohos/flutter_ohos';
 import FlutterRouterPlugin from 'flutter_router';
+import { Level, Logger, LogManager } from '@pie/log4a';
+import { fileIo } from '@kit.CoreFileKit';
 
 export default class EntryAbility extends UIAbility implements ExclusiveAppComponent<UIAbility>{
 
@@ -23,10 +25,29 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
 
 
   private uiContext: UIContext | null = null;
+  private logger: Logger = LogManager.getLogger(this);
 
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-
-
+    const cacheDir = this.context.cacheDir;
+    const logDir = `${cacheDir}/log`;
+    const logFile = `${logDir}/router.log`;
+    try {
+      // 创建log目录（如果不存在）
+      if (!fileIo.accessSync(logDir,fileIo.AccessModeType.EXIST)) {
+        fileIo.mkdirSync(logDir);
+      }
+      // 创建日志文件（如果不存在）
+      if (!fileIo.accessSync(logFile)) {
+        const fd = fileIo.openSync(logFile, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE);
+        fileIo.closeSync(fd);
+      }
+      console.error("创建日志文件成功")
+    } catch (error) {
+      const err = error as BusinessError;
+      console.error("创建日志文件失败")
+      console.error(`File operation failed: code=${err.code}, message=${err.message}`);
+    }
+    this.logger.addFileAppender(logFile, 'RouterLog', Level.INFO);
 
 
     DialogHelper.setDefaultConfig((config) => {
@@ -75,6 +96,7 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
     // 注册监听，范围是abilityContext内的page
     observer.on('routerPageUpdate', this.context, (info: observer.RouterPageInfo) => {
       if(info.state === observer.RouterPageState.ABOUT_TO_APPEAR){
+       this.logger.log(`pageUpdate--> ${info.name} ABOUT_TO_APPEAR`)
         hilog.error(0x0000, 'routerPageUpdate', 'pageUpdate--> ' + info.name +" ABOUT_TO_APPEAR");
       //   //注册全局 HashMap，根据 info.name 获取对应业务名称
       }
@@ -92,6 +114,8 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
     FlutterManager.getInstance().pushWindowStage(this, windowStage);
+
+
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
     windowStage.loadContent('pages/Index', (err) => {

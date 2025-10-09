@@ -37,6 +37,7 @@ export default struct BasicKnowledgePage {
         BaseListItem({ label: 'webview', path: "pages/basic_knowledge/WebIndexPage" })
         BaseListItem({ label: 'mtp', path: "mtp" })
         BaseListItem({ label: 'webview加载沙箱文件', path: "WebViewLoadContextFilePage" })
+        BaseListItem({ label: 'share_kit', path: "pages/basic_knowledge/share_kit/ShareKitPage" })
 
         Button('Change')
           .onClick(() => {

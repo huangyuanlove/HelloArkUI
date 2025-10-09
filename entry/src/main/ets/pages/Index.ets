@@ -3,7 +3,8 @@ import { PlayGroundIndex } from './playground/PlayGroundIndex'
 import { AttributeUpdater, promptAction } from '@kit.ArkUI'
 import BuildProfile from 'BuildProfile'
 import { HMDefaultGlobalAnimator, HMNavigation } from '@hadss/hmrouter'
-
+// import { uiAppearance } from '@kit.ArkUI';
+// import { BusinessError } from '@kit.BasicServicesKit';
 
 
 @Entry
@@ -19,6 +20,17 @@ export struct Index {
   @State currentIndex:number = 0
 
   modifier: NavModifier = new NavModifier();
+
+
+  // aboutToAppear(): void {
+  //   try {
+  //     let fontScale = uiAppearance.getFontScale();
+  //     console.info('Get fontScale ' + fontScale);
+  //   } catch (error) {
+  //     let message = (error as BusinessError).message;
+  //     console.error('Get fontScale failed, ' + message);
+  //   }
+  // }
 
 
   @Builder

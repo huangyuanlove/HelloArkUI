@@ -80,6 +80,8 @@
     "pages/playground/event/EventMainPage",
     "pages/playground/event/EventOnePage",
     "pages/playground/event/EventTwoPage",
-    "WebViewLoadContextFilePage"
+    "WebViewLoadContextFilePage",
+    "pages/playground/log4a/Log4aPage",
+    "pages/basic_knowledge/share_kit/ShareKitPage"
   ]
 }
