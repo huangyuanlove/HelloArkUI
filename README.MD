@@ -45,3 +45,6 @@
 * 图片滑块验证码  
   <img src ="image/slide_code.gif" width=20% height=20%/>  
 * 自定义拍照
+
+* 组件堆叠滑动效果
+* <img src ="image/component_stack.gif" width=20% height=20%/>  

@@ -75,6 +75,7 @@
     "pages/basic_knowledge/WebIndexPage",
     "pages/flutter/FlutterEntryWithRouterPage",
     "pages/playground/DeepCopyPage",
+    "pages/playground/ComponentStackPage",
     "pages/playground/OrderProgressPage",
     "pages/playground/user_auth/UserAuthPage",
     "pages/playground/event/EventMainPage",
