@@ -83,6 +83,8 @@
     "pages/playground/event/EventTwoPage",
     "WebViewLoadContextFilePage",
     "pages/playground/log4a/Log4aPage",
-    "pages/basic_knowledge/share_kit/ShareKitPage"
+    "pages/basic_knowledge/share_kit/ShareKitPage",
+    "pages/playground/drag_demo/DragMainPage",
+    "pages/playground/animation/AnimationPage"
   ]
 }

@@ -50,6 +50,8 @@ export struct PlayGroundIndex {
         BaseListItem({ label: '事件', path: "pages/playground/event/EventMainPage" })
         BaseListItem({ label: '组件堆叠', path: "pages/playground/ComponentStackPage" })
         BaseListItem({ label: 'Log4a', path: "pages/playground/event/EventMainPage" })
+        BaseListItem({ label: '拖拽效果', path: "pages/playground/drag_demo/DragMainPage" })
+        BaseListItem({ label: '组件动画', path: "pages/playground/animation/AnimationPage" })
 
         Button('自定义拍照').onClick((_) => {
 
@@ -63,7 +65,6 @@ export struct PlayGroundIndex {
 
         })
         Button('自定义录像').onClick((_) => {
-
           const context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;
           const uiContent = this.getUIContext()
           reqPermissionsFromUser(['ohos.permission.MICROPHONE', 'ohos.permission.CAMERA'], context, uiContent, {

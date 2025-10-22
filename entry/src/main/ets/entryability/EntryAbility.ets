@@ -10,10 +10,9 @@ import { ExclusiveAppComponent, FlutterManager, MethodCall, MethodResult } from 
 import FlutterRouterPlugin from 'flutter_router';
 import { Level, Logger, LogManager } from '@pie/log4a';
 import { fileIo } from '@kit.CoreFileKit';
+import { initCpuHandler, initMemoryHandler } from '@cangjie-tpc/hm_metricx_cj_hybrid';
 
-export default class EntryAbility extends UIAbility implements ExclusiveAppComponent<UIAbility>{
-
-
+export default class EntryAbility extends UIAbility implements ExclusiveAppComponent<UIAbility> {
   detachFromFlutterEngine(): void {
     // throw new Error('Method not implemented.');
   }
@@ -21,7 +20,6 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
   getAppComponent(): UIAbility {
     return this;
   }
-
 
 
   private uiContext: UIContext | null = null;
@@ -33,7 +31,7 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
     const logFile = `${logDir}/router.log`;
     try {
       // 创建log目录（如果不存在）
-      if (!fileIo.accessSync(logDir,fileIo.AccessModeType.EXIST)) {
+      if (!fileIo.accessSync(logDir, fileIo.AccessModeType.EXIST)) {
         fileIo.mkdirSync(logDir);
       }
       // 创建日志文件（如果不存在）
@@ -58,24 +56,25 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
     })
 
     FlutterManager.getInstance().pushUIAbility(this);
-    FlutterRouterPlugin.setRouterPushHandler((path:string,args:Record<string,Object>|undefined,result: MethodResult)=>{
+    FlutterRouterPlugin.setRouterPushHandler((path: string, args: Record<string, Object> | undefined,
+      result: MethodResult) => {
       console.error(`rouerHandler:path=> ${path} ,args=>${args}`)
-      if(path=='HMRouterAPage'){
-        HMRouterMgr.push({pageUrl:"pages/playground/hmrouter_page/HMRouterAPage",param:args,},{
-          onResult:(popInfo:PopInfo)=>{
-            if(popInfo){
+      if (path == 'HMRouterAPage') {
+        HMRouterMgr.push({ pageUrl: "pages/playground/hmrouter_page/HMRouterAPage", param: args, }, {
+          onResult: (popInfo: PopInfo) => {
+            if (popInfo) {
               result.success(popInfo.result)
             }
           }
         })
         return true;
       }
-      if(path =='pages/flutter/FromFlutterPage'){
-        HMRouterMgr.push({pageUrl:'pages/flutter/FromFlutterPage',param:args},{
-          onResult:(popInfo:PopInfo)=>{
-            if(popInfo){
+      if (path == 'pages/flutter/FromFlutterPage') {
+        HMRouterMgr.push({ pageUrl: 'pages/flutter/FromFlutterPage', param: args }, {
+          onResult: (popInfo: PopInfo) => {
+            if (popInfo) {
               result.success(popInfo.result)
-            }else{
+            } else {
               result.success("")
             }
           }
@@ -87,22 +86,38 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
       return false;
     });
 
-    FlutterRouterPlugin.setRouterPopHandler((call:MethodCall,result: MethodResult)=>{
+    FlutterRouterPlugin.setRouterPopHandler((call: MethodCall, result: MethodResult) => {
       console.error(`flutter 调用 pop  setRouterPopHandler:  ${call.method}  ${call.args}`)
-      HMRouterMgr.pop({param:call.args})
+      HMRouterMgr.pop({ param: call.args })
       return true;
     })
 
     // 注册监听，范围是abilityContext内的page
     observer.on('routerPageUpdate', this.context, (info: observer.RouterPageInfo) => {
-      if(info.state === observer.RouterPageState.ABOUT_TO_APPEAR){
-       this.logger.log(`pageUpdate--> ${info.name} ABOUT_TO_APPEAR`)
-        hilog.error(0x0000, 'routerPageUpdate', 'pageUpdate--> ' + info.name +" ABOUT_TO_APPEAR");
-      //   //注册全局 HashMap，根据 info.name 获取对应业务名称
+      if (info.state === observer.RouterPageState.ABOUT_TO_APPEAR) {
+        this.logger.log(`pageUpdate--> ${info.name} ABOUT_TO_APPEAR`)
+        hilog.error(0x0000, 'routerPageUpdate', 'pageUpdate--> ' + info.name + " ABOUT_TO_APPEAR");
+        //   //注册全局 HashMap，根据 info.name 获取对应业务名称
       }
     })
-  }
 
+    initCpuHandler(this.context,
+      (pageCpuInfo) => {
+        console.error(`initCpuHandler pageCpuInfo pageName:${pageCpuInfo.pageName}  avgCpu:${pageCpuInfo.avgCpu}   maxCpu:${pageCpuInfo.maxCpu}   sampleCount:${pageCpuInfo.sampleCount}`)
+      }, (processCpuInfo) => {
+        console.error(`initCpuHandler pageCpuInfo pid:${processCpuInfo.pid}  avgCpu:${processCpuInfo.avgCpu}   maxCpu:${processCpuInfo.maxCpu}   sampleCount:${processCpuInfo.sampleCount}`)
+      })
+    initMemoryHandler(this.context,
+      (pageMemoryInfo) => {
+        console.error(`initMemoryHandler pageMemoryInfo pageName:${pageMemoryInfo.pageName}  avgMemory:${pageMemoryInfo.avgMemory}   maxMemory:${pageMemoryInfo.maxMemory}   sampleCount:${pageMemoryInfo.sampleCount}`)
+      },
+      (processMemoryInfo) => {
+        console.error(`initMemoryHandler processMemoryInfo pid:${processMemoryInfo.pid}  avgMemory:${processMemoryInfo.avgMemory}   maxMemory:${processMemoryInfo.maxMemory}   sampleCount:${processMemoryInfo.sampleCount}`)
+      },
+      100
+    )
+
+  }
 
 
   onDestroy(): void {
@@ -129,8 +144,8 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
         // 获取UIContext实例
         this.uiContext = windowInfo.getUIContext();
         // 注册监听，范围是uiContext内的page
-        observer.on('routerPageUpdate', this.uiContext, (info: observer.RouterPageInfo)=>{
-          hilog.error(0x0000, 'routerPageUpdate', `uiContext ${ JSON.stringify(info)}`);
+        observer.on('routerPageUpdate', this.uiContext, (info: observer.RouterPageInfo) => {
+          hilog.error(0x0000, 'routerPageUpdate', `uiContext ${JSON.stringify(info)}`);
         })
       })
     });
