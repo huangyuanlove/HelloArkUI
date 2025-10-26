@@ -39,21 +39,13 @@ export default struct BasicKnowledgePage {
         BaseListItem({ label: 'webview加载沙箱文件', path: "WebViewLoadContextFilePage" })
         BaseListItem({ label: 'share_kit', path: "pages/basic_knowledge/share_kit/ShareKitPage" })
 
-        Button('Change')
-          .onClick(() => {
-            this.value++
-          })
-
 
         Button() {
-          Text('打开 UIAbility').fontSize(18)
-            .padding(10)
-        }
-        .type(ButtonType.Normal)
-        .borderRadius(10)
-        .margin(10)
-        .backgroundColor($r('app.color.green_39d169'))
-        .onClick(() => {
+          Text("打开 UIAbility")
+            .fontSize(24)
+            .fontColor(Color.White)
+            .padding({left:10,right:10,top:4,bottom:4}).backgroundColor("#1b91e0")
+        }.indexButtonStyle().onClick((_)=>{
           let context = getContext(this) as common.UIAbilityContext;
           let want: Want = {
             deviceId: '', // deviceId为空表示本设备
@@ -81,12 +73,14 @@ export default struct BasicKnowledgePage {
           }).catch((err: BusinessError) => {
             console.error(`startAbilityForResult failed, code is ${err.code}, message is ${err.message}`);
           })
-
         })
 
-
-
-        Button('打开 feature hap').onClick((_)=>{
+        Button() {
+          Text("打开 feature hap")
+            .fontSize(24)
+            .fontColor(Color.White)
+            .padding({left:10,right:10,top:4,bottom:4}).backgroundColor("#1b91e0")
+        }.indexButtonStyle().onClick((_)=>{
             let context = getContext(this) as common.UIAbilityContext
           context.startAbility({
             bundleName:BuildProfile.BUNDLE_NAME,
@@ -95,8 +89,12 @@ export default struct BasicKnowledgePage {
             hilog.error(0x01,'BasicKnowledgePage','BasicKnowledgePage 打开 feature hap')
           })
         })
-
-        Button('charles抓包 rcp').onClick((_)=>{
+        Button() {
+          Text("charles抓包 rcp")
+            .fontSize(24)
+            .fontColor(Color.White)
+            .padding({left:10,right:10,top:4,bottom:4}).backgroundColor("#1b91e0")
+        }.indexButtonStyle().onClick((_)=>{
           const session = rcp.createSession();
           const request = new rcp.Request('https://biztest.chunyutianxia.com/user_operation/app_interface/home_page/?app=0&platform=android&systemVer=10&version=10.6.12&app_ver=Build+10.6.12.250402&cyudId=53f38352-da64-4dac-b4e0-1b0cc681f6a0&secureId=e9ddd1fd-fffe-8a9f-57f7-defffdca8058&installId=1742785027244&phoneType=COL-AL10_by_HUAWEI&vendor=chunyu&screen_height=2060&screen_width=1080','GET');
           request.configuration = {
@@ -111,7 +109,12 @@ export default struct BasicKnowledgePage {
           });
         });
 
-        Button('charles抓包 http').onClick((_)=>{
+        Button() {
+          Text("charles抓包 http")
+            .fontSize(24)
+            .fontColor(Color.White)
+            .padding({left:10,right:10,top:4,bottom:4}).backgroundColor("#1b91e0")
+        }.indexButtonStyle().onClick((_)=>{
 
 
           let httpRequest = http.createHttp();
@@ -162,12 +165,12 @@ export default struct BasicKnowledgePage {
   }
 }
 
-@Component
-struct Demo{
-  @Prop value:number
-  build() {
-    Text(this.value.toString()).onClick((_)=>{
-      this.value ++
-    })
-  }
+
+@Extend(Button)
+function indexButtonStyle() {
+  .type(ButtonType.Normal)
+  .borderRadius(4)
+  .margin(6)
+  .backgroundColor($r('app.color.blue_3583ee'))
+
 }

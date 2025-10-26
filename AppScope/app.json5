@@ -2,8 +2,8 @@
   "app": {
     "bundleName": "com.huangyuanlove.arkui_demo",
     "vendor": "xuan",
-    "versionCode": 1,
-    "versionName": "1.0.0",
+    "versionCode": 11,
+    "versionName": "1.1.0",
     "icon": "$media:layered_app_icon",
     "label": "$string:app_name"
   }

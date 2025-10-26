@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.cer",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001BE95D4D6CC1E138FA07EB000AFA52D445ACDD0133101DA7EE347B7D5BBC4DD4A22E49C7731BA083",
-          "profile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p7b",
+          "storeFile": "/Users/huangyuan/DevEcoStudioProjects/HelloArkUI/sign/huangyuan.p12",
+          "storePassword": "00000018C1C34F2F99595FBC5737268C522AE8F7DB32E663078537744CA75F0C0434AD514D1828AB",
+          "keyAlias": "huangyuan",
+          "keyPassword": "000000180E645EDA9306D251230E7709B067B1B3AA0096039F0A15D892D55C4D41C24D529D78C676",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "/Users/huangyuan/.ohos/config/default_HelloArkUI_AXZWcSfSCUnBcmcIaJuYi5WDUPFoRQ5j40NwDp3qr1o=.p12",
-          "storePassword": "0000001B3D32451F496D6B70EDC8A14832B3D70225D0BAF8EAA5FBFE786404191DBDBE5E3E8F1AA6BA5569"
+          "profile": "/Users/huangyuan/DevEcoStudioProjects/HelloArkUI/sign/HelloArkUI_release.p7b",
+          "certpath": "/Users/huangyuan/DevEcoStudioProjects/HelloArkUI/sign/release.cer"
         }
       }
     ],

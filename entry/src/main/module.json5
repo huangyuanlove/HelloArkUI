@@ -5,7 +5,7 @@
     "description": "$string:module_desc",
     "mainElement": "EntryAbility",
     "deviceTypes": [
-      "default"
+      "phone"
     ],
     "requestPermissions": [
       {
@@ -14,28 +14,6 @@
       },
       {
         "name": 'ohos.permission.ACCESS_BIOMETRIC'
-      },
-      {
-        "name": 'ohos.permission.READ_MEDIA',
-        "reason": "$string:user_grant_READ_MEDIA_reason",
-        "usedScene": {
-          "abilities": [
-            "EntryAbility"
-          ],
-          "when": "inuse"
-        }
-
-      },
-      {
-        "name": 'ohos.permission.WRITE_MEDIA',
-        "reason": "$string:user_grant_WRITE_MEDIA_reason",
-        "usedScene": {
-          "abilities": [
-            "EntryAbility"
-          ],
-          "when": "inuse"
-        }
-
       },
       {
         "name": 'ohos.permission.CAMERA',
@@ -58,43 +36,6 @@
           "when": "inuse"
         }
 
-      },
-      {
-        "name" : "ohos.permission.APPROXIMATELY_LOCATION",
-        "reason": "$string:user_grant_approximately_location_reason",
-        "usedScene": {
-          "abilities": [
-            "EntryAbility"
-          ],
-          "when": "inuse"
-        }
-      },
-      {
-        "name" : "ohos.permission.LOCATION",
-        "reason": "$string:user_grant_approximately_location_reason",
-        "usedScene": {
-          "abilities": [
-            "EntryAbility"
-          ],
-          "when": "inuse"
-        }
-      },
-      {
-        "name" : "ohos.permission.LOCATION_IN_BACKGROUND",
-        "reason": "$string:user_grant_approximately_location_reason",
-        "usedScene": {
-          "abilities": [
-            "EntryAbility"
-          ],
-          "when": "inuse"
-        }
-      },
-
-      {
-        "name" : "ohos.permission.ACCELEROMETER" // 加速度权限
-      },
-      {
-        "name" : "ohos.permission.GYROSCOPE"     // 陀螺仪权限
       }
     ],
     "deliveryWithInstall": true,

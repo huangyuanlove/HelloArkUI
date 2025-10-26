@@ -22,7 +22,7 @@ export struct BaseListItem {
       Text(this.label)
         .fontSize(24)
         .fontColor(Color.White)
-        .padding({left:10,right:10,top:4,bottom:4})
+        .padding({left:10,right:10,top:4,bottom:4}).backgroundColor("#1b91e0")
     }.indexButtonStyle(this.path)
   }
 }

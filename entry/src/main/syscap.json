@@ -1,7 +1,7 @@
 {
   "devices": {
     "general": [
-      "default"
+      "phone"
     ]
   },
   "development": {

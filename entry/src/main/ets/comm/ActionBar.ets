@@ -1,12 +1,12 @@
 import { router } from '@kit.ArkUI';
+import { common, Want } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
 
 
 @Component
 @Preview
 struct ActionBar {
   @Prop title: string = ''
-  @Prop rightImage?: Resource = undefined
-  @Prop rightText: string = ''
   @Prop showBack: boolean = true;
   @Prop showDivider: boolean = true
   onClickBack: ((event: ClickEvent) => void) | undefined
@@ -43,12 +43,19 @@ struct ActionBar {
           }.width(44)
 
           Row() {
-            if (this.rightImage != null) {
-              Image(this.rightImage)
-            }
-            if (this.rightText.length > 0) {
-              Text(this.rightText).fontColor(Color.White).fontSize(16)
-            }
+            Image($r('app.media.source_code')).fitOriginalSize(true).onClick((_)=>{
+
+                let targetURL =' https://gitcode.com/huangyuan_xuan/HelloArkUI'
+              let want: Want = {
+                action: 'ohos.want.action.viewData',
+                entities: ['entity.system.browsable'],
+                uri: targetURL
+              };
+              (this.getUIContext().getHostContext() as  common.UIAbilityContext) .startAbility(want).then(() => {
+              }).catch((err: BusinessError<Object>) => {
+                hilog.error(0x01, 'toExternalWeb', '打开系统浏览器失败--> ' + JSON.stringify(err))
+              });
+            })
           }
           .margin({ right: 15 })
           .onClick((event) => {
