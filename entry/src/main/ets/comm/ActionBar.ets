@@ -1,6 +1,7 @@
 import { router } from '@kit.ArkUI';
 import { common, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 
 @Component
@@ -43,15 +44,17 @@ struct ActionBar {
           }.width(44)
 
           Row() {
-            Image($r('app.media.source_code')).fitOriginalSize(true).onClick((_)=>{
+            Image($r('app.media.source_code')).fitOriginalSize(true).onClick((_) => {
 
-                let targetURL =' https://gitcode.com/huangyuan_xuan/HelloArkUI'
+              let targetURL = 'https://gitcode.com/huangyuan_xuan/HelloArkUI'
               let want: Want = {
                 action: 'ohos.want.action.viewData',
                 entities: ['entity.system.browsable'],
                 uri: targetURL
               };
-              (this.getUIContext().getHostContext() as  common.UIAbilityContext) .startAbility(want).then(() => {
+
+
+              (this.getUIContext().getHostContext() as common.UIAbilityContext).startAbility(want).then(() => {
               }).catch((err: BusinessError<Object>) => {
                 hilog.error(0x01, 'toExternalWeb', '打开系统浏览器失败--> ' + JSON.stringify(err))
               });
