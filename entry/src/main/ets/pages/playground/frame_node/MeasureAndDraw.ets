@@ -1,5 +1,6 @@
 import { DrawContext, FrameNode, NodeController, Position, Size, UIContext, LayoutConstraint } from '@kit.ArkUI';
 import { drawing } from '@kit.ArkGraphics2D';
+import { ActionBar } from '../../../comm/ActionBar';
 
 function GetChildLayoutConstraint(constraint: LayoutConstraint, child: FrameNode): LayoutConstraint {
   const size = child.getUserConfigSize();
@@ -95,28 +96,33 @@ struct MeasureAndDraw {
   private nodeController: MyNodeController = new MyNodeController();
 
   build() {
-    Row() {
-      Column() {
-        NodeContainer(this.nodeController)
-          .width('100%')
-          .height(200)
-          .backgroundColor('#FFF0F0F0')
-        Button('Invalidate')
-          .margin(10)
-          .onClick(() => {
-            this.nodeController?.rootNode?.addWidth();
-            this.nodeController?.rootNode?.invalidate();
-          })
-        Button('UpdateLayout')
-          .onClick(() => {
-            let node = this.nodeController.rootNode;
-            node!.offsetY = (node!.offsetY + 10) % 110;
-            this.nodeController?.rootNode?.setNeedsLayout();
-          })
+    Column(){
+      ActionBar({title:"测量"})
+      Row() {
+        Column() {
+          NodeContainer(this.nodeController)
+            .width('100%')
+            .height(200)
+            .backgroundColor('#FFF0F0F0')
+          Button('Invalidate')
+            .margin(10)
+            .onClick(() => {
+              this.nodeController?.rootNode?.addWidth();
+              this.nodeController?.rootNode?.invalidate();
+            })
+          Button('UpdateLayout')
+            .onClick(() => {
+              let node = this.nodeController.rootNode;
+              node!.offsetY = (node!.offsetY + 10) % 110;
+              this.nodeController?.rootNode?.setNeedsLayout();
+            })
+        }
+        .width('100%')
+        .height('100%')
       }
-      .width('100%')
-      .height('100%')
     }
+
+
     .height('100%')
   }
 }

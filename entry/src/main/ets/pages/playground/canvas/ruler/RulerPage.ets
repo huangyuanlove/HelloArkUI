@@ -1,4 +1,5 @@
 import { hilog } from '@kit.PerformanceAnalysisKit'
+import { ActionBar } from '../../../../comm/ActionBar'
 
 @Entry
 @Component
@@ -11,15 +12,13 @@ struct RulerPage {
   private lineWidth = 5
   private startNumber = 0
   private spacing = 10
-  private  baseNumber: number = 123
+  private baseNumber: number = 123
   private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Left | PanDirection.Right })
   private canvasWidth: number = 0
   private canvasHeight: number = 0
   private timer: number = -1
-
-  @State panGestureX:number =0
-  @State panGestureY:number =0
-
+  @State panGestureX: number = 0
+  @State panGestureY: number = 0
 
   draw() {
     this.canvasRendering.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
@@ -40,13 +39,13 @@ struct RulerPage {
       }
 
       // if (this.startNumber % 10 == 0) {
-        let hourPath = new Path2D()
+      let hourPath = new Path2D()
 
-        hourPath.moveTo(currentX, 10)
-        hourPath.lineTo(currentX, endY + 10)
-        this.canvasRendering.stroke(hourPath)
-        // this.canvasRendering.lineTo(currentX, endY + 10)
-        // this.canvasRendering.stroke()
+      hourPath.moveTo(currentX, 10)
+      hourPath.lineTo(currentX, endY + 10)
+      this.canvasRendering.stroke(hourPath)
+      // this.canvasRendering.lineTo(currentX, endY + 10)
+      // this.canvasRendering.stroke()
       // }
 
       this.startNumber++
@@ -55,55 +54,55 @@ struct RulerPage {
 
   build() {
     Column() {
+      ActionBar({ title: "合成规则" })
+      Canvas(this.canvasRendering).width("100%").height("80%").onReady(() => {
+        hilog.error(0x01, "draw", `onReady`)
+        this.canvasWidth = this.canvasRendering.width
+        this.canvasHeight = this.canvasRendering.height
+        this.canvasRendering.lineCap = "round"
+        this.canvasRendering.strokeStyle = "#aaff6134"
+        this.canvasRendering.fillStyle = "#aaff6134"
+        this.canvasRendering.font = "36px sans-serif"
+        this.canvasRendering.lineWidth = this.lineWidth
 
-        Canvas(this.canvasRendering).width("100%").height("80%").onReady(() => {
-          hilog.error(0x01, "draw", `onReady`)
-          this.canvasWidth = this.canvasRendering.width
-          this.canvasHeight = this.canvasRendering.height
-          this.canvasRendering.lineCap = "round"
-          this.canvasRendering.strokeStyle = "#aaff6134"
-          this.canvasRendering.fillStyle = "#aaff6134"
-          this.canvasRendering.font = "36px sans-serif"
-          this.canvasRendering.lineWidth = this.lineWidth
+        let grad = this.canvasRendering.createLinearGradient(0, 0, this.canvasWidth * 3, this.canvasHeight)
+        grad.addColorStop(0.0, '#00b09b')
 
-          let grad = this.canvasRendering.createLinearGradient(0, 0, this.canvasWidth*3,  this.canvasHeight)
-          grad.addColorStop(0.0, '#00b09b')
-
-          grad.addColorStop(1.0, '#96c93d')
-          this.canvasRendering.strokeStyle = grad
+        grad.addColorStop(1.0, '#96c93d')
+        this.canvasRendering.strokeStyle = grad
 
 
-          this.draw()
+        this.draw()
 
+      })
+
+        .gesture(PanGesture(this.panOption).onActionStart((event: GestureEvent) => {
+          hilog.error(0x01, "RulerPage", "'Pan start")
+          this.panGestureX = event.offsetX
         })
+          .onActionUpdate((event: GestureEvent) => {
+            if (event) {
+              hilog.error(0x01, "RulerPage", `Pan update  ${event.offsetX} `)
+              let diff = this.panGestureX - event.offsetX
+              hilog.error(0x01, "RulerPage", `Pan update diff-> ${diff} `)
+              this.panGestureX = event.offsetX
 
-          .gesture(PanGesture(this.panOption).onActionStart((event: GestureEvent) => {
-            hilog.error(0x01, "RulerPage", "'Pan start")
-            this.panGestureX =  event.offsetX
-          })
-            .onActionUpdate((event: GestureEvent) => {
-              if (event) {
-                hilog.error(0x01,"RulerPage",`Pan update  ${event.offsetX} `)
-                let diff = this.panGestureX-event.offsetX
-                hilog.error(0x01,"RulerPage",`Pan update diff-> ${diff} `)
-                this.panGestureX = event.offsetX
-
-                if (this.baseNumber == 0 && event.offsetX > 0) {
-                  //刻度尺显示0之后不能向右拖动
-                  hilog.error(0x01, "RulerPage", "刻度尺显示0之后不能向右拖动")
-                } else {
-                  let result = this.baseNumber + (diff/15)
-                  this.baseNumber = Math.round(result)
-                  // this.baseNumber -= Math.floor(event.offsetX / 200)
-                  // hilog.error(0x01, "RulerPage", `拖动后重绘  ${this.baseNumber}`)
-                  this.draw()
-                }
+              if (this.baseNumber == 0 && event.offsetX > 0) {
+                //刻度尺显示0之后不能向右拖动
+                hilog.error(0x01, "RulerPage", "刻度尺显示0之后不能向右拖动")
+              } else {
+                let result = this.baseNumber + (diff / 15)
+                this.baseNumber = Math.round(result)
+                // this.baseNumber -= Math.floor(event.offsetX / 200)
+                // hilog.error(0x01, "RulerPage", `拖动后重绘  ${this.baseNumber}`)
+                this.draw()
               }
-            })
-            .onActionEnd((event: GestureEvent) => {
-              hilog.error(0x01, "RulerPage", `Pan end  ${event.offsetX} `)
-              console.info('Pan end')
-            }))
+            }
+          })
+          .onActionEnd((event: GestureEvent) => {
+            hilog.error(0x01, "RulerPage", `Pan end  ${event.offsetX} `)
+            console.info('Pan end')
+          }))
 
 
     }

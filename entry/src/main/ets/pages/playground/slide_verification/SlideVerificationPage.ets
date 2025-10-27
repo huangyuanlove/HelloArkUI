@@ -1,3 +1,4 @@
+import { ActionBar } from '../../../comm/ActionBar';
 import { SlideVerificationView } from './SlideVerificationView';
 import { SlideVerificationView2 } from './SlideVerificationView2';
 
@@ -6,7 +7,7 @@ import { SlideVerificationView2 } from './SlideVerificationView2';
 struct SlideVerificationPage {
   build() {
     Column() {
-
+      ActionBar({ title: "SlideVerificationPage" })
       SlideVerificationView().backgroundColor(Color.Pink).height(300)
       Divider().height(20).color("#e7e7e7").vertical(false)
 

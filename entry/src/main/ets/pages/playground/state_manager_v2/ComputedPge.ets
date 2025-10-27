@@ -1,4 +1,5 @@
 import hilog from '@ohos.hilog';
+import { ActionBar } from '../../../comm/ActionBar';
 
 @Entry
 @ComponentV2
@@ -17,7 +18,7 @@ struct ComputedPge {
 
   build() {
     Column() {
-
+      ActionBar({ title: "ComputedPge" })
       Text(`${this.info}`)
       Text(`${this.info}`)
       Text(`${this.info}`)

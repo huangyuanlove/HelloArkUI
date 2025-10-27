@@ -1,5 +1,6 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { promptAction } from '@kit.ArkUI';
+import { ActionBar } from '../../../comm/ActionBar';
 
 @Entry
 @ComponentV2
@@ -26,7 +27,7 @@ struct MonitorPage {
 
   build() {
     Column() {
-
+      ActionBar({ title: "MonitorPage" })
       Text(`name:${this.name}  message:${this.age}`)
       Button("修改简单类型变量：")
         .onClick(() => {

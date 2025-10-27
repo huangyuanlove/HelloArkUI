@@ -1,4 +1,5 @@
 import { HMRouter, HMRouterMgr } from '@hadss/hmrouter';
+import { ActionBar } from '../../../../comm/ActionBar';
 
 @HMRouter({pageUrl:'protocol_dialog', dialog: true})
 @Component
@@ -6,6 +7,7 @@ export struct  ProtocolDialog{
 
   build() {
     Column(){
+      ActionBar({title:"弹窗内容"})
       Column(){
         Text('这是弹窗内容')
         Button('查看具体内容').margin(10)

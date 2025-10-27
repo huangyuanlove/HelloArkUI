@@ -1,4 +1,5 @@
 import { emitter } from '@kit.BasicServicesKit';
+import { ActionBar } from '../../../comm/ActionBar';
 
 @Entry
 @Component
@@ -29,22 +30,27 @@ struct EventTwoPage {
 
 
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('EventTwoPageHelloWorld')
-        .fontSize($r('app.float.page_text_font_size'))
-        .fontWeight(FontWeight.Bold)
+    Column(){
+      ActionBar({title:"EventTwo"})
+      RelativeContainer() {
+        Text(this.message)
+          .id('EventTwoPageHelloWorld')
+          .fontSize($r('app.float.page_text_font_size'))
+          .fontWeight(FontWeight.Bold)
 
-        .onClick(() => {
-          this.message = 'Welcome';
+          .onClick(() => {
+            this.message = 'Welcome';
 
-          emitter.emit("EmitterEventOne")
-          this.getUIContext().getHostContext()?.eventHub.emit("EventHubEventOne")
+            emitter.emit("EmitterEventOne")
+            this.getUIContext().getHostContext()?.eventHub.emit("EventHubEventOne")
 
 
-        })
+          })
+      }
+      .height('100%')
+      .width('100%')
     }
-    .height('100%')
-    .width('100%')
+
+
   }
 }

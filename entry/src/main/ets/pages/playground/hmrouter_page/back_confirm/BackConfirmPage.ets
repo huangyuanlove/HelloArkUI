@@ -1,5 +1,6 @@
 import { HMLifecycle, HMLifecycleState, HMRouter, HMRouterMgr, IHMLifecycle } from "@hadss/hmrouter";
 import { promptAction } from "@kit.ArkUI";
+import { ActionBar } from "../../../../comm/ActionBar";
 import { PointLifecycle } from "../PointLifecycle";
 
 @HMRouter({ pageUrl: 'back_confirm_page' })
@@ -16,6 +17,7 @@ export struct BackConfirmPage {
 
   build() {
     Column() {
+      ActionBar({title:"返回测试"})
       Button('设置不拦截返回').margin(10).onClick((_) => {
         this.interceptBackPress = false
 

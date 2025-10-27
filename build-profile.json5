@@ -6,12 +6,12 @@
         "type": "HarmonyOS",
         "material": {
           "storeFile": "/Users/huangyuan/DevEcoStudioProjects/HelloArkUI/sign/huangyuan.p12",
-          "storePassword": "00000018C1C34F2F99595FBC5737268C522AE8F7DB32E663078537744CA75F0C0434AD514D1828AB",
+          "storePassword": "00000018E2C32043AF7C0DFFF744CE524ECC7CFD8FF73E8972DB0E4DA33E9EF908462C5164FAA9CE",
           "keyAlias": "huangyuan",
-          "keyPassword": "000000180E645EDA9306D251230E7709B067B1B3AA0096039F0A15D892D55C4D41C24D529D78C676",
+          "keyPassword": "00000018CF89F5FFCBE2BA80DAD39D7F0B6892A86BDF03D75A8DE5ACFE4022169BEB6A5D857C6ABD",
           "signAlg": "SHA256withECDSA",
-          "profile": "/Users/huangyuan/DevEcoStudioProjects/HelloArkUI/sign/HelloArkUI_release.p7b",
-          "certpath": "/Users/huangyuan/DevEcoStudioProjects/HelloArkUI/sign/release.cer"
+          "profile": "/Users/huangyuan/DevEcoStudioProjects/HelloArkUI/sign/debug.p7b",
+          "certpath": "/Users/huangyuan/DevEcoStudioProjects/HelloArkUI/sign/debug.cer"
         }
       }
     ],

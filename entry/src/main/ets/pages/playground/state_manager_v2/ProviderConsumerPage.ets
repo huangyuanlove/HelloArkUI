@@ -1,3 +1,5 @@
+import { ActionBar } from '../../../comm/ActionBar';
+
 @Entry
 @ComponentV2
 struct ProviderConsumerPage {
@@ -20,6 +22,7 @@ struct ProviderConsumerPage {
 
   build() {
     Column() {
+      ActionBar({ title: "ProviderConsumerPage" })
       Button(this.str)
         .onClick(() => {
           this.str += '0';

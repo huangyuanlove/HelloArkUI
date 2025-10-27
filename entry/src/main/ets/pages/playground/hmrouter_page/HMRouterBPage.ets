@@ -1,5 +1,6 @@
 import { HMLifecycleState, HMRouter, HMRouterMgr } from "@hadss/hmrouter";
 import { promptAction } from "@kit.ArkUI";
+import { ActionBar } from "../../../comm/ActionBar";
 
 
 @HMRouter({ pageUrl: 'pages/playground/hmrouter_page/HMRouterBPage', })
@@ -10,6 +11,7 @@ export struct  HMRouterBPage{
 
   build() {
       Column(){
+        ActionBar({title:"HMRouterBPage"})
         if(this.params){
           Text('接收到的参数')
           Text(JSON.stringify(this.params))

@@ -2,6 +2,7 @@ import { HMDefaultGlobalAnimator, HMNavigation, HMPopInfo, HMRouter, HMRouterMgr
 import { AttributeUpdater } from '@kit.ArkUI';
 import { PageDurationLifecycle } from './hmrouter/PageDurationLifecycle';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { ActionBar } from '../../../comm/ActionBar';
 
 
 @HMRouter({ pageUrl: 'pages/playground/hmrouter_page/HMRouterAPage', })
@@ -11,6 +12,7 @@ export struct HMRouterAPage {
 
   build() {
     Column() {
+      ActionBar({title:"HMRouterAPage"})
       Button('带参数跳转到新页面').onClick((_) => {
         HMRouterMgr.push({
           pageUrl: 'pages/playground/hmrouter_page/HMRouterBPage', param: {

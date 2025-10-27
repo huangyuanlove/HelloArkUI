@@ -3,6 +3,7 @@ import { ComponentContent, promptAction } from '@kit.ArkUI';
 import { confirmOrCancelDialogBuilder, DialogData } from '../../../../widget/ConfirmOrCancelDialogBuilder';
 import { HtmlRender } from '../../html_parse/HtmlRender';
 import { BusinessError } from '@kit.BasicServicesKit';
+import { ActionBar } from '../../../../comm/ActionBar';
 
 @Entry
 @Component
@@ -20,6 +21,7 @@ struct DialogControllerPage {
 
   build() {
     Column() {
+      ActionBar({title:"Dialog"})
       Text('在 Click 事件中定义').margin(10)
         .fontSize(30)
         .fontWeight(FontWeight.Bold)

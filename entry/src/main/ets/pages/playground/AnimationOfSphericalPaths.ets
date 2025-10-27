@@ -12,7 +12,7 @@ struct AnimationOfSphericalPaths {
   @State translateZ: number = 0
   @State ballRadius: number = 30
   private timerInterval: number = 0
-  private radius = 200
+  private radius = 150
   private a = 90
   private b = 0
 
@@ -46,32 +46,38 @@ struct AnimationOfSphericalPaths {
 
       ActionBar({title:"球面动画"})
 
-      Stack() {
-        Circle({ width: this.radius * 2, height: this.radius * 2 }).fill(Color.Yellow)
-        Circle({ width: this.ballRadius, height: this.ballRadius }).fill(Color.Pink)
-          .transform(matrix4.identity().translate({ x: this.translateX, y: this.translateY, z: this.translateZ }))
-      }.alignContent(Alignment.Center).width(this.radius * 2).height(this.radius * 2)
+      Scroll(){
+        Column(){
+          Stack() {
+            Circle({ width: this.radius * 2, height: this.radius * 2 }).fill(Color.Yellow)
+            Circle({ width: this.ballRadius, height: this.ballRadius }).fill(Color.Pink)
+              .transform(matrix4.identity().translate({ x: this.translateX, y: this.translateY, z: this.translateZ }))
+          }.alignContent(Alignment.Center).width(this.radius * 2).height(this.radius * 2)
 
-      Row() {
-        Button("start")
-          .onClick(() => {
-            if (this.timerInterval > 0) {
-              return
-            }
+          Row() {
+            Button("start")
+              .onClick(() => {
+                if (this.timerInterval > 0) {
+                  return
+                }
 
-            this.timerInterval = setInterval(()=>{
+                this.timerInterval = setInterval(()=>{
 
-              this.changeAngleX()
+                  this.changeAngleX()
 
-            }, 20)
-          })
-        Button("stop").onClick(() => {
-          clearInterval(this.timerInterval)
-          this.timerInterval = 0
-        }).margin({ left: 48 })
-      }.margin({ top: 48 })
+                }, 20)
+              })
+            Button("stop").onClick(() => {
+              clearInterval(this.timerInterval)
+              this.timerInterval = 0
+            }).margin({ left: 48 })
+          }.margin({ top: 48 })
 
-      CanvasBallAnimation()
+          CanvasBallAnimation()
+        }
+      }
+
+
 
     }.width("100%").height("100%").backgroundColor(Color.White)
   }

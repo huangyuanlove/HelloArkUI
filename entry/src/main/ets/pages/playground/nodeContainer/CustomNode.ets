@@ -1,5 +1,6 @@
 import { BuilderNode, FrameNode, NodeController, Size, UIContext } from '@kit.ArkUI'
 import BuildProfile from 'BuildProfile'
+import { ActionBar } from '../../../comm/ActionBar'
 
 class Params {
   text: string = "this is a text"
@@ -75,6 +76,7 @@ struct CustomNode {
 
   build() {
     Column() {
+      ActionBar({ title: "自定义 Node" })
       NodeContainer(this.myNodeController1)
         .width("100%")
         .height("40%")

@@ -1,5 +1,6 @@
 import { UIUtils } from '@kit.ArkUI'
 import { hilog } from '@kit.PerformanceAnalysisKit'
+import { ActionBar } from '../../../comm/ActionBar'
 
 @Entry
 @Component
@@ -30,6 +31,7 @@ struct MakeObservedPage {
 
   build() {
     Column() {
+      ActionBar({ title: "MakeObservedPage" })
       Row() {
         Button('修改进度').onClick((_) => {
           this.chatModel.chatList.forEach((item: MediaChatItem) => {

@@ -6,6 +6,7 @@ import { display, promptAction } from '@kit.ArkUI';
 import { DialogHelper } from '@pura/harmony-dialog/src/main/ets/dialog/DialogHelper';
 import { image } from '@kit.ImageKit';
 import { fileIo, fileUri } from '@kit.CoreFileKit';
+import { ActionBar } from '../../../comm/ActionBar';
 
 
 const TAG: string = 'TakePhotoPage'
@@ -45,6 +46,7 @@ struct TakePhotoPage {
 
   build() {
     Column() {
+      ActionBar({ title: "TakePhotoPage" })
       Scroll() {
         Row() {
           Text(this.cameraList.length + ' 个可用相机').onClick((_) => {

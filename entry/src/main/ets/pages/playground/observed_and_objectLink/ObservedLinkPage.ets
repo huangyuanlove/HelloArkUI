@@ -2,6 +2,7 @@ import { FirstLevel, Root, SecondLevel } from './DataModel';
 import { promptAction } from '@kit.ArkUI';
 import { emitter } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { ActionBar } from '../../../comm/ActionBar';
 
 @Entry
 @Component
@@ -135,6 +136,7 @@ struct ObservedLinkPage {
 
   build() {
     Column() {
+      ActionBar({ title: "Observed" })
       Row() {
         Button('使用 new 初始化').onClick((_) => {
           this.initData()

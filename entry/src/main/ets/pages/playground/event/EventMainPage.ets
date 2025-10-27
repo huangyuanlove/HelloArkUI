@@ -1,5 +1,6 @@
 import { emitter } from '@kit.BasicServicesKit';
 import { router } from '@kit.ArkUI';
+import { ActionBar } from '../../../comm/ActionBar';
 
 @Entry
 @Component
@@ -26,6 +27,7 @@ struct EventMainPage {
 
   build() {
     Column() {
+      ActionBar({title:"EventOne"})
       Text("发送事件")
         .id('EventMainPageHelloWorld')
         .fontSize($r('app.float.page_text_font_size'))

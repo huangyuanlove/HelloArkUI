@@ -2,6 +2,7 @@ import { CountDownTimer } from './TimerCountDown'
 import { rcp } from '@kit.RemoteCommunicationKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { ActionBar } from '../../../comm/ActionBar';
 
 @Entry
 @Component
@@ -27,6 +28,7 @@ struct TimerPage{
 
   build() {
     Column(){
+      ActionBar({ title: "CountDownTimer" })
       CountDownTimer({timeFormat:"-%s秒-后重新获取",finishedText:"重新获取",countDownTimeMS:10*1000,clickEvent:this.onCountDownTimerClick,fontsize:18})
     }
 

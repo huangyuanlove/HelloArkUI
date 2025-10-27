@@ -2,6 +2,7 @@ import { inputMethod } from '@kit.IMEKit'
 import { hilog } from '@kit.PerformanceAnalysisKit'
 import { BusinessError } from '@kit.BasicServicesKit'
 import { promptAction } from '@kit.ArkUI'
+import { ActionBar } from '../../../comm/ActionBar'
 
 @Entry
 @Component
@@ -128,6 +129,7 @@ struct CanvasInputVerificationCode {
 
   build() {
     Column(){
+      ActionBar({title:"canvas绘制"})
       Text("canvas绘制").fontSize(20).fontColor(Color.Black)
       Canvas(this.canvasRendering)
         .width("calc(100% - 30vp)")

@@ -1,3 +1,5 @@
+import { ActionBar } from '../../../comm/ActionBar'
+
 @Entry
 @ComponentV2
 struct ObservedV2TracePage {
@@ -7,6 +9,7 @@ struct ObservedV2TracePage {
   build() {
     Column() {
       Column() {
+        ActionBar({ title: "ObservedV2TracePage" })
         Text('父控件中展示数据')
         Text(`${this.person.name}  ${this.person.age}  ${this.person.id}   ${this.changeCount}`)
         Row() {

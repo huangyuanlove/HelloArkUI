@@ -1,5 +1,6 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { systemDateTime } from '@kit.BasicServicesKit';
+import { ActionBar } from '../../../../comm/ActionBar';
 
 
 @Entry
@@ -27,7 +28,7 @@ struct UseASPage {
 
   build() {
     Column() {
-
+      ActionBar({title:"AS"})
       Row(){
         Column(){
           Text(this.logTrack.str1) // Text1

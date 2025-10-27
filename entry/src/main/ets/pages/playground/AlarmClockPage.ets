@@ -1,3 +1,4 @@
+import { ActionBar } from '../../comm/ActionBar'
 import { ClockView } from './ClockView'
 @Entry
 @Component
@@ -35,6 +36,7 @@ struct AlarmClockPage{
 
   build(){
     Column(){
+      ActionBar({ title: "AlarmClockPage" })
       ClockView().width("100%").height("50%")
       Text(`${this.hour}:${this.minute}:${this.second}`).fontSize(36)
     }

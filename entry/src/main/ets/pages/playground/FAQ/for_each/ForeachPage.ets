@@ -1,5 +1,6 @@
 import { hilog } from '@kit.PerformanceAnalysisKit'
 import { promptAction } from '@kit.ArkUI'
+import { ActionBar } from '../../../../comm/ActionBar'
 
 @Entry
 @ComponentV2 //修改为V2
@@ -32,6 +33,7 @@ struct ForeachPage {
 
   build() {
     Column() {
+      ActionBar({title:"Foreach"})
       Button("刷新").onClick((_) => {
         this.initData()
       })

@@ -3,6 +3,7 @@ import { CallbackParam, ShootingMode } from '@kit.VisionKit';
 import { promptAction, router } from '@kit.ArkUI';
 import { emitter } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';
+import { ActionBar } from '../../../comm/ActionBar';
 
 @Entry
 @Component
@@ -25,6 +26,7 @@ struct IDCardRecognitionPage {
 
   build() {
     Column() {
+      ActionBar({title:"身份证识别"})
      if(this.cardSide == CardSide.FRONT){
        Text("CardSide.FRONT")
      }else if(this.cardSide == CardSide.BACK){

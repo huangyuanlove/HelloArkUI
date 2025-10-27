@@ -43,7 +43,9 @@ struct Base {
         })
 
       Text('使用组件的成员函数配置组件的事件方法。')
-        .onClick(this.myClickHandler)
+        .onClick((_)=>{
+          this.myClickHandler()
+        })
         .margin({
           top: 20
         })
