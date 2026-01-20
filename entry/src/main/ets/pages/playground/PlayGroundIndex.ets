@@ -52,6 +52,8 @@ export struct PlayGroundIndex {
         BaseListItem({ label: 'Log4a', path: "pages/playground/event/EventMainPage" })
         BaseListItem({ label: '拖拽效果', path: "pages/playground/drag_demo/DragMainPage" })
         BaseListItem({ label: '组件动画', path: "pages/playground/animation/AnimationPage" })
+        BaseListItem({ label: 'ScrollNestedPage', path: "pages/playground/ScrollNestedPage" })
+        BaseListItem({ label: 'LoadmoreAndRefresh', path: "pages/playground/loadmore_and_refresh/LoadMoreAndRefreshPage" })
 
         Button('自定义拍照').onClick((_) => {
 

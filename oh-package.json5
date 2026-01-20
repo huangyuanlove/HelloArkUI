@@ -18,7 +18,13 @@
     "@ohos/flutter_module": ".//har/flutter_module.har",
     "flutter_router": "file:./har/flutter_router.har",
     "@pie/log4a": "^1.5.16",
-    "@cangjie-tpc/hm_metricx_cj_hybrid": "^1.0.2"
+    "@ohos/imageknife": "3.2.6",
+    "@lynx/lynx": "3.4.1",
+    "@lynx/lynx_devtool": "3.4.1",
+    "@lynx/lynx_devtool_service": "3.4.1",
+    "@lynx/lynx_http_service": "3.4.1",
+    "@lynx/lynx_log_service": "3.4.1",
+    "@lynx/primjs": "2.14.1"
   },
   "dynamicDependencies": {},
   "overrides": {

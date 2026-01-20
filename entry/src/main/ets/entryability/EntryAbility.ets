@@ -10,7 +10,10 @@ import { ExclusiveAppComponent, FlutterManager, MethodCall, MethodResult } from 
 import FlutterRouterPlugin from 'flutter_router';
 import { Level, Logger, LogManager } from '@pie/log4a';
 import { fileIo } from '@kit.CoreFileKit';
-import { initCpuHandler, initMemoryHandler } from '@cangjie-tpc/hm_metricx_cj_hybrid';
+import { LLog, LynxServiceCenter, LynxEnv, LynxServiceType } from '@lynx/lynx';
+import { LynxDevToolService } from '@lynx/lynx_devtool_service';
+import { LynxLogService } from '@lynx/lynx_log_service';
+import { LynxHttpService } from '@lynx/lynx_http_service';
 
 export default class EntryAbility extends UIAbility implements ExclusiveAppComponent<UIAbility> {
   detachFromFlutterEngine(): void {
@@ -101,21 +104,22 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
       }
     })
 
-    initCpuHandler(this.context,
-      (pageCpuInfo) => {
-        console.error(`initCpuHandler pageCpuInfo pageName:${pageCpuInfo.pageName}  avgCpu:${pageCpuInfo.avgCpu}   maxCpu:${pageCpuInfo.maxCpu}   sampleCount:${pageCpuInfo.sampleCount}`)
-      }, (processCpuInfo) => {
-        console.error(`initCpuHandler pageCpuInfo pid:${processCpuInfo.pid}  avgCpu:${processCpuInfo.avgCpu}   maxCpu:${processCpuInfo.maxCpu}   sampleCount:${processCpuInfo.sampleCount}`)
-      })
-    initMemoryHandler(this.context,
-      (pageMemoryInfo) => {
-        console.error(`initMemoryHandler pageMemoryInfo pageName:${pageMemoryInfo.pageName}  avgMemory:${pageMemoryInfo.avgMemory}   maxMemory:${pageMemoryInfo.maxMemory}   sampleCount:${pageMemoryInfo.sampleCount}`)
-      },
-      (processMemoryInfo) => {
-        console.error(`initMemoryHandler processMemoryInfo pid:${processMemoryInfo.pid}  avgMemory:${processMemoryInfo.avgMemory}   maxMemory:${processMemoryInfo.maxMemory}   sampleCount:${processMemoryInfo.sampleCount}`)
-      },
-      100
-    )
+
+
+    // Init LynxDevtoolService
+    LynxServiceCenter.registerService(LynxServiceType.DevTool, LynxDevToolService.instance);
+    // Init LynxHttpService
+    LynxServiceCenter.registerService(LynxServiceType.Http, LynxHttpService.instance);
+    // Init LynxLogService
+    LynxServiceCenter.registerService(LynxServiceType.Log, LynxLogService.instance);
+
+    LLog.useSysLog(true);
+    LynxEnv.initialize(this.context);
+    let options = new Map<string, string>();
+    options.set('App', 'LynxExplorer');
+    options.set('AppVersion', '0.0.1');
+    LynxEnv.setAppInfo(options);
+    LynxEnv.enableDevtool(true);
 
   }
 
@@ -129,7 +133,12 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
     FlutterManager.getInstance().pushWindowStage(this, windowStage);
-
+    // new PageSpy({
+    //   context: this.context,
+    //   api: "192.168.1.25:6752",
+    //   enableSSL: false,
+    //   axios: axiosInstance
+    // })
 
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
