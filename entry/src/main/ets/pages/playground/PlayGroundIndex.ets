@@ -53,7 +53,11 @@ export struct PlayGroundIndex {
         BaseListItem({ label: '拖拽效果', path: "pages/playground/drag_demo/DragMainPage" })
         BaseListItem({ label: '组件动画', path: "pages/playground/animation/AnimationPage" })
         BaseListItem({ label: 'ScrollNestedPage', path: "pages/playground/ScrollNestedPage" })
-        BaseListItem({ label: 'LoadmoreAndRefresh', path: "pages/playground/loadmore_and_refresh/LoadMoreAndRefreshPage" })
+        BaseListItem({
+          label: 'LoadmoreAndRefresh',
+          path: "pages/playground/loadmore_and_refresh/LoadMoreAndRefreshPage"
+        })
+        BaseListItem({ label: 'ListRefreshPage', path: "pages/playground/loadmore_and_refresh/ListRefreshPage" })
 
         Button('自定义拍照').onClick((_) => {
 

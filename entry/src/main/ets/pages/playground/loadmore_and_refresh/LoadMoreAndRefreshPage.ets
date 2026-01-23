@@ -56,12 +56,6 @@ struct LoadMoreAndRefreshPage {
   @Local footerText: string = '上拉加载更多'
   private scroller: Scroller = new Scroller()
 
-  @Monitor('footerTransitionY','headerTransitionY')
-  onTransitionYChange(monitor: IMonitor) {
-    monitor.dirty.forEach((field) => {
-      console.error(`onTransitionYChange: ${field} ${monitor.value(field)?.before} changge to ${monitor.value(field)?.now}`)
-    })
-  }
 
   @LocalBuilder
   header() {
@@ -83,11 +77,9 @@ struct LoadMoreAndRefreshPage {
     .height(60)
     .backgroundColor(Color.Red)
     .onAreaChange((_, newValue) => {
-      console.error(`header height ${newValue.height}`)
       this.headerMaxTransition = newValue.height as number
     })
     .position({ top: -this.headerMaxTransition })
-    .scale({ y: 1 })
   }
 
   @LocalBuilder
@@ -95,7 +87,6 @@ struct LoadMoreAndRefreshPage {
     Column() {
       Text(`${this.footerText} ${this.getLastLoadMoreTime()}`).height(60).backgroundColor(Color.Green)
     }.width("100%").onAreaChange((_, newValue) => {
-      console.error(`footer height ${newValue.height}`)
       this.footerMaxTransition = newValue.height as number
     }).position({ bottom: -this.footerMaxTransition }).backgroundColor(Color.Orange)
   }
@@ -143,7 +134,8 @@ struct LoadMoreAndRefreshPage {
           .onActionStart((event: GestureEvent) => {
             this.lastScroll = event.offsetY
             console.error(`onActionStart ${this.lastScroll}}`)
-          }).onActionUpdate((event: GestureEvent) => {
+          })
+          .onActionUpdate((event: GestureEvent) => {
           let diff = event.offsetY - this.lastScroll
           this.lastScroll = event.offsetY
           console.error(`PanGesture diff-> ${diff}  ,velocity-> ${event.velocity} `)
@@ -158,7 +150,8 @@ struct LoadMoreAndRefreshPage {
             }
             this.handleScroll(diff)
           }
-        }).onActionEnd((event: GestureEvent) => {
+        })
+          .onActionEnd((event: GestureEvent) => {
           console.error(`PanGesture onActionEnd needRefreshOnDidScroll-> ${this.needRefreshOnDidScroll}  needLoadMoreOnDidScroll-> ${this.needLoadMoreOnDidScroll}`)
           if (event.velocityY) {
             this.scroller.fling(event.velocityY)
