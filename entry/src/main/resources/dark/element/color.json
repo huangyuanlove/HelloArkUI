@@ -22,19 +22,19 @@
     },
     {
       "name": "page_background_color",
-      "value": "#ffffff"
+      "value": "#000000"
     },
     {
       "name": "text_desc_color",
-      "value": "#999999"
-    },
-    {
-      "name": "text_subtitle_color",
       "value": "#666666"
     },
     {
+      "name": "text_subtitle_color",
+      "value": "#999999"
+    },
+    {
       "name": "text_title_color",
-      "value": "#333333"
+      "value": "#cccccc"
     }
   ]
 }

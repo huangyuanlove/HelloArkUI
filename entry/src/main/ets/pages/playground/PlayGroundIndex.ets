@@ -6,6 +6,7 @@ import { HMPopInfo, HMRouterMgr } from '@hadss/hmrouter'
 import hilog from '@ohos.hilog'
 import { FlutterPath, MyFlutterRouter } from '../flutter/MyFlutterRouter'
 
+
 @Component
 export struct PlayGroundIndex {
   build() {
@@ -53,11 +54,14 @@ export struct PlayGroundIndex {
         BaseListItem({ label: '拖拽效果', path: "pages/playground/drag_demo/DragMainPage" })
         BaseListItem({ label: '组件动画', path: "pages/playground/animation/AnimationPage" })
         BaseListItem({ label: 'ScrollNestedPage', path: "pages/playground/ScrollNestedPage" })
+        BaseListItem({ label: '拖动的 GridItem', path: "pages/playground/drag/DragableGridItemPage" })
         BaseListItem({
           label: 'LoadmoreAndRefresh',
           path: "pages/playground/loadmore_and_refresh/LoadMoreAndRefreshPage"
         })
         BaseListItem({ label: 'ListRefreshPage', path: "pages/playground/loadmore_and_refresh/ListRefreshPage" })
+        BaseListItem({ label: '键盘避让', path: "pages/playground/ChatListKeyboardPage" })
+        BaseListItem({ label: '深色模式', path:     "pages/playground/dark_theme/DarkThemeModelPage" })
 
         Button('自定义拍照').onClick((_) => {
 

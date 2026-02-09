@@ -1,6 +1,6 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
-import { AbilityConstant, bundleManager, Want } from '@kit.AbilityKit';
+import { AbilityConstant, bundleManager, Configuration, ConfigurationConstant, Want } from '@kit.AbilityKit';
 import { UIContext, window, uiObserver as observer } from '@kit.ArkUI';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { JSON } from '@kit.ArkTS';
@@ -121,6 +121,35 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
     LynxEnv.setAppInfo(options);
     LynxEnv.enableDevtool(true);
 
+  }
+
+
+  onConfigurationUpdate(newConfig: Configuration): void {
+    if(newConfig.colorMode == ConfigurationConstant.ColorMode.COLOR_MODE_DARK){
+      window.getLastWindow(this.context).then((win)=>{
+        console.error('设置状态栏为深色模式')
+        win.setWindowSystemBarProperties({
+          statusBarColor:"#ffff0000",
+          isStatusBarLightIcon:false,
+          statusBarContentColor:"#ffffff00",
+          navigationBarColor: '#ffff0000',
+          // 以下两个属性从API Version 8开始支持
+          navigationBarContentColor: '#ffffff00'
+        })
+      })
+    }else if(newConfig.colorMode == ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT){
+      window.getLastWindow(this.context).then((win)=>{
+        console.error('设置状态栏为浅色模式')
+        win.setWindowSystemBarProperties({
+          statusBarColor:"#ff00ff00",
+          isStatusBarLightIcon:true,
+          statusBarContentColor:"#ff00ffff",
+          navigationBarColor: '#ff00ff00',
+          // 以下两个属性从API Version 8开始支持
+          navigationBarContentColor: '#ff00ffff'
+        })
+      })
+    }
   }
 
 

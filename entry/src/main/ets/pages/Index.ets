@@ -18,8 +18,6 @@ export struct Index {
 
   modifier: NavModifier = new NavModifier();
 
-
-
   @Builder
   tabBar(index:number){
     Column(){

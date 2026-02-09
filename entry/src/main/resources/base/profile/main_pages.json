@@ -89,6 +89,9 @@
     "pages/playground/lynx/LynxPage",
     "pages/playground/ScrollNestedPage",
     "pages/playground/loadmore_and_refresh/LoadMoreAndRefreshPage",
-    "pages/playground/loadmore_and_refresh/ListRefreshPage"
+    "pages/playground/loadmore_and_refresh/ListRefreshPage",
+    "pages/playground/drag/DragableGridItemPage",
+    "pages/playground/ChatListKeyboardPage",
+    "pages/playground/dark_theme/DarkThemeModelPage"
   ]
 }
