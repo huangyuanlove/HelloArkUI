@@ -47,4 +47,9 @@
 * 自定义拍照
 
 * 组件堆叠滑动效果
-* <img src ="image/component_stack.gif" width=20% height=20%/>  
+<img src ="image/component_stack.gif" width=20% height=20%/>  
+
+* 深色模式适配
+* 自定义上拉加载更多，下拉刷新
+* 翻页动效
+* 数字滚动效果
