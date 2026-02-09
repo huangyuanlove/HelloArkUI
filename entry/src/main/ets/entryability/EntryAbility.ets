@@ -105,7 +105,6 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
     })
 
 
-
     // Init LynxDevtoolService
     LynxServiceCenter.registerService(LynxServiceType.DevTool, LynxDevToolService.instance);
     // Init LynxHttpService
@@ -125,28 +124,30 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
 
 
   onConfigurationUpdate(newConfig: Configuration): void {
-    if(newConfig.colorMode == ConfigurationConstant.ColorMode.COLOR_MODE_DARK){
-      window.getLastWindow(this.context).then((win)=>{
+    this.setColorMode(newConfig.colorMode == ConfigurationConstant.ColorMode.COLOR_MODE_DARK)
+  }
+
+  setColorMode(isDark: boolean) {
+    if (isDark) {
+      window.getLastWindow(this.context).then((win) => {
         console.error('设置状态栏为深色模式')
         win.setWindowSystemBarProperties({
-          statusBarColor:"#ffff0000",
-          isStatusBarLightIcon:false,
-          statusBarContentColor:"#ffffff00",
-          navigationBarColor: '#ffff0000',
-          // 以下两个属性从API Version 8开始支持
-          navigationBarContentColor: '#ffffff00'
+          statusBarColor: "#ff0000",
+          statusBarContentColor: "#000000",
+
+        }).catch((error:BusinessError) => {
+          console.error('设置状态栏为深色模式 出错 ' + error.message)
         })
       })
-    }else if(newConfig.colorMode == ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT){
-      window.getLastWindow(this.context).then((win)=>{
+    } else {
+      window.getLastWindow(this.context).then((win) => {
         console.error('设置状态栏为浅色模式')
         win.setWindowSystemBarProperties({
-          statusBarColor:"#ff00ff00",
-          isStatusBarLightIcon:true,
-          statusBarContentColor:"#ff00ffff",
-          navigationBarColor: '#ff00ff00',
-          // 以下两个属性从API Version 8开始支持
-          navigationBarContentColor: '#ff00ffff'
+          statusBarColor: "#00ff00",
+          statusBarContentColor: "#ffffff",
+
+        }).catch((error:BusinessError) => {
+          console.error('设置状态栏为浅色模式 出错 ' + error.message)
         })
       })
     }
@@ -176,9 +177,12 @@ export default class EntryAbility extends UIAbility implements ExclusiveAppCompo
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
       }
+      this.setColorMode(this.context.config.colorMode == ConfigurationConstant.ColorMode.COLOR_MODE_DARK)
       hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');
       windowStage.getMainWindow((err: BusinessError, data) => {
         let windowInfo: window.Window = data;
+
+
         // 获取UIContext实例
         this.uiContext = windowInfo.getUIContext();
         // 注册监听，范围是uiContext内的page

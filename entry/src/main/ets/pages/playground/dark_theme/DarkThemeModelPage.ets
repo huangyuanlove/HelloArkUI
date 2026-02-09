@@ -1,6 +1,7 @@
 import { ConfigurationConstant } from '@kit.AbilityKit';
 import { webview } from '@kit.ArkWeb';
 import { DialogHelper } from '@pura/harmony-dialog';
+import { display, window } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -88,7 +89,6 @@ struct DarkThemeModelPage {
             primaryButton: '取消',
             secondaryButton: '确认',
             onAction: (action, dialogID) => {
-
             }
           })
         })
