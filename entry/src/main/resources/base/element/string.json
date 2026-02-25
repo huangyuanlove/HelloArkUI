@@ -41,6 +41,10 @@
     {
       "name": "user_grant_recorder_video_reason",
       "value": "录视频"
+    },
+    {
+      "name": "user_grant_custom_screen_capture_reason",
+      "value": "截图"
     }
   ,
     {

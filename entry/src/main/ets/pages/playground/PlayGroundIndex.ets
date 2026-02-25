@@ -54,7 +54,9 @@ export struct PlayGroundIndex {
         BaseListItem({ label: '拖拽效果', path: "pages/playground/drag_demo/DragMainPage" })
         BaseListItem({ label: '组件动画', path: "pages/playground/animation/AnimationPage" })
         BaseListItem({ label: 'ScrollNestedPage', path: "pages/playground/ScrollNestedPage" })
-        BaseListItem({ label: '拖动的 GridItem', path: "pages/playground/drag/DragableGridItemPage" })
+        BaseListItem({ label: 'DraggedGridPage', path: "pages/playground/drag/DraggedGridPage" })
+        BaseListItem({ label: 'ListDragPage', path: "pages/playground/drag/ListDragPage" })
+        BaseListItem({ label: '截图', path: "pages/playground/shot/ScreenShotPage" })
         BaseListItem({
           label: 'LoadmoreAndRefresh',
           path: "pages/playground/loadmore_and_refresh/LoadMoreAndRefreshPage"

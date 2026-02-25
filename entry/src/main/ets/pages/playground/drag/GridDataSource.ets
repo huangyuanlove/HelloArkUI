@@ -28,6 +28,10 @@ export class GridDataSource<T> implements IDataSource {
     }
   }
 
+  public moveDataWithoutNotify(from: number, to: number): void {
+    let tmp = this.list.splice(from, 1);
+    this.list.splice(to, 0, tmp[0]);
+  }
   // 通知控制器数据位置变化
   notifyDataMove(from: number, to: number): void {
     this.listeners.forEach(listener => {
@@ -41,20 +45,26 @@ export class GridDataSource<T> implements IDataSource {
     });
   }
 
+  getCurrentListID():string{
+    let result = '['
+    this.list.forEach( (value)=>{
+      result += (value as ESObject)['text']
+      result +=','
+    } )
+    return `${result}]`
+  }
+  public getItemIndex(item:T):number{
+    return this.list.indexOf(item)
+  }
+
   public change(from:number,to:number){
     if(from!=to){
-      console.error(`change之前 ${JSON.stringify(this.list,['text'])}`)
 
-
-      let tmp:T = this.list[from]
-      this.list.splice(from,1)
-      this.list.splice(to,0,tmp)
-      console.error(`change之后 ${JSON.stringify(this.list)}`)
+      console.error(`change之前 ${this.getCurrentListID()}`)
+      let tmp = this.list.splice(from, 1);
+      this.list.splice(to, 0, tmp[0]);
+      console.error(`change之后 ${this.getCurrentListID()}`)
       this.listeners.forEach((listener)=>{
-        // listener.onDatasetChange([
-        //   {type:DataOperationType.DELETE,index:from,count:1},
-        //   {type:DataOperationType.ADD,index:to,count:1}
-        // ])
         listener.onDataDelete(from)
         listener.onDataAdd(to)
       })
