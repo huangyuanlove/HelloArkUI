@@ -95,6 +95,7 @@
     "pages/playground/drag/DraggedGridPage",
     "pages/playground/drag/ListDragPage",
     "pages/playground/shot/ScreenShotPage",
-    "pages/playground/shot/LongShotPage"
+    "pages/playground/shot/LongShotPage",
+    "pages/playground/shot/ImageCropPage"
   ]
 }

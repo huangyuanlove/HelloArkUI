@@ -60,14 +60,9 @@ struct ScreenShotPage {
 
           this.getUIContext().getRouter().pushUrl({url:"pages/playground/shot/LongShotPage"})
 
-            // HMRouterMgr.push({pageUrl:'playground/shot/LongShotPage'},{
-            //   onLost:()=>{
-            //     console.error(`长截图 onLost`)
-            //   },
-            //   onArrival:()=>{
-            //     console.error(`长截图 onArrival`)
-            //   }
-            // })
+        })
+        Button('图片裁剪').onClick((_)=>{
+          this.getUIContext().getRouter().pushUrl({url:"pages/playground/shot/ImageCropPage"})
         })
 
       }.backgroundColor(Color.Green).id('root')

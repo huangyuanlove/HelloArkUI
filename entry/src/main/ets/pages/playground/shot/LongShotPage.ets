@@ -20,19 +20,14 @@ export struct LongShotPage {
   private listHeight: number = 0
   private listWidth: number = 0
   private pixmapArray: image.PixelMap[] = []
-  private currentScrollOffset: number = 0
-
-  private lastOffset:number = 0
-  private lastScrollHeight:number = 0
-
-
-  @Local lastPixmap?:image.PixelMap
+  private scrollOffsetArray: number [] = []
+  @Local lastPixmap?: image.PixelMap
 
   @LocalBuilder
-  previewLastPic(){
-    Scroll(){
-      Image(this.lastPixmap).width('100%')
-    }
+  previewLastPic() {
+    Scroll() {
+      Image(this.lastPixmap).width('100%').borderColor(Color.Red).borderWidth(1).objectFit(ImageFit.Contain).backgroundColor(Color.Yellow)
+    }.constraintSize({ maxHeight: 300 }).borderColor(Color.Yellow).borderWidth(1)
 
   }
 
@@ -41,11 +36,17 @@ export struct LongShotPage {
     Scroll() {
       Column() {
         ForEach(this.pixmapArray, (item: image.PixelMap, index: number) => {
-          Image(item).width('100%')
+          Image(item).fitOriginalSize(true).width('100%')
         })
       }
     }.constraintSize({ maxHeight: 300 })
 
+  }
+
+  private async snapShort() {
+    let pixmap = await this.getUIContext().getComponentSnapshot().get(list_id,{waitUntilRenderFinished:true})
+    this.pixmapArray.push(pixmap)
+    this.scrollOffsetArray.push(this.scroller.currentOffset().yOffset)
   }
 
   build() {
@@ -82,33 +83,28 @@ export struct LongShotPage {
         Button('一键截图')
         Button('滚动截图')
           .onClick(async (_) => {
-            let scrollCount: number = 0
             this.pixmapArray = []
-            let pixmap = await this.getUIContext().getComponentSnapshot().get(list_id)
-            this.pixmapArray.push(pixmap)
+            await this.snapShort()
             while (!this.scroller.isAtEnd()) {
-              scrollCount++
               this.scroller.scrollTo({
                 xOffset: 0,
-                yOffset: this.currentScrollOffset + this.listHeight
+                yOffset: this.scroller.currentOffset().yOffset + this.listHeight
               })
               await sleep(200)
-              this.currentScrollOffset += this.listHeight
+              await this.snapShort()
+            }
 
-              let pixmap = await this.getUIContext().getComponentSnapshot().get(list_id)
-              this.pixmapArray.push(pixmap)
+            for (let i = 0; i < this.scrollOffsetArray.length - 1; i++) {
 
-              this.lastScrollHeight = this.scroller.currentOffset().yOffset - this.lastOffset
-              this.lastOffset = this.scroller.currentOffset().yOffset
-
-
+              let diff = this.scrollOffsetArray[i+1] - this.scrollOffsetArray[i]
+              console.error(`第${i + 1}次滚动了 ${this.getUIContext().vp2px(diff)}`)
 
             }
-            let diff = this.currentScrollOffset - this.scroller.currentOffset().yOffset
+            for (let i = 0; i < this.pixmapArray.length; i++) {
+              let imageInfo: image.ImageInfo = this.pixmapArray[i].getImageInfoSync()
+              console.error(`第${i + 1}次截图高度 ${imageInfo.size.height}`)
+            }
 
-            console.error(`滑动了 ${scrollCount} 次, 当前偏移量计算值  ${this.currentScrollOffset},  当前偏移量实际值 :${this.scroller.currentOffset()
-              .yOffset}`)
-            console.error(`最后一次滑动了 ${this.lastScrollHeight} ,计算偏差为 ${diff}`)
 
             DialogHelper.showCustomContentDialog({
               title: '预览',
@@ -116,28 +112,86 @@ export struct LongShotPage {
                 this.previewScreenShot()
               },
               maxHeight: "60%",
-              onAction:async (action, dialogID) => {
+              onAction: async (action, dialogID) => {
 
-                if(action == DialogAction.CANCEL){
+                if (action == DialogAction.CANCEL) {
                   let tmpPixMap = this.pixmapArray[this.pixmapArray.length -1]
 
-                  let diff =this.listHeight -( this.currentScrollOffset - this.scroller.currentOffset().yOffset)
+                  let imageInfo = tmpPixMap.getImageInfoSync()
+
+                  let len = this.scrollOffsetArray.length
+                  let lastScrollHeight = Math.ceil(this.getUIContext().vp2px(this.scrollOffsetArray[len-1] -  this.scrollOffsetArray[len-2]))
+                  console.error(`最后一次滚动了  ${lastScrollHeight},截图高度 ${imageInfo.size.height}，isEditable ${tmpPixMap.isEditable}`)
+
+
+
+                  let pixelMapBuffer = new ArrayBuffer(tmpPixMap.getPixelBytesNumber())
+                  tmpPixMap.readPixelsToBuffer(pixelMapBuffer)
+
+                let editablePixelMap = await  image.createPixelMap(pixelMapBuffer,{
+                    editable:true,
+                    pixelFormat:imageInfo.pixelFormat,
+                    size:imageInfo.size
+                  })
+
+
+
                   let cropRegion: image.Region = {
                     x: 0,
-                    y: this.currentScrollOffset - this.scroller.currentOffset().yOffset,
+                    y: imageInfo.size.height - lastScrollHeight,
+                    // y: 0,
                     size: {
-                      height:  diff,
-                      width: this.listWidth
+                      height: lastScrollHeight,
+                      width: imageInfo.size.width
                     }
                   };
-                 await tmpPixMap.crop(cropRegion)
-                  this.lastPixmap = tmpPixMap
+                  //
+                  // const area: image.PositionArea = {
+                  //   pixels: new ArrayBuffer(tmpPixMap.getPixelBytesNumber()),
+                  //   offset: 0,
+                  //   stride: tmpPixMap.getBytesNumberPerRow(),
+                  //   region: cropRegion
+                  // };
+                  // tmpPixMap.readPixelsSync(area);
+                  //
+                  // const opts: image.InitializationOptions = {
+                  //   editable: true,
+                  //   // readPixelsSync使用的是BGRA_8888,转换时设置RGBA_8888
+                  //   pixelFormat: image.PixelMapFormat.RGBA_8888,
+                  //   size: { height: lastScrollHeight, width: imageInfo.size.width }
+                  // };
+                  // let snapshot = image.createPixelMapSync(opts);
+                  // const snapshotArea: image.PositionArea = {
+                  //   pixels: area.pixels,
+                  //   offset: 0,
+                  //   stride: area.stride,
+                  //   region: {
+                  //     size: {
+                  //       width: imageInfo.size.width,
+                  //       height: lastScrollHeight
+                  //     },
+                  //     x: 0,
+                  //     y: 0
+                  //   }
+                  // };
+                  // snapshot.writePixelsSync(snapshotArea);
+
+                try {
+                  await editablePixelMap.crop(cropRegion)
+                }catch (error) {
+                  console.error(`裁剪错误  ${error} ${error.code}  ${error.message}`)
+                }
+
+
+                  this.lastPixmap = editablePixelMap
+                  let cropedImageInfo = this.lastPixmap.getImageInfoSync()
+                  console.error(`裁剪后的图片高度 ${cropedImageInfo.size.height}`)
                   DialogHelper.showCustomContentDialog({
-                    title:"最后一张图片",
-                    contentBuilder:()=>{
+                    title: "最后一张图片",
+                    contentBuilder: () => {
                       this.previewLastPic()
                     },
-                    onAction:(action,dialogid)=>{
+                    onAction: (action, dialogid) => {
 
                     }
                   })
@@ -146,7 +200,9 @@ export struct LongShotPage {
 
                 if (action == DialogAction.SURE) {
                   //最后一张图片需要裁掉的高度
-                  let diff = this.currentScrollOffset - this.scroller.currentOffset().yOffset
+                  let len = this.scrollOffsetArray.length
+                  let diff =
+                    Math.ceil(this.getUIContext().vp2px(this.scrollOffsetArray[len-2] - this.scrollOffsetArray[len-1]))
 
                   let longPixelMap = image.createPixelMapSync({
                     editable: true,
@@ -160,15 +216,15 @@ export struct LongShotPage {
 
 
                   let imgPosition: number = 0;
-                  for (let i = 0; i < this.pixmapArray.length ; i++) {
+                  for (let i = 0; i < this.pixmapArray.length; i++) {
                     let pixelMap = this.pixmapArray[i]
                     let stride = pixelMap.getBytesNumberPerRow();
                     let bytesNumber = pixelMap.getPixelBytesNumber();
                     let buffer: ArrayBuffer = new ArrayBuffer(bytesNumber);
 
-                    if(i == this.pixmapArray.length -1){
+                    if (i == this.pixmapArray.length - 1) {
                       //最后一张图，判断一下是否需要裁剪
-                      if(diff > 0){
+                      if (diff > 0) {
                         let cropRegion: image.Region = {
                           x: 0,
                           y: diff,
